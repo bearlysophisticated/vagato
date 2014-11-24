@@ -1,0 +1,29 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+
+body {
+  background-color: #F5F5F1;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  float: right;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.col-md-3:mth-child(4n+1){
+  clear: left;
+}

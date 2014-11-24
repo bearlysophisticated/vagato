@@ -1,0 +1,37 @@
+<%= form_for(@room) do |f| %>
+  <% if @room.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</h2>
+
+      <ul>
+      <% @room.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label "Megnevezés" %><br>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label "Leírás" %><br>
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label "Kapacitás" %><br>
+    <%= f.number_field :capacity, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label "Hasonló szobák száma" %><br>
+    <%= f.number_field :num_of_this, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.submit "Mentés", class: "right btn btn-primary" %>
+  </div>
+  <div class="form-group invisible">
+    <%= f.label :Szálláshely %><br>
+    <%= f.number_field :accommodation_id, class: "form-control" %>
+  </div>
+<% end %>

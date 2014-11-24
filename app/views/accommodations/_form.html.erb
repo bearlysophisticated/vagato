@@ -1,0 +1,62 @@
+<%= form_for @accommodation, :html => {:class => "form-horizontal", :role => "form"} do |f| %>
+  <% if @accommodation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@accommodation.errors.count, "error") %> prohibited this accommodation from being saved:</h2>
+
+      <ul>
+      <% @accommodation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+      <div class="form_group">
+        <%= f.label "Megnevezés" %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+      <div class="form_group">
+        <%= f.label "Leírás" %><br>
+        <%= f.text_area :description, class: "form-control" %>
+      </div>
+
+
+
+      <%= f.fields_for :address do |address_form| %>
+      <div class="form_group">
+        <%= address_form.label "Ország" %>
+        <%= address_form.text_field :country, class: "form-control" %>
+      </div>
+      <div class="form_group">
+        <%= address_form.label "Irányítószám" %>
+        <%= address_form.text_field :zip, class: "form-control" %>
+      </div>
+      <div class="form_group">
+        <%= address_form.label "Település" %>
+        <%= address_form.text_field :city, class: "form-control" %>
+      </div>
+      <div class="form_group">
+        <%= address_form.label "Cím" %>
+        <%= address_form.text_field :address, class: "form-control" %>
+      </div>
+      <% end %>
+
+
+
+  <%= f.fields_for :category do |category_form| %>
+    <h3>Category</h3>
+    <div class="field">
+      <%= category_form.label :name %>
+      <%= category_form.text_field :name %>
+    </div>
+    <div class="field">
+      <%= category_form.label :class %>
+      <%= category_form.number_field :class %>
+    </div>
+  <% end %>
+
+  <div class="actions right" >
+    <%= f.submit "Mentés", class: "btn btn-primary" %>
+  </div>
+<% end %>

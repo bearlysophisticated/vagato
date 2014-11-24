@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="row">
+    <% @accommodations.each do |accommodation| %>
+        <div class="col-md-3 well">
+          <%= link_to accommodation.name, accommodation %>
+        </div>
+    <% end %>
+  </div>
+</div>

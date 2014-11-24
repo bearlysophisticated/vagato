@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Accommodation:</strong>
+  <%= @accommodation_equipment.accommodation_id %>
+</p>
+
+<p>
+  <strong>Equipment:</strong>
+  <%= @accommodation_equipment.equipment_id %>
+</p>
+
+<%= link_to 'Edit', edit_accommodation_equipment_path(@accommodation_equipment) %> |
+<%= link_to 'Back', accommodation_equipments_path %>

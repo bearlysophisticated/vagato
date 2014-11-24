@@ -1,0 +1,2 @@
+module AccommodationEquipmentsHelper
+end

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Szerkesztés', edit_accommodation_path(@accommodation), class: "btn btn-link right" %>
+
+<h2><%= @accommodation.name %></h2>
+
+<p class="italic">
+  <%= @accommodation.description %>
+</p>
+
+<p>
+  <strong>Cím: </strong><%= @accommodation.address.zip %> <%= @accommodation.address.city %>, <%= @accommodation.address.address %>, <%= @accommodation.address.country %>
+</p>
+
+<h3>Szobák:</h3>
+<div class="row">
+  <% @rooms.each do |room| %>
+      <div class="col-md-3 well">
+        <%= link_to room.name, room %>
+      </div>
+  <% end %>
+</div>
+
+<%= link_to 'Vissza', '/', class: "btn btn-link" %>
