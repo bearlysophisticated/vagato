@@ -11,6 +11,10 @@ class AccommodationsController < ApplicationController
   # GET /accommodations/1.json
   def show
     @rooms = Accommodation.find(params[:id]).rooms
+    @hash = Gmaps4rails.build_markers(@accommodation.address) do |address, marker|
+      marker.lat address.latitude
+      marker.lng address.longitude
+    end
   end
 
   # GET /accommodations/new

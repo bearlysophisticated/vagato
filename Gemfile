@@ -45,3 +45,6 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 gem 'rails_12factor', group: :production
+
+gem 'geocoder'
+gem 'gmaps4rails'
