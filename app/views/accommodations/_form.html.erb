@@ -1,4 +1,4 @@
-<%= form_for @accommodation, :html => {:class => "form-horizontal", :role => "form"} do |f| %>
+<%= form_for @accommodation, :html => { :multipart => true } do |f| %>
   <% if @accommodation.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@accommodation.errors.count, "error") %> prohibited this accommodation from being saved:</h2>
@@ -44,17 +44,19 @@
 
 
 
-  <%= f.fields_for :category do |category_form| %>
-    <h3>Category</h3>
-    <div class="field">
-      <%= category_form.label :name %>
-      <%= category_form.text_field :name %>
+  <%= f.fields_for :categry do |categry_form| %>
+    <div class="form_group">
+      <%= categry_form.label "Kategória megnevezése" %>
+      <%= categry_form.text_field :name, class: "form-control" %>
     </div>
-    <div class="field">
-      <%= category_form.label :class %>
-      <%= category_form.number_field :class %>
+    <div class="form_group">
+      <%= categry_form.label "Kategória minősítése" %>
+      <%= categry_form.number_field :value, class: "form-control" %>
     </div>
   <% end %>
+
+  <h5><strong>Felszereltség</strong></h5>
+  <%= f.collection_check_boxes(:equipment_ids, Equipment.all, :id, :name) %>
 
   <div class="actions right" >
     <%= f.submit "Mentés", class: "btn btn-primary" %>

@@ -11,23 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141124114336) do
+ActiveRecord::Schema.define(version: 20141125153312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "accommodation_equipments", force: true do |t|
-    t.integer  "accommodation_id"
-    t.integer  "equipment_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "accommodations", force: true do |t|
     t.string   "name"
     t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "description"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
+  create_table "accommodations_equipments", id: false, force: true do |t|
+    t.integer "accommodation_id"
+    t.integer "equipment_id"
   end
 
   create_table "addresses", force: true do |t|
@@ -40,10 +43,10 @@ ActiveRecord::Schema.define(version: 20141124114336) do
     t.datetime "updated_at"
   end
 
-  create_table "categories", force: true do |t|
+  create_table "categries", force: true do |t|
     t.string   "name"
-    t.decimal  "class"
     t.string   "code"
+    t.integer  "value"
     t.integer  "accommodation_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -53,6 +56,13 @@ ActiveRecord::Schema.define(version: 20141124114336) do
     t.float    "latitude"
     t.float    "longitude"
     t.integer  "address_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "equipment", force: true do |t|
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -67,19 +77,19 @@ ActiveRecord::Schema.define(version: 20141124114336) do
     t.datetime "updated_at"
   end
 
-  create_table "room_equipments", force: true do |t|
-    t.integer  "room_id"
-    t.integer  "equipment_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "rooms", force: true do |t|
     t.string   "name"
     t.string   "code"
     t.integer  "accommodation_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "num_of_this"
+    t.integer  "capacity"
+    t.integer  "description"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
 end

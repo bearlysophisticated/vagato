@@ -12,10 +12,16 @@
   <strong>Cím: </strong><%= @accommodation.address.zip %> <%= @accommodation.address.city %>, <%= @accommodation.address.address %>, <%= @accommodation.address.country %>
 </p>
 
-<h3>Szobák:</h3>
+<% @accommodation.equipments.map do |equipment| %>
+  <span class="label label-info" style="margin-right: 5px;">
+     <%= equipment.name %> 
+  </span>
+<% end %>
+
+<h4>Szobák:</h4>
 <div class="row">
   <% @rooms.each do |room| %>
-      <div class="col-md-3">
+      <div class="col-md-2">
       	<div class="thumbnail">
 			<%= image_tag room.image.url %>
 			<div class="caption">

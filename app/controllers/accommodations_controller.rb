@@ -17,13 +17,7 @@ class AccommodationsController < ApplicationController
   def new
     @accommodation = Accommodation.new
     @accommodation.build_address
-#    @accommodation.build_category
-#    @accommodation.create_category
-#    @address = Address.new
-#    @coordinate = Coordinate.new
-#    @category = Category.new
-#    @equipments = Equipment.all
-#    @choosen_equipments = Array.new
+    @accommodation.build_categry
   end
 
   # GET /accommodations/1/edit
@@ -79,7 +73,8 @@ class AccommodationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def accommodation_params
-       params.require(:accommodation).permit(:name, :code, :description, :image, address_attributes: [:id, :country, :zip, :city, :address],
-        category_attributes: [:id, :name, :class])
+       params.require(:accommodation).permit(:name, :code, :description, :image, {equipment_ids: []}, 
+        address_attributes: [:id, :country, :zip, :city, :address],
+        categry_attributes: [:id, :name, :value])
     end
 end

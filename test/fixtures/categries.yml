@@ -2,12 +2,12 @@
 
 one:
   name: MyString
-  class: 9.99
   code: MyString
+  value: 1
   accommodation_id: 1
 
 two:
   name: MyString
-  class: 9.99
   code: MyString
+  value: 1
   accommodation_id: 1

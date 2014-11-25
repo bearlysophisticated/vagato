@@ -1,9 +1,9 @@
-class CreateCategories < ActiveRecord::Migration
+class CreateCategries < ActiveRecord::Migration
   def change
-    create_table :categories do |t|
+    create_table :categries do |t|
       t.string :name
-      t.decimal :class
       t.string :code
+      t.integer :value
       t.integer :accommodation_id
 
       t.timestamps

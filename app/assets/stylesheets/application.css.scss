@@ -3,9 +3,13 @@
 
 
 body {
-  background-color: #F5F5F1;
+  background-color: #FFF;
   color: #333;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar .navbar-default {
+	background-color: #F5F5F1
 }
 
 .center {
@@ -14,6 +18,10 @@ body {
 
 .right {
   float: right;
+}
+
+.margin-right {
+	margin-right: 10px;
 }
 
 .italic {

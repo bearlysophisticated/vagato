@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :equipment
+
+  resources :categries
+
   root 'pages#home'
 
   get 'pages/home'
@@ -13,8 +17,6 @@ Rails.application.routes.draw do
   resources :room_equipments
 
   resources :coordinates
-
-  resources :categories
 
   resources :accommodation_equipments
 
