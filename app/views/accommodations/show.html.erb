@@ -25,7 +25,7 @@
       	<div class="thumbnail">
 			<%= image_tag room.image.url %>
 			<div class="caption">
-        		<%= link_to room.name, room %>
+        		<%= link_to room.name, "/rooms/#{room.id}" %>
         	</div>
         </div>
       </div>

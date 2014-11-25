@@ -1,4 +1,5 @@
 class RoomsController < ApplicationController
+
   before_action :set_room, only: [:show, :edit, :update, :destroy]
 
   # GET /rooms
@@ -16,6 +17,12 @@ class RoomsController < ApplicationController
   def new
     @room = Room.new
     @room.accommodation_id = params[:acc_id]
+    price = @room.build_price
+
+    price.currency = PricesHelper.default_currency
+    price.vat = PricesHelper.default_vat
+    price.ifa = PricesHelper.default_ifa
+#    @room.price = price
   end
 
   # GET /rooms/1/edit
@@ -70,6 +77,7 @@ class RoomsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def room_params
-      params.require(:room).permit(:name, :code, :accommodation_id, :description, :capacity, :num_of_this, :image)
+      params.require(:room).permit(:name, :code, :accommodation_id, :description, :capacity, :num_of_this, :image,
+        price_attributes: [:id, :value])
     end
 end

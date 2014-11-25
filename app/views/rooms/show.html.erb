@@ -1,19 +1,26 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
+<%= link_to 'Szerkesztés', edit_room_path(@room), class: "btn btn-success right" %>
+
+<small><%= @room.accommodation.name %></small>
+<h2>
   <%= @room.name %>
+</h2>
+
+<p class="italic">
+  <%= @room.description %>
 </p>
 
 <p>
-  <strong>Code:</strong>
-  <%= @room.code %>
+	<strong>Kapacitás:</strong> <%= @room.capacity %>
 </p>
 
 <p>
-  <strong>Accommodation:</strong>
-  <%= @room.accommodation_id %>
+	<strong>Hasonló szobák száma:</strong> <%= @room.num_of_this %>
 </p>
 
-<%= link_to 'Edit', edit_room_path(@room) %> |
-<%= link_to 'Back', rooms_path %>
+<p>
+	<strong>Ár:</strong> <%= @room.price.value_with_vat %> <%= @room.price.currency %> + <%= @room.price.ifa %> <%= @room.price.currency %>/fő/éj IFA
+</p>
+
+<%= link_to 'Vissza', "/accommodations/#{@room.accommodation.id}" %>

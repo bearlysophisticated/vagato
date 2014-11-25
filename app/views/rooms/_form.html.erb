@@ -1,4 +1,4 @@
-<%= form_for(@room) do |f| %>
+<%= form_for @room, :html => { :multipart => true } do |f| %>
   <% if @room.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@room.errors.count, "error") %> prohibited this room from being saved:</h2>
@@ -27,6 +27,14 @@
     <%= f.label "Hasonló szobák száma" %><br>
     <%= f.number_field :num_of_this, class: "form-control" %>
   </div>
+
+  <%= f.fields_for :price do |p| %>
+    <div class="form-group">
+      <%= p.label "Ár" %><br>
+      <%= p.number_field :value, class: "form-control" %>
+    </div>
+  <% end %>
+  
   <div class="form-group">
     <%= f.submit "Mentés", class: "right btn btn-primary" %>
   </div>
