@@ -15,8 +15,13 @@
 <h3>Szobák:</h3>
 <div class="row">
   <% @rooms.each do |room| %>
-      <div class="col-md-3 well">
-        <%= link_to room.name, room %>
+      <div class="col-md-3">
+      	<div class="thumbnail">
+			<%= image_tag room.image.url %>
+			<div class="caption">
+        		<%= link_to room.name, room %>
+        	</div>
+        </div>
       </div>
   <% end %>
 </div>
