@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :categries
 
-  root 'pages#home'
+  root 'accommodations#index'
 
   get 'pages/home'
 

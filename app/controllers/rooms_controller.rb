@@ -1,6 +1,7 @@
 class RoomsController < ApplicationController
-
   before_action :set_room, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :check_user, only: [:new, :create, :edit, :update, :destroy]
 
   # GET /rooms
   # GET /rooms.json
@@ -22,7 +23,6 @@ class RoomsController < ApplicationController
     price.currency = PricesHelper.default_currency
     price.vat = PricesHelper.default_vat
     price.ifa = PricesHelper.default_ifa
-#    @room.price = price
   end
 
   # GET /rooms/1/edit
@@ -80,4 +80,11 @@ class RoomsController < ApplicationController
       params.require(:room).permit(:name, :code, :accommodation_id, :description, :capacity, :num_of_this, :image,
         price_attributes: [:id, :value])
     end
+
+    def check_user
+      if current_user != @room.accommodation.current_user
+        redirect_to root_url, alert: "Nincs jogosultsaga!"
+      end
+    end
+
 end

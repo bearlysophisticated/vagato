@@ -3,7 +3,9 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Szerkesztés', edit_accommodation_path(@accommodation), class: "btn btn-link right" %>
+<% if (user_signed_in?) && (current_user == @accommodation.user) %>
+  <%= link_to 'Szerkesztés', edit_accommodation_path(@accommodation), class: "btn btn-link right" %>
+<% end %>
 
 <h2><%= @accommodation.name %></h2>
 <% @accommodation.equipments.map do |equipment| %>

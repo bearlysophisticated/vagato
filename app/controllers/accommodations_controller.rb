@@ -1,10 +1,16 @@
 class AccommodationsController < ApplicationController
   before_action :set_accommodation, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :check_user, only: [:edit, :update, :destroy]
 
   # GET /accommodations
   # GET /accommodations.json
   def index
-    @accommodations = Accommodation.all
+    if user_signed_in?
+      @accommodations = Accommodation.where("user_id = #{current_user.id}")
+    else
+      @accommodations = Accommodation.all
+    end
   end
 
   # GET /accommodations/1
@@ -32,6 +38,7 @@ class AccommodationsController < ApplicationController
   # POST /accommodations.json
   def create
     @accommodation = Accommodation.new(accommodation_params)
+    @accommodation.user_id = current_user.id
 
     respond_to do |format|
       if @accommodation.save
@@ -80,5 +87,11 @@ class AccommodationsController < ApplicationController
        params.require(:accommodation).permit(:name, :code, :description, :image, {equipment_ids: []}, 
         address_attributes: [:id, :country, :zip, :city, :address],
         categry_attributes: [:id, :name, :value])
+    end
+
+    def check_user
+      if current_user != @accommodation.user
+        redirect_to root_url, alert: "Nincs jogosultsaga!"
+      end
     end
 end
