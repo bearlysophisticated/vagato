@@ -82,7 +82,8 @@ class RoomsController < ApplicationController
     end
 
     def check_user
-      if current_user != @room.accommodation.current_user
+      accommodation = Accommodation.find(params[:acc_id])
+      if current_user != accommodation.user
         redirect_to root_url, alert: "Nincs jogosultsaga!"
       end
     end
