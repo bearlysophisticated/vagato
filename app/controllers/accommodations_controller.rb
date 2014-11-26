@@ -1,16 +1,16 @@
 class AccommodationsController < ApplicationController
   before_action :set_accommodation, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:szallasaim, :new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update, :destroy]
+
+  def szallasaim
+    @accommodations = Accommodation.where(user: current_user)
+  end
 
   # GET /accommodations
   # GET /accommodations.json
   def index
-    if user_signed_in?
-      @accommodations = Accommodation.where("user_id = #{current_user.id}")
-    else
       @accommodations = Accommodation.all
-    end
   end
 
   # GET /accommodations/1
