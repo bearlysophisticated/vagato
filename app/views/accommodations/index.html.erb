@@ -1,14 +1,18 @@
-<div class="container">
-  <div class="row">
-    <% @accommodations.each do |accommodation| %>
-      <div class="col-md-3">
-        <div class="thumbnail">
-          <%= image_tag accommodation.image.url %>
-          <div class="caption">
-              <%= link_to accommodation.name, accommodation %>
-          </div>
+
+<% if user_signed_in? %>
+  <%= link_to "Új szállás", new_accommodation_path, class: "btn btn-success right" %>
+<% end %>
+
+<div class="row">
+  <% @accommodations.each do |accommodation| %>
+    <div class="col-md-3">
+      <div class="thumbnail">
+        <%= image_tag accommodation.image.url %>
+        <div class="caption">
+            <%= link_to accommodation.name, accommodation %>
         </div>
       </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>
+
