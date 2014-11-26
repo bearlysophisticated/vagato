@@ -35,3 +35,22 @@ body {
 .col-md-3:mth-child(4n+1){
   clear: left;
 }
+
+div.narrow-30 {
+  width: 30%; 
+}
+
+div.narrow-60 {
+  width: 60%;
+}
+
+div.narrow-30-center {
+  position: relative;
+  left: 50%;
+  margin-left: -15%;
+}
+
+div.footer {
+  text-align: center;
+  margin-top: 100px;
+}
