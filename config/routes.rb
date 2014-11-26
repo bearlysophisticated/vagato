@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :serviices
+
   devise_for :users
 
   root 'accommodations#index'
@@ -13,8 +15,6 @@ Rails.application.routes.draw do
   get 'rooms/new/:acc_id' => 'rooms#new'
 
   get 'szallasaim' => 'accommodations#szallasaim'
-
-  resources :room_equipments
 
   resources :coordinates
 

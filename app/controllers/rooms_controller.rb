@@ -50,7 +50,7 @@ class RoomsController < ApplicationController
   def update
     respond_to do |format|
       if @room.update(room_params)
-        format.html { redirect_to @room, notice: 'Room was successfully updated.' }
+        format.html { redirect_to "/accommodations/#{@room.accommodation.id}/edit", notice: 'Room was successfully updated.' }
         format.json { render :show, status: :ok, location: @room }
       else
         format.html { render :edit }
@@ -64,7 +64,7 @@ class RoomsController < ApplicationController
   def destroy
     @room.destroy
     respond_to do |format|
-      format.html { redirect_to rooms_url, notice: 'Room was successfully destroyed.' }
+      format.html { redirect_to "/accommodations/#{@room.accommodation.id}/edit", notice: 'Room was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -77,12 +77,17 @@ class RoomsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def room_params
-      params.require(:room).permit(:name, :code, :accommodation_id, :description, :capacity, :num_of_this, :image,
+      params.require(:room).permit(:name, :code, :accommodation_id, :description, :capacity, :num_of_this, :image, {equipment_ids: []},
         price_attributes: [:id, :value])
     end
 
     def check_user
-      accommodation = Accommodation.find(params[:acc_id])
+      if params[:acc_id].nil?
+        accommodation = Accommodation.find(params[:room][:accommodation_id])
+      else
+        accommodation = Accommodation.find(params[:acc_id])
+      end
+
       if current_user != accommodation.user
         redirect_to root_url, alert: "Nincs jogosultsaga!"
       end

@@ -8,9 +8,9 @@
 <% end %>
 
 <h2><%= @accommodation.name %></h2>
-<% @accommodation.equipments.map do |equipment| %>
+<% @accommodation.serviices.map do |serviice| %>
   <span class="label label-info" style="margin-right: 5px;">
-     <%= equipment.name %> 
+     <%= serviice.name %> 
   </span>
 <% end %>
 
