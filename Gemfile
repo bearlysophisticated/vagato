@@ -48,3 +48,4 @@ gem 'rails_12factor', group: :production
 
 gem 'geocoder'
 gem 'gmaps4rails'
+gem 'devise'
