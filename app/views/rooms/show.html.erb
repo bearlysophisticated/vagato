@@ -6,8 +6,13 @@
 <h2>
   <%= @room.name %>
 </h2>
+<% @room.equipments.map do |equipment| %>
+  <span class="label label-info" style="margin-right: 5px;">
+     <%= equipment.name %> 
+  </span>
+<% end %>
 
-<p class="italic">
+<p class="italic"><br>
   <%= @room.description %>
 </p>
 
