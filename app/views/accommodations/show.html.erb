@@ -24,12 +24,12 @@
   <div style='width: 600px;'>
     <div id="map" style='width: 600px; height: 200px;'></div>
   </div>
-</p>
+</p><br>
 
 <h4>Szobák:</h4>
 <div class="row">
   <% @rooms.each do |room| %>
-      <div class="col-md-2">
+      <div class="col-sm-3">
       	<div class="thumbnail">
 			<%= image_tag room.image.url %>
 			<div class="caption">
