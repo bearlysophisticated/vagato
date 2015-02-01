@@ -16,12 +16,19 @@ ActiveRecord::Schema.define(version: 20141126180716) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "accommodation_equipments", force: true do |t|
+    t.integer  "accommodation_id"
+    t.integer  "equipment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "accommodations", force: true do |t|
     t.string   "name"
     t.string   "code"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "description"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
@@ -89,15 +96,15 @@ ActiveRecord::Schema.define(version: 20141126180716) do
     t.string   "name"
     t.string   "code"
     t.integer  "accommodation_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "num_of_this"
     t.integer  "capacity"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.string   "description"
   end
 
   create_table "rooms_equipments", id: false, force: true do |t|

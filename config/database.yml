@@ -8,8 +8,8 @@ default: &default
   adapter: postgresql
   encoding: utf8
   database: vagato
-  username: postgres
-  password: 1a2b3c4D
+  username: medwe
+  password: medwe
   host: localhost
   pool: 5
   timeout: 5000
