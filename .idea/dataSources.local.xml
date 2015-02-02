@@ -14,8 +14,8 @@
       <user-password>dfc7dfcfdfcedfdddfcf</user-password>
     </data-source>
     <data-source name="Rails vagato: production" uuid="c1ac15b2-8617-4708-9f34-35453e14a0f5">
-      <user-name>medwe</user-name>
-      <user-password>dfc7dfcfdfcedfdddfcf</user-password>
+      <user-name>deploy</user-name>
+      <user-password>dfdddfdddfeddfdadf9edf9edfebdfdddff3dfebdfc2df9a</user-password>
     </data-source>
   </component>
 </project>
