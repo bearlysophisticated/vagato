@@ -1,6 +1,6 @@
-app_key: "84f5fhg0xinj03f"
-app_secret: <%= ENV["DROPBOX_APP_SECRET"] %>
-access_token: "ay02x6kwnzbr836m"
-access_token_secret: <%= ENV["DROPBOX_TOKEN_SECRET"] %>
-user_id: "21411555"
-access_type: "app_folder"
+app_key:              "84f5fhg0xinj03f"
+app_secret:           "3s9hypu3poagors"
+access_token:         "lvtj67fdmdoxuxca"
+access_token_secret:  "7upwcdoh3naca5s"
+user_id:              "21411555"
+access_type:          "app_folder"
