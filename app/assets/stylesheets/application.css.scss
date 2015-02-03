@@ -54,6 +54,10 @@ div.narrow-30-center {
 }
 
 div.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
   text-align: center;
-  margin-top: 20px;
+  background-color: #F8F8F8;
 }
