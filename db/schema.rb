@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203154121) do
+ActiveRecord::Schema.define(version: 20150203201803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(version: 20150203154121) do
     t.string   "image_content_type", limit: 255
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.integer  "address_id"
     t.integer  "owner_id"
   end
 
@@ -48,14 +47,16 @@ ActiveRecord::Schema.define(version: 20150203154121) do
   end
 
   create_table "addresses", force: :cascade do |t|
-    t.string   "country",    limit: 255
-    t.string   "zip",        limit: 255
-    t.string   "city",       limit: 255
-    t.string   "address",    limit: 255
+    t.string   "country",          limit: 255
+    t.string   "zip",              limit: 255
+    t.string   "city",             limit: 255
+    t.string   "address",          limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "latitude"
     t.float    "longitude"
+    t.integer  "addressable_id"
+    t.string   "addressable_type"
   end
 
   create_table "categries", force: :cascade do |t|
@@ -86,7 +87,6 @@ ActiveRecord::Schema.define(version: 20150203154121) do
     t.string   "name"
     t.string   "phone"
     t.datetime "day_of_birth"
-    t.integer  "address_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end

@@ -1,5 +1,5 @@
 class Guest < ActiveRecord::Base
-  belongs_to :address, dependent: :destroy
+  has_one :address, :as => :addressable, dependent: :destroy
 
   has_one :user, :as => :role, dependent: :destroy
   accepts_nested_attributes_for :user

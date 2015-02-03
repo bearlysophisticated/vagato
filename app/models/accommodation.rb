@@ -1,6 +1,6 @@
 class Accommodation < ActiveRecord::Base
   belongs_to :owner
-  belongs_to :address
+  has_one :address, :as => :addressable
   has_one :categry
 #  has_many :accommodation_equipments
 #  has_many :equipments, through: :accommodation_equipments
@@ -17,4 +17,7 @@ class Accommodation < ActiveRecord::Base
       :storage => :dropbox,
       :dropbox_credentials => Rails.root.join("config/dropbox.yml")
   validates_attachment_content_type :image, :content_type => /\Aimage\/.*\Z/
+
+  validates_associated :address
+
 end
