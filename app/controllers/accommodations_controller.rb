@@ -4,7 +4,7 @@ class AccommodationsController < ApplicationController
   before_action :check_user, only: [:edit, :update, :destroy]
 
   def szallasaim
-    @accommodations = Accommodation.where(user: current_user)
+    @accommodations = Accommodation.where(owner: current_user.role)
   end
 
   # GET /accommodations
@@ -16,7 +16,8 @@ class AccommodationsController < ApplicationController
   # GET /accommodations/1
   # GET /accommodations/1.json
   def show
-    @rooms = Accommodation.find(params[:id]).rooms
+    # @rooms = Accommodation.find(params[:id]).rooms
+    @rooms = @accommodation.rooms
     @hash = Gmaps4rails.build_markers(@accommodation.address) do |address, marker|
       marker.lat address.latitude
       marker.lng address.longitude
@@ -38,7 +39,7 @@ class AccommodationsController < ApplicationController
   # POST /accommodations.json
   def create
     @accommodation = Accommodation.new(accommodation_params)
-    @accommodation.user_id = current_user.id
+    @accommodation.owner_id = current_user.role.id
 
     respond_to do |format|
       if @accommodation.save
@@ -90,7 +91,7 @@ class AccommodationsController < ApplicationController
     end
 
     def check_user
-      if current_user != @accommodation.user
+      if current_user != @accommodation.owner.user
         redirect_to root_url, alert: "Nincs jogosultsaga!"
       end
     end
