@@ -7,7 +7,6 @@ class Guest < ActiveRecord::Base
   accepts_nested_attributes_for :address
 
   validates :name, :phone, :day_of_birth, presence: true
-  validates :name, :phone, :day_of_birth, absence: true
   validates_associated :user
   validates_associated :address
 end

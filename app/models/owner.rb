@@ -5,6 +5,5 @@ class Owner < ActiveRecord::Base
   accepts_nested_attributes_for :user
 
   validates :name, presence: true
-  validates :name, absence: true
   validates_associated :user
 end

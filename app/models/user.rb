@@ -13,4 +13,12 @@ class User < ActiveRecord::Base
   def owner?
     self.role.is_a? Owner
   end
+
+  def admin?
+    self.role.is_a? Admin
+  end
+
+  def role?
+    self.role_type
+  end
 end

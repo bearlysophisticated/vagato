@@ -18,7 +18,7 @@ class GuestsController < ApplicationController
   # POST /accommodations.json
   def create
     @guest = Guest.new(guest_params)
-    puts guest_params
+
     if @guest.save
       redirect_to '/'
     else
