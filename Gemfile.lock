@@ -76,6 +76,9 @@ GEM
       execjs
     coffee-script-source (1.9.0)
     colorize (0.7.5)
+    countries (0.10.0)
+      currencies (~> 0.4.2)
+    currencies (0.4.2)
     devise (3.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -206,6 +209,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.1.1)
   capistrano-rbenv!
   coffee-rails
+  countries
   devise
   font-awesome-sass
   geocoder

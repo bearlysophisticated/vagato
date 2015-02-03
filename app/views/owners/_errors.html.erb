@@ -1,0 +1,9 @@
+<% if @owner.errors.any? %>
+    <div class="error_explanation">
+      <ul>
+        <% @owner.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+<% end %>

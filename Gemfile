@@ -6,6 +6,9 @@ gem 'geocoder'
 # Google maps integration
 gem 'gmaps4rails'
 
+# Countries gem for country selection and validation
+gem 'countries'
+
 # Authentication
 gem 'devise'
 gem 'bcrypt'
