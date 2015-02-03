@@ -12,7 +12,7 @@ class AccommodationEquipmentsController < ApplicationController
   def show
   end
 
-  # GET /accommodation_equipments/new
+  # GET /accommodation_equipments/new_owner
   def new
     @accommodation_equipment = AccommodationEquipment.new
   end

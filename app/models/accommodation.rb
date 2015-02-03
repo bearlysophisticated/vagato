@@ -1,6 +1,6 @@
 class Accommodation < ActiveRecord::Base
-  belongs_to :user
-  has_one :address
+  belongs_to :owner
+  belongs_to :address
   has_one :categry
 #  has_many :accommodation_equipments
 #  has_many :equipments, through: :accommodation_equipments

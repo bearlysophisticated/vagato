@@ -1,7 +1,7 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  #before_action :check_user, only: [:new, :create, :edit, :update, :destroy]
+  #before_action :check_user, only: [:new_owner, :create, :edit, :update, :destroy]
 
   # GET /rooms
   # GET /rooms.json
@@ -14,7 +14,7 @@ class RoomsController < ApplicationController
   def show
   end
 
-  # GET /rooms/new
+  # GET /rooms/new_owner
   def new
     @room = Room.new
     @room.accommodation_id = params[:acc_id]

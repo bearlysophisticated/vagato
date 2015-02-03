@@ -12,7 +12,7 @@ class EquipmentController < ApplicationController
   def show
   end
 
-  # GET /equipment/new
+  # GET /equipment/new_owner
   def new
     @equipment = Equipment.new
   end

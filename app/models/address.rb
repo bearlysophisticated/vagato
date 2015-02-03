@@ -1,5 +1,6 @@
 class Address < ActiveRecord::Base
-  belongs_to :accommodation
+  has_one :accommodation
+  has_one :guest
 
   geocoded_by :full_address
   after_validation :geocode

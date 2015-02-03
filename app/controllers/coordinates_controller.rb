@@ -12,7 +12,7 @@ class CoordinatesController < ApplicationController
   def show
   end
 
-  # GET /coordinates/new
+  # GET /coordinates/new_owner
   def new
     @coordinate = Coordinate.new
   end

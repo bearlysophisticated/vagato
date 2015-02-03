@@ -11,8 +11,8 @@ class PricesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:prices)
   end
 
-  test "should get new" do
-    get :new
+  test "should get new_owner" do
+    get :new_owner
     assert_response :success
   end
 

@@ -12,7 +12,7 @@ class AddressesController < ApplicationController
   def show
   end
 
-  # GET /addresses/new
+  # GET /addresses/new_owner
   def new
     @address = Address.new
   end

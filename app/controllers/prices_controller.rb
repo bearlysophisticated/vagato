@@ -12,7 +12,7 @@ class PricesController < ApplicationController
   def show
   end
 
-  # GET /prices/new
+  # GET /prices/new_owner
   def new
     @price = Price.new
   end

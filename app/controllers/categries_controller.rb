@@ -12,7 +12,7 @@ class CategriesController < ApplicationController
   def show
   end
 
-  # GET /categries/new
+  # GET /categries/new_owner
   def new
     @categry = Categry.new
   end

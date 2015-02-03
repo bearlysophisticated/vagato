@@ -24,8 +24,9 @@
           <li><%= link_to "Profil", edit_user_registration_path %></li>
           <li><%= link_to "Kijelentkezés", destroy_user_session_path, method: :delete %></li>
         <% else %>
-          <li><%= link_to "Regisztráció", new_user_registration_path %></li>
-          <li><%= link_to "Bejelentkezés", new_user_session_path %></li>
+            <li><%= link_to "Vendég regisztráció", new_guest_path %></li>
+            <li><%= link_to "Szállásadó regisztráció", new_owner_path %></li>
+            <li><%= link_to "Bejelentkezés", new_user_session_path %></li>
         <% end %>
       </ul>
     </div><!-- /.navbar-collapse -->

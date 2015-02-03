@@ -1,36 +1,30 @@
 Rails.application.routes.draw do
 
-  resources :serviices
-
   devise_for :users
+  # devise_for :devise, controllers: {
+  #    sessions: 'devise/sessions',
+  #    registrations: 'devise/registrations'
+  # }
 
   root 'accommodations#index'
 
   get 'pages/home'
-
   get 'pages/about'
-
   get 'pages/contact'
-
-  get 'rooms/new/:acc_id' => 'rooms#new'
-
+  get 'rooms/new_owner/:acc_id' => 'rooms#new_owner'
   get 'szallasaim' => 'accommodations#szallasaim'
 
   resources :coordinates
-
   resources :accommodation_equipments
-
   resources :prices
-
   resources :addresses
-
   resources :rooms
-
   resources :accommodations
-
   resources :equipment
-
   resources :categries
+  resources :serviices
+  resources :guests
+  resources :owners
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

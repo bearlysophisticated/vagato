@@ -23,7 +23,7 @@ class AccommodationsController < ApplicationController
     end
   end
 
-  # GET /accommodations/new
+  # GET /accommodations/new_owner
   def new
     @accommodation = Accommodation.new
     @accommodation.build_address
