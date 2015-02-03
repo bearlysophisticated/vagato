@@ -13,6 +13,9 @@ gem 'bcrypt'
 # Bootstrap CSS library
 gem 'bootstrap-sass'
 
+# Font Awesome icons
+gem 'font-awesome-sass'
+
 # Use Paperclip for uploading and showing pictures
 gem 'paperclip'
 # Use Paperclip for Dropbox to upload and retrieve pictures from Dropbox

@@ -20,9 +20,21 @@
 
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? %>
-          <li><%= link_to "Szállásaim", "/szallasaim/" %></li>
-          <li><%= link_to "Profil", edit_user_registration_path %></li>
-          <li><%= link_to "Kijelentkezés", destroy_user_session_path, method: :delete %></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user fa-2x"></i> U<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <% if current_user.owner? %>
+                    <li><%= link_to "Szállásaim", "/szallasaim/" %></li>
+                <% end %>
+                <% if current_user.guest? %>
+                    <li><%= link_to "Fogalásaim", '#' %></li>
+                <% end %>
+                <li><%= link_to "Profilom", edit_user_registration_path %></li>
+                <li class="divider"></li>
+                <li><%= link_to "Kijelentkezés", destroy_user_session_path, method: :delete %></li>
+              </ul>
+            </li>
+
         <% else %>
             <li><%= link_to "Vendég regisztráció", new_guest_path %></li>
             <li><%= link_to "Szállásadó regisztráció", new_owner_path %></li>

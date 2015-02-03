@@ -5,4 +5,12 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   belongs_to :role, polymorphic: true
+
+  def guest?
+    self.role.is_a? Guest
+  end
+
+  def owner?
+    self.role.is_a? Owner
+  end
 end
