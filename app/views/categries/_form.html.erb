@@ -1,4 +1,6 @@
-<%= form_for(@categry) do |f| %>
+<div class="narrow-60">
+
+<%= simple_form_for(@categry) do |c| %>
   <% if @categry.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@categry.errors.count, "error") %> prohibited this categry from being saved:</h2>
@@ -11,19 +13,11 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :code %><br>
-    <%= f.text_field :code %>
-  </div>
-  <div class="field">
-    <%= f.label :value %><br>
-    <%= f.number_field :value %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%= c.input :name, label: 'Megnevezés' %>
+    <%= c.input :code, label: 'Kód' %>
+    <%= c.input :value, label: 'Érték' %>
+    <%= c.button :submit, 'Mentés', class: 'btn-primary' %>
+
 <% end %>
+
+</div>

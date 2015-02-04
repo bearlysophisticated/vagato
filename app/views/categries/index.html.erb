@@ -1,29 +1,24 @@
-<h1>Listing categries</h1>
+<h2>Kategóriák</h2>
 
-<table>
-  <thead>
+<table class="table table-bordered">
+
     <tr>
-      <th>Name</th>
-      <th>Code</th>
-      <th>Value</th>
-      <th colspan="3"></th>
+      <th>Megnevezés</th>
+      <th>Kód</th>
+      <th>Érték</th>
+      <th><%= link_to 'Új kategória', new_categry_path, class: 'btn btn-success btn-xs' %></th>
     </tr>
-  </thead>
 
-  <tbody>
     <% @categries.each do |categry| %>
       <tr>
         <td><%= categry.name %></td>
         <td><%= categry.code %></td>
-        <td><%= categry.value %></td>
-        <td><%= link_to 'Show', categry %></td>
-        <td><%= link_to 'Edit', edit_categry_path(categry) %></td>
-        <td><%= link_to 'Destroy', categry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><% categry.value.times { %><i class="fa fa-star"></i><% } %></td>
+        <td class="col-md-1" align="center"><%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_categry_path(categry) %>&nbsp;
+        <%= link_to raw("<i class='fa fa-trash'></i>"), categry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
-  </tbody>
+
 </table>
 
 <br>
-
-<%= link_to 'New Categry', new_categry_path %>

@@ -10,7 +10,7 @@
     <td><%= link_to a.name, a %></td>
     <td><%= link_to a.owner.name, a.owner %></td>
     <% unless a.categry.nil? %>
-        <td><a href="<%= categry_path(a.categry.id) %>"><% a.categry.value.times { %><i class="fa fa-star"></i><% } %></a></td>
+        <td><% a.categry.value.times { %><i class="fa fa-star"></i><% } %></td>
     <% end %>
   </tr>
   <% end %>

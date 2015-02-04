@@ -4,7 +4,7 @@ class CategriesController < ApplicationController
   # GET /categries
   # GET /categries.json
   def index
-    @categries = Categry.all
+    @categries = Categry.all.sort_by(&:value)
   end
 
   # GET /categries/1
