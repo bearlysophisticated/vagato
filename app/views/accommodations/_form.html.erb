@@ -1,69 +1,39 @@
-<%= form_for @accommodation, :html => { :multipart => true } do |f| %>
-  <% if @accommodation.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@accommodation.errors.count, "error") %> prohibited this accommodation from being saved:</h2>
+<%= simple_form_for @accommodation, :html => { :multipart => true } do |a| %>
+    <% if @accommodation.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@accommodation.errors.count, "error") %> prohibited this accommodation from being saved:</h2>
 
-      <ul>
-      <% @accommodation.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+            <ul>
+                <% @accommodation.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <%= a.input :name, label: 'Megnevezés', autofocus: true %>
+    <%= a.input :description, label: 'Leírás' %>
+
+    <%= a.fields_for :address do |ad| %>
+        <%= ad.input :country, label: 'Ország' %>
+        <%= ad.input :zip, label: 'Irányítószám' %>
+        <%= ad.input :city, label: 'Város' %>
+        <%= ad.input :address, label: 'Cím' %>
+    <% end %>
+
+    <%= a.input :categry, collection: Categry.all %>
+
+    <%= a.fields_for :categry do |c| %>
+
+    <% end %>
+
+    <!--<h5><strong>Felszereltség</strong></h5>
+     # a.collection_check_boxes(:serviice_ids, Serviice.all, :id, :name) -->
+    <%= a.association :serviices, as: :check_boxes, label: 'Felszereltség' %>
+
+    <%= a.input :image, label: 'Kép' %>
+
+    <div class="actions right" >
+        <%= a.submit "Mentés", class: "btn btn-primary" %>
     </div>
-  <% end %>
-
-
-      <div class="form_group">
-        <%= f.label "Megnevezés" %>
-        <%= f.text_field :name, class: "form-control" %>
-      </div>
-      <div class="form_group">
-        <%= f.label "Leírás" %><br>
-        <%= f.text_area :description, class: "form-control" %>
-      </div>
-
-
-
-      <%= f.fields_for :address do |address_form| %>
-      <div class="form_group">
-        <%= address_form.label "Ország" %>
-        <%= address_form.text_field :country, class: "form-control" %>
-      </div>
-      <div class="form_group">
-        <%= address_form.label "Irányítószám" %>
-        <%= address_form.text_field :zip, class: "form-control" %>
-      </div>
-      <div class="form_group">
-        <%= address_form.label "Település" %>
-        <%= address_form.text_field :city, class: "form-control" %>
-      </div>
-      <div class="form_group">
-        <%= address_form.label "Cím" %>
-        <%= address_form.text_field :address, class: "form-control" %>
-      </div>
-      <% end %>
-
-
-
-  <%= f.fields_for :categry do |categry_form| %>
-    <div class="form_group">
-      <%= categry_form.label "Kategória megnevezése" %>
-      <%= categry_form.text_field :name, class: "form-control" %>
-    </div>
-    <div class="form_group">
-      <%= categry_form.label "Kategória minősítése" %>
-      <%= categry_form.number_field :value, class: "form-control" %>
-    </div>
-  <% end %>
-
-  <h5><strong>Felszereltség</strong></h5>
-  <%= f.collection_check_boxes(:serviice_ids, Serviice.all, :id, :name) %>
-
-  <div class="form-group">
-    <%= f.label "Kép" %><br>
-    <%= f.file_field :image, class: "form-control" %>
-  </div>
-
-  <div class="actions right" >
-    <%= f.submit "Mentés", class: "btn btn-primary" %>
-  </div>
 <% end %>
