@@ -11,17 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203203021) do
+ActiveRecord::Schema.define(version: 20150204175118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "accommodation_equipments", force: :cascade do |t|
-    t.integer  "accommodation_id"
-    t.integer  "equipment_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "accommodations", force: :cascade do |t|
     t.string   "name",               limit: 255
@@ -34,11 +27,7 @@ ActiveRecord::Schema.define(version: 20150203203021) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "owner_id"
-  end
-
-  create_table "accommodations_equipment", id: false, force: :cascade do |t|
-    t.integer "accommodation_id"
-    t.integer "equipment_id"
+    t.integer  "categry_id"
   end
 
   create_table "accommodations_serviices", id: false, force: :cascade do |t|
@@ -67,18 +56,9 @@ ActiveRecord::Schema.define(version: 20150203203021) do
   end
 
   create_table "categries", force: :cascade do |t|
-    t.string   "name",             limit: 255
-    t.string   "code",             limit: 255
+    t.string   "name",       limit: 255
+    t.string   "code",       limit: 255
     t.integer  "value"
-    t.integer  "accommodation_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "coordinates", force: :cascade do |t|
-    t.float    "latitude"
-    t.float    "longitude"
-    t.integer  "address_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

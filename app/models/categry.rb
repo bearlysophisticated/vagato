@@ -1,3 +1,3 @@
 class Categry < ActiveRecord::Base
-	belongs_to :accommodation
+	has_many :accommodations
 end
