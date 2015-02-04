@@ -21,11 +21,7 @@
         <%= ad.input :address, label: 'Cím' %>
     <% end %>
 
-    <%= a.input :categry, collection: Categry.all %>
-
-    <%= a.fields_for :categry do |c| %>
-
-    <% end %>
+    <%= a.input :categry_id, collection: Categry.all, :value_method => :id %>
 
     <!--<h5><strong>Felszereltség</strong></h5>
      # a.collection_check_boxes(:serviice_ids, Serviice.all, :id, :name) -->

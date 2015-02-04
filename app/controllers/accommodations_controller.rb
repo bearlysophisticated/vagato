@@ -48,7 +48,6 @@ class AccommodationsController < ApplicationController
 
     respond_to do |format|
       if @accommodation.save
-        @accommodation.update_attributes(:code => @accommodation.id)
         format.html { redirect_to @accommodation, notice: 'Accommodation was successfully created.' }
         format.json { render :show, status: :created, location: @accommodation }
       else
@@ -61,6 +60,8 @@ class AccommodationsController < ApplicationController
   # PATCH/PUT /accommodations/1
   # PATCH/PUT /accommodations/1.json
   def update
+    puts params
+
     respond_to do |format|
       if @accommodation.update(accommodation_params)
         format.html { redirect_to @accommodation, notice: 'Accommodation was successfully updated.' }
@@ -90,7 +91,7 @@ class AccommodationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def accommodation_params
-       params.require(:accommodation).permit(:name, :code, :description, :image, {serviice_ids: []}, 
+       params.require(:accommodation).permit(:name, :code, :description, :image, :categry_id, {serviice_ids: []},
         address_attributes: [:id, :country, :zip, :city, :address],
         categry_attributes: [:id, :name, :value])
     end
