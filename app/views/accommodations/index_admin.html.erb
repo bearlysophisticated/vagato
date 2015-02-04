@@ -1,0 +1,19 @@
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Id</th>
+    <th>Megnevezés</th>
+    <th>Tulajdonos</th>
+    <th>Kategória</th>
+  </tr>
+
+  <% @accommodations.each do |a| %>
+  <tr>
+    <td><%= a.id %></td>
+    <td><%= a.name %></td>
+    <td><%= link_to a.owner.name, a.owner %></td>
+    <% unless a.categry.nil? %>
+        <td><a href="<%= categry_path(a.categry.id) %>"><% a.categry.value.times { %><i class="fa fa-star"></i><% } %></a></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>

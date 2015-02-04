@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   get 'pages/about'
   get 'pages/contact'
   get 'rooms/new_owner/:acc_id' => 'rooms#new_owner'
-  get 'szallasaim' => 'accommodations#szallasaim'
+  get 'accommodations/index_owner' => 'accommodations#index_owner'
+  get 'accommodations/index_admin' => 'accommodations#index_admin'
 
   resources :prices
   resources :addresses

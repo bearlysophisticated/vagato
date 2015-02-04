@@ -1,16 +1,21 @@
 class AccommodationsController < ApplicationController
   before_action :set_accommodation, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:szallasaim, :new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:index_owner, :index_admin, :new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update, :destroy]
-
-  def szallasaim
-    @accommodations = Accommodation.where(owner: current_user.role)
-  end
+  before_action :check_is_admin, only: [:index_admin]
 
   # GET /accommodations
   # GET /accommodations.json
   def index
-      @accommodations = Accommodation.all
+    @accommodations = Accommodation.all
+  end
+
+  def index_owner
+    @accommodations = Accommodation.where(owner: current_user.role)
+  end
+
+  def index_admin
+    @accommodations = Accommodation.all
   end
 
   # GET /accommodations/1
@@ -91,8 +96,14 @@ class AccommodationsController < ApplicationController
     end
 
     def check_user
-      if current_user != @accommodation.owner.user
+      unless current_user == @accommodation.owner.user || current_user.role.is_a?(Admin)
         redirect_to root_url, alert: "Nincs jogosultsaga!"
       end
     end
+
+  def check_is_admin
+    unless current_user.role.is_a?(Admin)
+      redirect_to root_url, alert: "Nincs jogosultsaga!"
+    end
+  end
 end

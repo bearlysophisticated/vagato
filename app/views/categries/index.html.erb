@@ -6,7 +6,6 @@
       <th>Name</th>
       <th>Code</th>
       <th>Value</th>
-      <th>Accommodation</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,7 +16,6 @@
         <td><%= categry.name %></td>
         <td><%= categry.code %></td>
         <td><%= categry.value %></td>
-        <td><%= categry.accommodation_id %></td>
         <td><%= link_to 'Show', categry %></td>
         <td><%= link_to 'Edit', edit_categry_path(categry) %></td>
         <td><%= link_to 'Destroy', categry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
