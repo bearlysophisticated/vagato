@@ -1,4 +1,6 @@
-<%= form_for(@serviice) do |f| %>
+<div class="narrow-60">
+
+<%= simple_form_for(@serviice) do |s| %>
   <% if @serviice.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@serviice.errors.count, "error") %> prohibited this serviice from being saved:</h2>
@@ -11,15 +13,10 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :code %><br>
-    <%= f.text_field :code %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <%= s.input :name, label: 'Megnevezés' %>
+    <%= s.input :code, label: 'Kód' %>
+    <%= s.button :submit, 'Mentés', class: 'btn-primary' %>
+
 <% end %>
+
+</div>

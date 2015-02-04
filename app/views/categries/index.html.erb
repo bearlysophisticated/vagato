@@ -14,8 +14,10 @@
         <td><%= categry.name %></td>
         <td><%= categry.code %></td>
         <td><% categry.value.times { %><i class="fa fa-star"></i><% } %></td>
-        <td class="col-md-1" align="center"><%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_categry_path(categry) %>&nbsp;
-        <%= link_to raw("<i class='fa fa-trash'></i>"), categry, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="col-md-1" align="center">
+          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_categry_path(categry) %>&nbsp;
+          <%= link_to raw("<i class='fa fa-trash'></i>"), categry, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
       </tr>
     <% end %>
 
