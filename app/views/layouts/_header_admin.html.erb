@@ -1,0 +1,36 @@
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">VAGATO</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><%= link_to 'Kategóriák', categries_path %></li>
+        <li><%= link_to 'Szolgáltatások', serviices_path %></li>
+        <li><%= link_to 'Felszereltségek', equipment_index_path %></li>
+        <li><%= link_to 'Szálláshelyek', accommodations_path %></li>
+        <li><%= link_to 'Felhasználók', '#' %></li>
+        <li><%= link_to 'Adminok', admins_path %></li>
+        <li><%= link_to 'Beállítások', '#' %></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user-secret fa-lg fa-fw"></i>&nbsp;<%= current_user.role.name %>&nbsp;&nbsp;<i class="fa fa-caret-down"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="<%= edit_user_registration_path %>"><i class="fa fa-user fa-fw"></i>&nbsp;&nbsp;Profilom</a></li>
+            <li class="divider"></li>
+            <li><a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow"><i class="fa fa-sign-out fa-fw"></i>&nbsp;&nbsp;Kijelentkezés</a> </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

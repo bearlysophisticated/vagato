@@ -19,6 +19,10 @@ gem 'bootstrap-sass'
 # Font Awesome icons
 gem 'font-awesome-sass'
 
+# Simple Form with country select
+gem 'simple_form'
+gem 'country_select'
+
 # Use Paperclip for uploading and showing pictures
 gem 'paperclip'
 # Use Paperclip for Dropbox to upload and retrieve pictures from Dropbox

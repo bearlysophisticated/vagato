@@ -69,3 +69,28 @@ div.error_explanation {
   border-radius: 5px;
   padding: 5px;
 }
+
+.navbar {
+  border-radius: 0px;
+  border: 0px;
+}
+
+.navbar-owner {
+  background-color: darkslateblue;
+}
+
+.navbar-owner .nav > li > a {
+  color: #f8f8f8
+}
+
+.navbar-owner .nav > li > a:hover {
+  color: #000000;
+}
+
+.navbar-owner .navbar-header .navbar-brand {
+  color: #f8f8f8;
+}
+
+.navbar-owner .navbar-header .navbar-brand:hover {
+  color: #999999;
+}

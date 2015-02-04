@@ -1,29 +1,17 @@
 <div class="narrow-30 narrow-30-center">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-group">
-    <%= f.label "E-mail" %>
-    <%= f.email_field :email, autofocus: true, class: "form-control" %>
-  </div>
+<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-  <div class="form-group">
-    <%= f.label "Jelszó" %>
-    <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-  </div>
+      <%= f.input :email, autofocus: true, label: 'E-mail' %>
+      <%= f.input :password, label: 'Jelszó' %>
+      <%= f.input :remember_me, label: 'Emlékezz rám', as: :boolean %>
+      <div align="center">
+        <%= f.button :submit, 'Bejelentkezés', class: 'btn btn-primary center' %>
+      </div><br/>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="form-group">
-      <%= f.check_box :remember_me %>
-      <%= f.label "Emlékezzen rám" %>
-    </div>
-  <% end -%>
-
-  <div class="form-group center">
-    <%= f.submit "Bejelentkezés", class: "btn btn-primary" %>
-  </div>
 <% end %>
 
-<div class="center">
+<div align="center">
   <%= render "devise/shared/links" %>
 </div>
 
