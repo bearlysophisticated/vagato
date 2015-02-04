@@ -13,8 +13,8 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/rooms">Szobák</a></li>
-        <li><a href="/">Szállások</a></li>
+        <li class="<%= 'active' if (current_page? rooms_path) || (current_page? root_url) %>"><%= link_to 'Szobák', rooms_path %></li>
+        <li class="<%= 'active' if current_page? accommodations_path %>"><%= link_to 'Szállások', accommodations_path %></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
