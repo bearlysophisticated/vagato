@@ -1,11 +1,13 @@
 <h2>Szolgáltatások</h2>
 
 <table class="table table-bordered">
-    <tr>
-      <th>Megnevezés</th>
-      <th>Kód</th>
-      <th><%= link_to 'New Serviice', new_serviice_path, class: 'btn btn-success btn-xs' %></th>
-    </tr>
+    <thead>
+        <tr>
+          <th>Megnevezés</th>
+          <th>Kód</th>
+          <th><%= link_to 'New Serviice', new_serviice_path, class: 'btn btn-success btn-xs' %></th>
+        </tr>
+    </thead>
 
     <% @serviices.each do |serviice| %>
       <tr>

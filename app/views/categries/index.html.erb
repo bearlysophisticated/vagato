@@ -1,14 +1,14 @@
 <h2>Kategóriák</h2>
 
 <table class="table table-bordered">
-
-    <tr>
-      <th>Megnevezés</th>
-      <th>Kód</th>
-      <th>Érték</th>
-      <th><%= link_to 'Új kategória', new_categry_path, class: 'btn btn-success btn-xs' %></th>
-    </tr>
-
+    <thead>
+        <tr>
+          <th>Megnevezés</th>
+          <th>Kód</th>
+          <th>Érték</th>
+          <th><%= link_to 'Új kategória', new_categry_path, class: 'btn btn-success btn-xs' %></th>
+        </tr>
+    </thead>
     <% @categries.each do |categry| %>
       <tr>
         <td><%= categry.name %></td>
