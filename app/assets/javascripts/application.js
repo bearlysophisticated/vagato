@@ -16,3 +16,33 @@
 //= require turbolinks
 //= require underscore
 //= require gmaps/google
+
+var ready;
+ready = function() {
+
+    var rooms = document.getElementById('rooms');
+    var accommodations = document.getElementById('accommodations');
+
+    if (rooms == null && accommodations === null) {
+        var content = document;
+        var contentHeight = Math.max(
+            content.body.scrollHeight, content.documentElement.scrollHeight,
+            content.body.offsetHeight, content.documentElement.offsetHeight,
+            content.body.clientHeight, content.documentElement.clientHeight
+        );
+
+        var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+        console.log("Content height: " + contentHeight);
+        console.log("ViewPort height: " + viewPortHeight);
+
+        if (contentHeight <= viewPortHeight) {
+            var d = document.getElementById('footer');
+            d.style.position = "absolute";
+        }
+    }
+
+};
+
+$(document).ready(ready);
+$(document).on('page:load', ready);
