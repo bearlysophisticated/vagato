@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  root 'accommodations#index'
+  root 'rooms#index'
 
   get 'pages/home'
   get 'pages/about'
