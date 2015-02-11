@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :guests
   resources :owners
   resources :admins
+  resources :users
   resources :settings
 
 end
