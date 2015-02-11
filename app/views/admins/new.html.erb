@@ -1,2 +1,21 @@
-<h1>AdminsController#new</h1>
-<p>Find me in app/views/admins_controller/new.html.erb</p>
+<div class="narrow-60">
+
+  <h2>Admin regisztráció</h2>
+
+  <%= simple_form_for @admin do |a| %>
+
+      <%= render 'errors' %>
+
+      <%= a.input :name, label: 'Teljes név', autofocus: true %>
+      <%= a.input :phone, label: 'Telefon' %>
+
+      <%= a.fields_for :user do |u| %>
+          <%= u.input :email, label: 'Email' %>
+          <%= u.input :password, label: 'Jelszó', autocomplete: 'off' %>
+          <%= u.input :password_confirmation, label: 'Jelszó újra', autocomplete: 'off' %>
+      <% end %>
+
+      <%= a.button :submit, 'Regisztráció', class: 'btn-primary' %>
+  <% end %>
+
+</div>
