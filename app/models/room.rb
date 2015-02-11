@@ -1,8 +1,8 @@
 class Room < ActiveRecord::Base
   has_one :price
   belongs_to :accommodation
-
   has_and_belongs_to_many :equipments
+  has_and_belongs_to_many :bookings
 
   accepts_nested_attributes_for :price
   accepts_nested_attributes_for :equipments
