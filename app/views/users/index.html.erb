@@ -1,2 +1,56 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<ul class="nav nav-tabs nav-justified">
+  <li <% if params[:active].nil? || params[:active] == 'guests' %> class="active" <% end %> role="presentation"><a href="/users?active=guests">Vendégek</a></li>
+  <li <% if params[:active] == 'owners' %> class="active" <% end %> role="presentation"><a href="/users?active=owners">Szállásadók</a></li>
+</ul>
+
+<br />
+
+<% if params[:active].nil? || params[:active] == 'guests' %>
+    <table class="table table-bordered">
+      <thead>
+          <tr>
+            <th>Név</th>
+            <th>Telefon</th>
+            <th>Email</th>
+            <th>Született</th>
+            <th><%= link_to 'Új vendég felhasználó', new_guest_path, class: 'btn btn-success btn-xs' %></th>
+          </tr>
+      </thead>
+
+      <% Guest.all.each do |guest| %>
+          <tr>
+            <td><%= guest.name %></td>
+            <td><%= guest.phone %></td>
+            <td><%= guest.user.email %></td>
+            <td><%= guest.day_of_birth %></td>
+            <td class="col-md-1" align="center">
+              <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_guest_path(guest) %>&nbsp;
+              <%= link_to raw("<i class='fa fa-trash'></i>"), guest, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+
+<% elsif params[:active] == 'owners' %>
+    <table class="table table-bordered">
+      <thead>
+          <tr>
+            <th>Név</th>
+            <th>Email</th>
+            <th><%= link_to 'Új szállásadó felhasználó', new_owner_path, class: 'btn btn-success btn-xs' %></th>
+          </tr>
+      </thead>
+
+      <% Owner.all.each do |owner| %>
+          <tr>
+            <td><%= owner.name %></td>
+            <td><%= owner.user.email %></td>
+            <td class="col-md-1" align="center">
+              <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_owner_path(owner) %>&nbsp;
+              <%= link_to raw("<i class='fa fa-trash'></i>"), owner, method: :delete, data: { confirm: 'Are you sure?' } %>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+
+<% end %>
