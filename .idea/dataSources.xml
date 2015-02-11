@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="4157030960">
+  <component name="DataSourceManagerImpl" format="xml" hash="3582062611">
     <data-source source="LOCAL" name="Rails vagato: default" uuid="f3839d8c-b7c8-41f4-81f8-abac1059f069">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
