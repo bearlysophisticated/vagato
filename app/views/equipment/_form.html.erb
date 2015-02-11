@@ -1,4 +1,6 @@
-<%= form_for(@equipment) do |f| %>
+<div class="narrow-60">
+
+<%= simple_form_for(@equipment) do |e| %>
   <% if @equipment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@equipment.errors.count, "error") %> prohibited this equipment from being saved:</h2>
@@ -11,15 +13,10 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :code %><br>
-    <%= f.text_field :code %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+      <%= e.input :name, label: 'Megnevezés' %>
+      <%= e.input :code, label: 'Kód' %>
+      <%= e.button :submit, 'Mentés', class: 'btn-primary' %>
+
 <% end %>
+
+</div>
