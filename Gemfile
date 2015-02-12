@@ -23,6 +23,13 @@ gem 'font-awesome-sass'
 gem 'simple_form'
 gem 'country_select'
 
+# DatePicker for Simple Form
+gem 'bootstrap3-datetimepicker-rails', '~> 4.0.0'
+# gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+
+# MomentJS - Parse, validate, manipulate, and display dates in JavaScript; DatePicker dependency
+gem 'momentjs-rails', '>= 2.8.1'
+
 # Use Paperclip for uploading and showing pictures
 gem 'paperclip'
 # Use Paperclip for Dropbox to upload and retrieve pictures from Dropbox

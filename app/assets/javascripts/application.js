@@ -16,10 +16,38 @@
 //= require turbolinks
 //= require underscore
 //= require gmaps/google
+//= require moment
+//= require bootstrap-datetimepicker
+//= require moment-hu/hu
 
-var ready;
-ready = function() {
+var setupDatePickers = function() {
+    var booking_startdate = document.getElementById('booking_startdate');
+    var booking_enddate = document.getElementById('booking_enddate');
 
+    if(booking_startdate != null && booking_enddate != null) {
+        $('#booking_startdate').datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+        $('#booking_startdate').data("DateTimePicker").setMinDate(new Date());
+
+        $('#booking_enddate').datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+
+        $('#booking_startdate').on("dp.change", function (e) {
+            $('#booking_enddate').data("DateTimePicker").setMinDate(e.date);
+        });
+        $('#booking_enddate').on("dp.change", function (e) {
+            $('#booking_startdate').data("DateTimePicker").setMaxDate(e.date);
+        });
+    }
+};
+
+var positionFooter = function() {
     var rooms = document.getElementById('rooms');
     var accommodations = document.getElementById('accommodations');
 
@@ -41,7 +69,11 @@ ready = function() {
             d.style.position = "absolute";
         }
     }
+}
 
+var ready = function() {
+    positionFooter();
+    setupDatePickers();
 };
 
 $(document).ready(ready);

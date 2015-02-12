@@ -1,6 +1,9 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Szerkesztés', edit_room_path(@room), class: "btn btn-success right" %>
+<% if current_user.owner? || current_user.admin? %>
+    <%= link_to 'Szerkesztés', edit_room_path(@room), class: "btn btn-success right" %>
+<% end %>
+
 
 <small><%= @room.accommodation.name %></small>
 <h2>
@@ -28,4 +31,38 @@
 	<strong>Ár:</strong> <%= @room.price.value_with_vat %> <%= @room.price.currency %> + <%= @room.price.ifa %> <%= @room.price.currency %>/fő/éj IFA
 </p>
 
-<%= link_to 'Vissza', "/accommodations/#{@room.accommodation.id}" %>
+<% if current_user.guest? %>
+    <div class="well">
+      <div class="container">
+        <div class="col-md-2">
+            <h3>Foglalás</h3>
+        </div>
+
+        <%= simple_form_for @cart do |c| %>
+              <div class='col-md-4'>
+                <div class="form-group">
+                  <div class='input-group'>
+                    <input type='text' class="form-control" id='booking_startdate' />
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div class='col-md-4'>
+                <div class="form-group">
+                  <div class='input-group'>
+                    <input type='text' class="form-control" id='booking_enddate' />
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <%= link_to 'Foglalás', "/cart/add/#{@room.id}", class: "btn btn-success" %>
+              </div>
+        <% end %>
+
+      </div>
+    </div>
+<% end %>
+
+<%= link_to 'Vissza', @room.accommodation %>
