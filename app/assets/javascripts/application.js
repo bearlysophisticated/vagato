@@ -21,31 +21,50 @@
 //= require moment-hu/hu
 
 var setupDatePickers = function() {
-    var booking_startdate = document.getElementById('booking_startdate');
-    var booking_enddate = document.getElementById('booking_enddate');
+    var booking_start_date = document.getElementById('booking_start_date');
+    var booking_end_date = document.getElementById('booking_end_date');
 
-    if(booking_startdate != null && booking_enddate != null) {
-        $('#booking_startdate').datetimepicker({
+    if(booking_start_date != null && booking_end_date != null) {
+        $('#booking_start_date').datetimepicker({
             locale: "hu",
             calendarWeeks: true,
             format: "YYYY.MM.DD"
         });
-        $('#booking_startdate').data("DateTimePicker").setMinDate(new Date());
+        $('#booking_start_date').data("DateTimePicker").setMinDate(new Date());
 
-        $('#booking_enddate').datetimepicker({
+        $('#booking_end_date').datetimepicker({
             locale: "hu",
             calendarWeeks: true,
             format: "YYYY.MM.DD"
         });
 
-        $('#booking_startdate').on("dp.change", function (e) {
-            $('#booking_enddate').data("DateTimePicker").setMinDate(e.date);
+        $('#booking_start_date').on("dp.change", function (e) {
+            $('#booking_end_date').data("DateTimePicker").setMinDate(e.date.add(1, 'days'));
+            if($('#booking_end_date').data("DateTimePicker").date <= e.date){
+                $('#booking_end_date').data("DateTimePicker").setDate(e.date);
+            }
+            setNightsInput();
         });
-        $('#booking_enddate').on("dp.change", function (e) {
-            $('#booking_startdate').data("DateTimePicker").setMaxDate(e.date);
+
+        $('#booking_end_date').on("dp.change", function (e) {
+            setNightsInput();
+        });
+
+        $('#booking_nights').on("change", function (e) {
+            var start_date = $('#booking_start_date').data("DateTimePicker").date;
+            console.log("Startdate " + start_date.toString());
+            var new_end_date = start_date.add($('#booking_nights').val(), 'days');
+            console.log("Enddate " + new_end_date.toString());
+            $('#booking_end_date').data("DateTimePicker").setDate(new_end_date);
         });
     }
 };
+
+function setNightsInput(){
+    var nights = $('#booking_end_date').data("DateTimePicker").date.diff($('#booking_start_date').data("DateTimePicker").date, 'days');
+    console.log(nights);
+    $('#booking_nights').val(nights);
+}
 
 var positionFooter = function() {
     var rooms = document.getElementById('rooms');

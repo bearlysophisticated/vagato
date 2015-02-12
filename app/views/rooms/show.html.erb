@@ -29,36 +29,47 @@
 
 <p>
 	<strong>Ár:</strong> <%= @room.price.value_with_vat %> <%= @room.price.currency %> + <%= @room.price.ifa %> <%= @room.price.currency %>/fő/éj IFA
-</p>
+</p><br />
 
 <% if current_user.guest? %>
-    <div class="well">
-      <div class="container">
-        <div class="col-md-2">
-            <h3>Foglalás</h3>
-        </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Foglalás</h3>
+      </div>
+      <div class="panel-body">
 
-        <%= simple_form_for @cart do |c| %>
-              <div class='col-md-4'>
+        <%= simple_form_for @cart, url: {controller: 'cart', action: 'add'} do |c| %>
+            <%= c.hidden_field :room_id, :value => @room.id %>
+            <%= c.hidden_field :cart_id, :value => @cart.id %>
+
+            <div class='col-md-4'>
                 <div class="form-group">
                   <div class='input-group'>
-                    <input type='text' class="form-control" id='booking_startdate' />
+                    <%= c.text_field :start_date, class: 'form-control' %>
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                  <div class='input-group'>
+                    <input type='number' class="form-control" id='booking_nights' disabled="true" name="booking[num_of_nights]" />
+                    <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
+                  </div>
               </div>
-              <div class='col-md-4'>
+            </div>
+            <div class='col-md-4'>
                 <div class="form-group">
                   <div class='input-group'>
-                    <input type='text' class="form-control" id='booking_enddate' />
+                    <%= c.text_field :end_date, class: 'form-control' %>
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
-              </div>
+            </div>
 
-              <div class="col-md-2">
-                <%= link_to 'Foglalás', "/cart/add/#{@room.id}", class: "btn btn-success" %>
-              </div>
+            <div class="col-md-1">
+                <%= c.button :submit, 'Foglalás', class: 'btn-success' %>
+            </div>
         <% end %>
 
       </div>
