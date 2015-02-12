@@ -22,4 +22,15 @@ module CartHelper
     return self.has_cart?(guest)
   end
 
+  def self.get_cart_for(guest)
+    guest.bookings.each do |b|
+      return b if b.state == 'CART'
+    end
+
+    nil
+  end
+
+  def get_cart_for(guest)
+    return self.get_cart_for(guest)
+  end
 end
