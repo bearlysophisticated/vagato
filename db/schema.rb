@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212104021) do
+ActiveRecord::Schema.define(version: 20150212120242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 20150212104021) do
   create_table "accommodations", force: :cascade do |t|
     t.string   "name",               limit: 255
     t.string   "code",               limit: 255
-    t.string   "description",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_file_name",    limit: 255
@@ -28,6 +27,7 @@ ActiveRecord::Schema.define(version: 20150212104021) do
     t.datetime "image_updated_at"
     t.integer  "owner_id"
     t.integer  "categry_id"
+    t.text     "description"
   end
 
   create_table "accommodations_serviices", id: false, force: :cascade do |t|
@@ -94,6 +94,13 @@ ActiveRecord::Schema.define(version: 20150212104021) do
     t.datetime "updated_at"
   end
 
+  create_table "equipment_rooms", force: :cascade do |t|
+    t.integer  "room_id"
+    t.integer  "equipment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "guests", force: :cascade do |t|
     t.string   "name"
     t.string   "phone"
@@ -125,18 +132,13 @@ ActiveRecord::Schema.define(version: 20150212104021) do
     t.integer  "accommodation_id"
     t.integer  "num_of_this"
     t.integer  "capacity"
-    t.string   "description",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_file_name",    limit: 255
     t.string   "image_content_type", limit: 255
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-  end
-
-  create_table "rooms_equipments", id: false, force: :cascade do |t|
-    t.integer "room_id"
-    t.integer "equipment_id"
+    t.text     "description"
   end
 
   create_table "serviices", force: :cascade do |t|
