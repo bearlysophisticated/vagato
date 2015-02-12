@@ -1,4 +1,5 @@
 module CartHelper
+
   def create_cart_for(guest)
     return create_cart_for(guest)
   end
@@ -20,4 +21,5 @@ module CartHelper
   def has_cart?(guest)
     return self.has_cart?(guest)
   end
+
 end
