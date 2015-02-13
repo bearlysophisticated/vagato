@@ -27,9 +27,9 @@ Rails.application.routes.draw do
   resources :bookings
 
   get 'cart/index'
-  get 'cart/add'
+  patch 'cart/add'
   get 'cart/remove'
-  get 'cart/clear'
+  patch 'cart/clear'
   get 'cart/book'
   get '/cart' => 'cart#index'
 

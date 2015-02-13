@@ -1,2 +1,13 @@
 <h1>Cart#index</h1>
 <p>Find me in app/views/cart/index.html.erb</p>
+
+<%= simple_form_for @cart , url: {controller: 'cart', action: 'clear'} do |c| %>
+    <%= c.hidden_field :cart_id, :value => @cart.id %>
+    <%= c.button :submit, 'Kiürít', class: 'btn-warning' %>
+<% end %>
+
+<ul>
+<% @cart.rooms.each do |r| %>
+  <li><%= r.name %></li>
+<% end %>
+</ul>
