@@ -33,4 +33,19 @@ module CartHelper
   def get_cart_for(guest)
     return self.get_cart_for(guest)
   end
+
+  def self.is_addable(cart, room)
+    num_of_same_rooms = 0
+    cart.rooms.each do |r|
+      if r.id == room.id
+        num_of_same_rooms += 1
+      end
+    end
+
+    return num_of_same_rooms < room.num_of_this
+  end
+
+  def is_addable(cart, room)
+    return self.is_addable(cart, room)
+  end
 end

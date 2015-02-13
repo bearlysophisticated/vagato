@@ -7,9 +7,21 @@ class CartController < ApplicationController
     room = Room.find(params[:booking][:room_id])
     cart = Booking.find(params[:booking][:cart_id])
 
-    if room.nil? && cart.nil?
-      flash[:warn] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
-    else
+    start_date = nil
+    end_date = nil
+
+    if params[:booking][:start_date] && params[:booking][:end_date]
+      start_date = params[:booking][:start_date].to_date
+      end_date = params[:booking][:end_date].to_date
+    elsif !cart.nil?
+      start_date = cart.start_date
+      end_date = cart.end_date
+    end
+
+    if room.nil? && cart.nil? && start_date.nil? && end_date.nil?
+      flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
+
+    elsif CartHelper.is_addable(cart, room)
       cart.rooms.push(room)
 
       if cart.start_date.nil?
@@ -23,8 +35,10 @@ class CartController < ApplicationController
       if cart.save!
         flash[:notice] = 'A szobafoglalást beraktam a kosárba!'
       else
-        flash[:warn] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
+        flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
       end
+    else
+      flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
     end
 
     redirect_to room_path(room.id)
@@ -46,7 +60,7 @@ class CartController < ApplicationController
       if cart.save!
         flash[:notice] = 'Kiürítettem a kosarat!'
       else
-        flash[:warn] = 'Nem sikerült kiüríteni a kosarat.'
+        flash[:alert] = 'Nem sikerült kiüríteni a kosarat.'
       end
     end
 
