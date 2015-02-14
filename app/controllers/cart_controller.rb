@@ -1,6 +1,31 @@
 class CartController < ApplicationController
   def index
     @cart = CartHelper.get_cart_for(current_user.role)
+    @rooms = @cart.rooms.sort_by { |r| r[:id]}
+    @room_count = Hash.new
+
+    i = 0
+    while i < @rooms.size do
+      if @room_count[@rooms[i].id].nil?
+        @room_count[@rooms[i].id] = 1
+      else
+        @room_count[@rooms[i].id] += 1
+      end
+
+      if i+1 == @rooms.size
+        break
+      else
+        if @rooms[i].id == @rooms[i+1].id
+          @rooms.delete_at(i+1)
+        else
+          i += 1
+        end
+      end
+
+    end
+
+    puts @room_count.to_s
+    puts @rooms.to_s
   end
 
   def add
@@ -45,6 +70,37 @@ class CartController < ApplicationController
   end
 
   def remove
+    cart = Booking.find(params[:booking][:cart_id])
+    room = Room.find(params[:booking][:room_id])
+
+    unless cart.nil? && room.nil?
+      rooms = cart.rooms.sort_by { |r| r[:id]}
+
+      i = 0
+      while i < rooms.size do
+        if rooms[i].id == room.id
+          rooms.delete_at(i)
+          cart.rooms.clear
+
+          if rooms.size > 0
+            cart.rooms = rooms
+          else
+            cart.start_date = nil
+            cart.end_date = nil
+          end
+
+          if cart.save!
+            flash[:notice] = 'A szobafoglalást töröltem a kosárból.'
+          end
+
+          break
+        end
+
+        i += 1
+      end
+    end
+
+    redirect_to '/cart'
   end
 
   def clear

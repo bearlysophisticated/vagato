@@ -28,7 +28,7 @@ Rails.application.routes.draw do
 
   get 'cart/index'
   patch 'cart/add'
-  get 'cart/remove'
+  patch 'cart/remove'
   patch 'cart/clear'
   get 'cart/book'
   get '/cart' => 'cart#index'
