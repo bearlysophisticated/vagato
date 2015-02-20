@@ -12,6 +12,7 @@ class RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    @cart = CartHelper.get_cart_for(current_user.role)
   end
 
   # GET /rooms/new_owner

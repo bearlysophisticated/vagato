@@ -1,5 +1,5 @@
 
-<%= link_to 'Szoba hozzáadása', "../../rooms/new/#{@accommodation.id}", class: "btn btn-success right" %>
+<%= link_to 'Szoba hozzáadása', "/rooms/new/#{@accommodation.id}", class: "btn btn-success right" %>
 <%= link_to 'Törlés', @accommodation, method: :delete, data: { confirm: 'Biztosan tölri ezt a szállást?' }, class: "btn btn-danger right margin-right" %>
 
 <h1>Szállás szerkesztés</h1>

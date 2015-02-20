@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  # devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions'}
 
   root 'rooms#index'
 
@@ -23,5 +24,13 @@ Rails.application.routes.draw do
   resources :admins
   resources :users
   resources :settings
+  resources :bookings
+
+  get 'cart/index'
+  patch 'cart/add'
+  patch 'cart/remove'
+  patch 'cart/clear'
+  get 'cart/book'
+  get '/cart' => 'cart#index'
 
 end

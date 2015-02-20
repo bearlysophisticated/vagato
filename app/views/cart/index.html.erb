@@ -1,0 +1,40 @@
+<% if @rooms.size == 0 %>
+    <div align="center">
+      <p style="font-style: italic">A kosarad üres</p>
+    </div>
+<% else %>
+    <table class="table table-bordered">
+      <% @rooms.each do |r| %>
+          <tr>
+            <td class="fit-content"><%= image_tag r.image.url, size: '75' %></td>
+            <td>
+              <%= link_to r.name, r %><br />
+              <small><%= r.accommodation.name %></small>
+            </td>
+            <td class="fit-content"><%= @room_count[r.id] %></td>
+            <td class="fit-content">
+              <%= simple_form_for @cart , url: {controller: 'cart', action: 'remove'} do |c| %>
+                  <%= c.hidden_field :room_id, :value => r.id %>
+                  <%= c.hidden_field :cart_id, :value => @cart.id %>
+                  <%= c.button :submit, 'Töröl', class: 'btn-danger btn-xs' %>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+    </table><br />
+
+    <div class="row">
+      <div class="col-md-6">
+        <%= simple_form_for @cart , url: {controller: 'cart', action: 'clear'} do |c| %>
+            <%= c.hidden_field :cart_id, :value => @cart.id %>
+            <%= c.button :submit, 'Kiürít', class: 'btn-warning' %>
+        <% end %>
+      </div>
+      <div class="col-md-6">
+        <%= simple_form_for @cart , url: {controller: 'cart', action: 'book'} do |c| %>
+            <%= c.hidden_field :cart_id, :value => @cart.id %>
+            <%= c.button :submit, 'Foglal', class: 'btn-success right' %>
+        <% end %>
+      </div>
+    </div>
+<% end %>

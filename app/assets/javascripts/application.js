@@ -16,10 +16,57 @@
 //= require turbolinks
 //= require underscore
 //= require gmaps/google
+//= require moment
+//= require bootstrap-datetimepicker
+//= require moment-hu/hu
 
-var ready;
-ready = function() {
+var setupDatePickers = function() {
+    var booking_start_date = document.getElementById('booking_start_date');
+    var booking_end_date = document.getElementById('booking_end_date');
 
+    if(booking_start_date != null && booking_end_date != null) {
+        $('#booking_start_date').datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+        $('#booking_start_date').data("DateTimePicker").setMinDate(new Date());
+
+        $('#booking_end_date').datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+
+        $('#booking_start_date').on("dp.change", function (e) {
+            $('#booking_end_date').data("DateTimePicker").setMinDate(e.date.add(1, 'days'));
+            if($('#booking_end_date').data("DateTimePicker").date <= e.date){
+                $('#booking_end_date').data("DateTimePicker").setDate(e.date);
+            }
+            setNightsInput();
+        });
+
+        $('#booking_end_date').on("dp.change", function (e) {
+            setNightsInput();
+        });
+
+        $('#booking_nights').on("change", function (e) {
+            var start_date = $('#booking_start_date').data("DateTimePicker").date;
+            console.log("Startdate " + start_date.toString());
+            var new_end_date = start_date.add($('#booking_nights').val(), 'days');
+            console.log("Enddate " + new_end_date.toString());
+            $('#booking_end_date').data("DateTimePicker").setDate(new_end_date);
+        });
+    }
+};
+
+function setNightsInput(){
+    var nights = $('#booking_end_date').data("DateTimePicker").date.diff($('#booking_start_date').data("DateTimePicker").date, 'days');
+    console.log(nights);
+    $('#booking_nights').val(nights);
+}
+
+var positionFooter = function() {
     var rooms = document.getElementById('rooms');
     var accommodations = document.getElementById('accommodations');
 
@@ -41,7 +88,11 @@ ready = function() {
             d.style.position = "absolute";
         }
     }
+}
 
+var ready = function() {
+    positionFooter();
+    setupDatePickers();
 };
 
 $(document).ready(ready);
