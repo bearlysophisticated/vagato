@@ -2,16 +2,16 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="Rails vagato: default" uuid="f3839d8c-b7c8-41f4-81f8-abac1059f069">
-      <user-name>medwe</user-name>
-      <user-password>dfc7dfcfdfcedfdddfcf</user-password>
+      <user-name>m3dw3</user-name>
+      <user-password>dfc7df99dfcedfdddf99</user-password>
     </data-source>
     <data-source name="Rails vagato: development" uuid="5509f08d-cb47-4c6c-b14b-6e22f1e4b5cc">
-      <user-name>medwe</user-name>
-      <user-password>dfc7dfcfdfcedfdddfcf</user-password>
+      <user-name>m3dw3</user-name>
+      <user-password>dfc7df99dfcedfdddf99</user-password>
     </data-source>
     <data-source name="Rails vagato: test" uuid="315af557-36fb-40a1-bedf-f162ed8dc5f0">
-      <user-name>medwe</user-name>
-      <user-password>dfc7dfcfdfcedfdddfcf</user-password>
+      <user-name>m3dw3</user-name>
+      <user-password>dfc7df99dfcedfdddf99</user-password>
     </data-source>
     <data-source name="Rails vagato: production" uuid="c1ac15b2-8617-4708-9f34-35453e14a0f5">
       <user-name>deploy</user-name>

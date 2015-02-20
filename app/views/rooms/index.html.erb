@@ -1,7 +1,7 @@
 <div id="rooms" class="row">
   <% @rooms.each do |room| %>
       <div class="col-sm-3">
-        <div class="thumbnail">
+        <div class="thumbnail" style="height: 250px">
           <%= image_tag room.image.url %>
           <div class="caption">
             <%= link_to room.name, room %>

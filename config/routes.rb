@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'pages/home'
   get 'pages/about'
   get 'pages/contact'
-  get 'rooms/new_owner/:acc_id' => 'rooms#new_owner'
+  get 'rooms/new/:acc_id' => 'rooms#new'
   get 'accommodations/index_owner' => 'accommodations#index_owner'
   get 'accommodations/index_admin' => 'accommodations#index_admin'
 
