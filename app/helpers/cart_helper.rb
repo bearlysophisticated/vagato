@@ -48,4 +48,14 @@ module CartHelper
   def is_addable(cart, room)
     return self.is_addable(cart, room)
   end
+
+  def self.get_cart_size_for(guest)
+    cart = self.get_cart_for(guest)
+
+    return cart.rooms.size
+  end
+
+  def get_cart_size_for(guest)
+    return self.get_cart_size_for(guest)
+  end
 end
