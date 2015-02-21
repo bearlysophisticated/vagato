@@ -53,7 +53,7 @@
             <div class="col-md-2">
               <div class="form-group">
                   <div class='input-group'>
-                    <input type='number' class="form-control" id='booking_nights' disabled="true" name="booking[num_of_nights]" />
+                    <%= c.text_field :num_of_nights, class: 'form-control', disabled: true %>
                     <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
                   </div>
               </div>
@@ -68,7 +68,7 @@
             </div>
 
             <div class="col-md-1">
-                <%= c.button :submit, 'Foglalás', class: 'btn-success' %>
+                <%= c.button :submit, 'Foglalás', class: 'btn-success', disabled: !BookingsHelper.is_bookable(@room, @cart.start_date, @cart.end_date) %>
             </div>
         <% end %>
 

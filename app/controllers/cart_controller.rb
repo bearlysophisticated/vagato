@@ -50,12 +50,14 @@ class CartController < ApplicationController
       cart.rooms.push(room)
 
       if cart.start_date.nil?
-        cart.start_date = params[:booking][:start_date]
+        cart.start_date = start_date
       end
 
       if cart.end_date.nil?
-        cart.end_date = params[:booking][:end_date]
+        cart.end_date = end_date
       end
+
+      cart.num_of_nights = end_date - start_date
 
       if cart.save!
         flash[:notice] = 'A szobafoglalást beraktam a kosárba!'
@@ -124,6 +126,20 @@ class CartController < ApplicationController
   end
 
   def book
+    booking = Booking.find(params[:booking][:booking_id])
+
+    if booking.nil?
+      flash[:warn] = 'Nem sikerült megtenni a foglalást.'
+    else
+      booking.state = 'BOOKED'
+      CartHelper.create_cart_for(current_user.role)
+
+      if booking.save!
+        flash[:notice] = 'A foglalás rögzítve lett!'
+      else
+        flash[:warn] = 'Nem sikerült megtenni a foglalást.'
+      end
+    end
   end
 
   private
