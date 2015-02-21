@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212120242) do
+ActiveRecord::Schema.define(version: 20150221161507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accommodations", force: :cascade do |t|
-    t.string   "name",               limit: 255
-    t.string   "code",               limit: 255
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image_file_name",    limit: 255
-    t.string   "image_content_type", limit: 255
+    t.string   "image_file_name"
+    t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "owner_id"
@@ -36,10 +36,10 @@ ActiveRecord::Schema.define(version: 20150212120242) do
   end
 
   create_table "addresses", force: :cascade do |t|
-    t.string   "country",          limit: 255
-    t.string   "zip",              limit: 255
-    t.string   "city",             limit: 255
-    t.string   "address",          limit: 255
+    t.string   "country"
+    t.string   "zip"
+    t.string   "city"
+    t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "latitude"
@@ -77,19 +77,20 @@ ActiveRecord::Schema.define(version: 20150212120242) do
     t.integer  "room_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status"
   end
 
   create_table "categries", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
+    t.string   "name"
+    t.string   "code"
     t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "equipment", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -118,7 +119,7 @@ ActiveRecord::Schema.define(version: 20150212120242) do
 
   create_table "prices", force: :cascade do |t|
     t.float    "value"
-    t.string   "currency",   limit: 255
+    t.string   "currency"
     t.float    "ifa"
     t.float    "vat"
     t.integer  "room_id"
@@ -127,34 +128,37 @@ ActiveRecord::Schema.define(version: 20150212120242) do
   end
 
   create_table "rooms", force: :cascade do |t|
-    t.string   "name",               limit: 255
-    t.string   "code",               limit: 255
+    t.string   "name"
+    t.string   "code"
     t.integer  "accommodation_id"
     t.integer  "num_of_this"
     t.integer  "capacity"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image_file_name",    limit: 255
-    t.string   "image_content_type", limit: 255
+    t.string   "image_file_name"
+    t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.text     "description"
   end
 
+  create_table "rooms_equipments", id: false, force: :cascade do |t|
+  end
+
   create_table "serviices", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
