@@ -4,10 +4,11 @@ class Guest < ActiveRecord::Base
   # Login credentials
   has_one :user, :as => :role, dependent: :destroy
   # As a user, have bookings and relatives who are not users
-  has_many :bookings
+  has_many :bookings_guests
+  has_many :bookings, :through => :bookings_guests
   has_many :guests, :as => :relatives
-  # As a fictional guest, have bookings where you participate and have relative who's a real user
-  has_many :bookings, through: :bookings_guests, :as => :travels
+  # As a fictional guest, have a relative who's a real user
+  # has_many :participations, through: :participations, :as => :participations
   belongs_to :relative, :foreign_key => 'id', :class_name => 'Guest'
 
   accepts_nested_attributes_for :user

@@ -1,9 +1,17 @@
 class BookingsController < ApplicationController
   before_action :set_booking, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /bookings
   def index
-    @bookings = Booking.all
+    if current_user.guest?
+      @bookings = Booking.where.not('state' => 'CART')
+      @booked_bookings = Booking.where('state' => 'BOOKED')
+      @approved_bookings = Booking.where('state' => 'APPROVED')
+      @closed_bookings = Booking.where('state' => 'CLOSED')
+    elsif current_user.owner?
+      @bookings = Booking.all
+    end
   end
 
   # GET /bookings/1

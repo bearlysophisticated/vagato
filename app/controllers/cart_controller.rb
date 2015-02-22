@@ -130,14 +130,19 @@ class CartController < ApplicationController
 
     if booking.nil?
       flash[:warn] = 'Nem sikerült megtenni a foglalást.'
+      redirect_to '/cart'
     else
       booking.state = 'BOOKED'
-      CartHelper.create_cart_for(current_user.role)
+      unless CartHelper.has_cart?(current_user.role)
+        CartHelper.create_cart_for(current_user.role)
+      end
 
       if booking.save!
         flash[:notice] = 'A foglalás rögzítve lett!'
+        redirect_to bookings_path
       else
         flash[:warn] = 'Nem sikerült megtenni a foglalást.'
+        redirect_to '/cart'
       end
     end
   end

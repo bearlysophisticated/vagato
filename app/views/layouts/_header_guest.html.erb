@@ -20,7 +20,7 @@
       <% cart_size = CartHelper.get_cart_size_for(current_user.role) %>
       <ul class="nav navbar-nav navbar-right">
         <li class="<%= 'active' if (current_page? '/cart') || (current_page? '/cart/index') %>">
-          <a href="/cart"><i class="fa fa-shopping-cart fa-lg"></i><% if cart_size > 0 %>&nbsp;&nbsp;<span class="badge" style="background-color: #cc0000"><%= cart_size %></span></a><% end %>
+          <a href="/cart"><i class="fa fa-shopping-cart fa-lg"></i><% if cart_size > 0 %>&nbsp;&nbsp;<span class="badge" style="background-color: #cc0000"><%= cart_size %></span><% end %></a>
         </li>
         <li>&nbsp;</li>
         <li class="dropdown">
