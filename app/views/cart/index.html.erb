@@ -45,7 +45,7 @@
             </td>
             <td class="fit-content"><%= @room_count[r.id] %></td>
             <td class="fit-content">
-              <%= simple_form_for @cart , url: {controller: 'cart', action: 'remove'} do |c| %>
+              <%= simple_form_for @cart, url: {controller: 'cart', action: 'remove'} do |c| %>
                   <%= c.hidden_field :room_id, :value => r.id %>
                   <%= c.hidden_field :cart_id, :value => @cart.id %>
                   <%= c.button :submit, 'Töröl', class: 'btn-danger btn-xs' %>

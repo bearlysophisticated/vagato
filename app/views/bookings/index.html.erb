@@ -14,7 +14,7 @@
         <th>Éjszakák</th>
       </thead>
 
-      <% @booked_bookings.each do |b| %>
+      <% @bookings['BOOKED'].each do |b| %>
         <tr>
           <td><%= b.id %></td>
           <td>
@@ -45,7 +45,7 @@
       <th>Éjszakák</th>
       </thead>
 
-      <% @approved_bookings.each do |b| %>
+      <% @bookings['APPROVED'].each do |b| %>
           <tr>
             <td><%= b.id %></td>
             <td>
@@ -76,7 +76,7 @@
       <th>Éjszakák</th>
       </thead>
 
-      <% @closed_bookings.each do |b| %>
+      <% @bookings['CLOSED'].each do |b| %>
           <tr>
             <td><%= b.id %></td>
             <td>

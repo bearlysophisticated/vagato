@@ -5,10 +5,20 @@ class BookingsController < ApplicationController
   # GET /bookings
   def index
     if current_user.guest?
-      @bookings = Booking.where.not('state' => 'CART')
-      @booked_bookings = Booking.where('state' => 'BOOKED')
-      @approved_bookings = Booking.where('state' => 'APPROVED')
-      @closed_bookings = Booking.where('state' => 'CLOSED')
+      @bookings = Hash.new
+      @bookings['BOOKED'] = Array.new
+      @bookings['APPROVED'] = Array.new
+      @bookings['CLOSED'] = Array.new
+
+      Booking.where('guest_id' => current_user.role.id).where.not('state' => 'CART').each do |b|
+        @bookings[b.state].push(b)
+      end
+
+=begin
+      @booked_bookings = Booking.where('guest_id' => current_user.role.id).where('state' => 'BOOKED')
+      @approved_bookings = Booking.where('guest_id' => current_user.role.id).where('state' => 'APPROVED')
+      @closed_bookings = Booking.where('guest_id' => current_user.role.id).where('state' => 'CLOSED')
+=end
     elsif current_user.owner?
       @bookings = Booking.all
     end

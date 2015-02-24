@@ -1,4 +1,7 @@
 class CartController < ApplicationController
+  before_action :authenticate_user!
+  before_action :check_role
+
   def index
     @cart = CartHelper.get_cart_for(current_user.role)
     @rooms = @cart.rooms.sort_by { |r| r[:id]}
@@ -126,8 +129,9 @@ class CartController < ApplicationController
   end
 
   def book
-    booking = Booking.find(params[:booking][:booking_id])
+    @booking = Booking.find(params[:booking][:booking_id])
 
+=begin
     if booking.nil?
       flash[:warn] = 'Nem sikerült megtenni a foglalást.'
       redirect_to '/cart'
@@ -145,9 +149,101 @@ class CartController < ApplicationController
         redirect_to '/cart'
       end
     end
+=end
+  end
+
+  def finish_booking
+    booking = Booking.find(params[:booking_id])
+    can_book = true
+
+    if booking.nil?
+      can_book = false
+      flash[:warn] = 'Nem sikerült megtenni a foglalást.'
+      puts 1
+      redirect_to '/cart'
+    else
+
+      booking.rooms.each do |r|
+        if BookingsHelper.is_bookable(r, booking.start_date, booking.end_date) && can_book
+=begin
+          bookings_room = BookingsRoom.where('booking_id' => booking.id).where('room_id' => r.id)
+          puts bookings_room.as_json.to_s
+          bookings_room.room_id = r.id
+=end
+
+          i = 0
+          while i < r.capacity do
+            guest_name = params["name#{r.id}#{i+1}"]
+            guest_birth = params["birth#{r.id}#{i+1}"]
+
+            unless guest_name.nil? && guest_birth.nil?
+              if guest_name == current_user.role.name && guest_birth == current_user.role.day_of_birth.to_s.gsub!('-','.')
+                bookings_guest = BookingsGuest.where('booking_id' => booking.id).where('guest_id' => current_user.role.id).first(1)
+                bookings_guest[0].room = r
+                bookings_guest[0].role = 'BOOKER'
+                bookings_guest[0].save!
+              else
+                guest = Guest.new
+                guest.name = guest_name
+                guest.day_of_birth = guest_birth
+                guest.phone = 0
+                guest.relative = current_user.role
+
+                if guest.save!
+                  bookings_guest = BookingsGuest.new
+                  bookings_guest.guest = guest
+                  bookings_guest.booking = booking
+                  bookings_guest.room = r
+                  bookings_guest.role = 'RELATIVE'
+                  bookings_guest.save!
+                end
+              end
+            else
+              can_book = false
+              flash[:warn] = 'Hiányos mezők! Kérlek töltsd ki minden vendég adatát!'
+              puts 2
+              redirect_to '/cart'
+            end
+
+            i += 1
+          end
+
+=begin
+          bookings_room.save!
+=end
+        else
+          can_book = false
+          flash[:warn] = "Nem sikerült megtenni a foglalást. A #{r.name} szoba a(z) #{r.accommodation.name} szálláson nem elérhető a kiválasztott időszakban."
+          puts 3
+          redirect_to '/cart'
+        end
+      end
+
+      if can_book
+        booking.state = 'BOOKED'
+        unless CartHelper.has_cart?(current_user.role)
+          CartHelper.create_cart_for(current_user.role)
+        end
+
+        if booking.save!
+          flash[:notice] = "A foglalás véglegesítve lett! Foglalási szám: #{booking.id}"
+          puts 4
+          redirect_to bookings_path
+        else
+          flash[:warn] = 'Nem sikerült megtenni a foglalást.'
+          puts 5
+          redirect_to '/cart'
+        end
+      end
+    end
   end
 
   private
+
+  def check_role
+    return current_user.guest?
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def booking_params
     params.require(:booking).permit(:start_date, :end_date, :num_of_nights, :state, :guest_id)

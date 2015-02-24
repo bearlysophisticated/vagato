@@ -38,14 +38,14 @@
       </div>
       <div class="panel-body">
 
-        <%= simple_form_for @cart, url: {controller: 'cart', action: 'add'} do |c| %>
+        <%= form_for @cart, url: {controller: 'cart', action: 'add'} do |c| %>
             <%= c.hidden_field :room_id, :value => @room.id %>
             <%= c.hidden_field :cart_id, :value => @cart.id %>
 
             <div class='col-md-4'>
                 <div class="form-group">
                   <div class='input-group'>
-                    <%= c.text_field :start_date, class: 'form-control', disabled: !@cart.start_date.nil? %>
+                    <%= c.text_field :start_date, class: 'form-control', disabled: !@cart.start_date.nil?, required: true %>
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
@@ -61,14 +61,14 @@
             <div class='col-md-4'>
                 <div class="form-group">
                   <div class='input-group'>
-                    <%= c.text_field :end_date, class: 'form-control', disabled: !@cart.end_date.nil? %>
+                    <%= c.text_field :end_date, class: 'form-control', disabled: !@cart.end_date.nil?, required: true %>
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                   </div>
                 </div>
             </div>
 
             <div class="col-md-1">
-                <%= c.button :submit, 'Foglalás', class: 'btn-success', disabled: !BookingsHelper.is_bookable(@room, @cart.start_date, @cart.end_date) %>
+                <%= button_tag 'Foglalás', class: 'btn btn-success', disabled: !BookingsHelper.is_bookable(@room, @cart.start_date, @cart.end_date) %>
             </div>
         <% end %>
 

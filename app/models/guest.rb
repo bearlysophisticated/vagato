@@ -9,7 +9,7 @@ class Guest < ActiveRecord::Base
   has_many :guests, :as => :relatives
   # As a fictional guest, have a relative who's a real user
   # has_many :participations, through: :participations, :as => :participations
-  belongs_to :relative, :foreign_key => 'id', :class_name => 'Guest'
+  belongs_to :relative, :foreign_key => 'guest_id', :class_name => 'Guest'
 
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :address
