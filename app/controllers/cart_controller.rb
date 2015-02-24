@@ -130,26 +130,6 @@ class CartController < ApplicationController
 
   def book
     @booking = Booking.find(params[:booking][:booking_id])
-
-=begin
-    if booking.nil?
-      flash[:warn] = 'Nem sikerült megtenni a foglalást.'
-      redirect_to '/cart'
-    else
-      booking.state = 'BOOKED'
-      unless CartHelper.has_cart?(current_user.role)
-        CartHelper.create_cart_for(current_user.role)
-      end
-
-      if booking.save!
-        flash[:notice] = 'A foglalás rögzítve lett!'
-        redirect_to bookings_path
-      else
-        flash[:warn] = 'Nem sikerült megtenni a foglalást.'
-        redirect_to '/cart'
-      end
-    end
-=end
   end
 
   def finish_booking
@@ -165,11 +145,6 @@ class CartController < ApplicationController
 
       booking.rooms.each do |r|
         if BookingsHelper.is_bookable(r, booking.start_date, booking.end_date) && can_book
-=begin
-          bookings_room = BookingsRoom.where('booking_id' => booking.id).where('room_id' => r.id)
-          puts bookings_room.as_json.to_s
-          bookings_room.room_id = r.id
-=end
 
           i = 0
           while i < r.capacity do
@@ -207,10 +182,6 @@ class CartController < ApplicationController
 
             i += 1
           end
-
-=begin
-          bookings_room.save!
-=end
         else
           can_book = false
           flash[:warn] = "Nem sikerült megtenni a foglalást. A #{r.name} szoba a(z) #{r.accommodation.name} szálláson nem elérhető a kiválasztott időszakban."

@@ -14,13 +14,10 @@ class BookingsController < ApplicationController
         @bookings[b.state].push(b)
       end
 
-=begin
-      @booked_bookings = Booking.where('guest_id' => current_user.role.id).where('state' => 'BOOKED')
-      @approved_bookings = Booking.where('guest_id' => current_user.role.id).where('state' => 'APPROVED')
-      @closed_bookings = Booking.where('guest_id' => current_user.role.id).where('state' => 'CLOSED')
-=end
     elsif current_user.owner?
-      @bookings = Booking.all
+      #@bookings = Booking.joins(:bookings_rooms).includes(:rooms).joins(:accommodations).where(:accommodations => { owner_id: current_user.role.id })
+      @bookings = Booking.joins(rooms: [:accommodation]).where('accommodations.owner_id' => current_user.role.id).uniq
+      puts @bookings.as_json.to_s
     end
   end
 
