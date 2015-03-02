@@ -1,12 +1,21 @@
-<div id="rooms" class="row">
-  <% @rooms.each do |room| %>
-      <div class="col-sm-3">
+<% i = 1 %>
+<% @rooms.each do |room| %>
+    <% if i % 4 == 0 %>
+        <div class="row" %>
+    <% end %>
+    <div class="col-sm-3 col-xs-6 col-md-3">
         <div class="thumbnail">
-          <%= image_tag room.image.url %>
+          <div class="thumbnail-img crop">
+            <%= image_tag room.image.url %>
+          </div>
           <div class="caption">
             <%= link_to room.name, room %>
           </div>
         </div>
-      </div>
-  <% end %>
-</div>
+    </div>
+    <% if i % 4 == 0 %>
+        </div>
+    <% end %>
+    <% i+=1 %>
+<% end %>
+

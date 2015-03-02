@@ -1,8 +1,10 @@
 <div id="accommodations" class="row">
   <% @accommodations.each do |accommodation| %>
-    <div class="col-sm-3">
+    <div class="col-sm-3 col-xs-6 col-md-3">
       <div class="thumbnail">
-        <%= image_tag accommodation.image.url %>
+        <div class="thumbnail-img crop">
+            <%= image_tag accommodation.image.url %>
+        </div>
         <div class="caption">
             <%= link_to accommodation.name, accommodation %>
         </div>

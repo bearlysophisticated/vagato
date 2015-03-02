@@ -1,0 +1,37 @@
+<ul class="nav nav-tabs nav-justified">
+  <li role="presentation" <% if params[:active].nil? || params[:active] == 'booked' %> class="active" <% end %>><a href="/bookings?active=booked">Függő foglalások</a></li>
+  <li role="presentation" <% if params[:active] == 'answered' %> class="active" <% end %>><a href="/bookings?active=answered">Visszaigazolt foglalások</a></li>
+  <li role="presentation" <% if params[:active] == 'closed' %> class="active" <% end %>><a href="/bookings?active=closed">Teljesült foglalások</a></li>
+</ul>
+
+<table class="table">
+  <thead>
+      <th>Foglalási szám</th>
+      <th>Szobák</th>
+      <th>Érkezés</th>
+      <th>Távozás</th>
+      <th>Éjszakák</th>
+  </thead>
+
+  <% if params[:active].nil? || params[:active] == 'booked'
+       curr_bookings = @bookings['BOOKED']
+   elsif params[:active] == 'answered'
+        curr_bookings = @bookings['ANSWERED']
+   elsif params[:active] == 'closed'
+        curr_bookings = @bookings['CLOSED']
+   end %>
+
+  <% curr_bookings.each do |b| %>
+      <tr <% if b.state == 'APPROVED' %> style="background-color: palegreen;" <% elsif b.state == 'DENIED' %> style="background-color: palevioletred" <% end %> >
+        <td><%= link_to b.id, b %></td>
+        <td>
+          <% @rooms[b.id].each do |r| %>
+              <%= link_to "#{r.name} (#{r.accommodation.name})", r %><br />
+          <% end %>
+        </td>
+        <td><%= b.start_date %></td>
+        <td><%= b.end_date %></td>
+        <td><%= b.num_of_nights %></td>
+      </tr>
+  <% end %>
+</table>

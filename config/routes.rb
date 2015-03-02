@@ -30,7 +30,9 @@ Rails.application.routes.draw do
   patch 'cart/add'
   patch 'cart/remove'
   patch 'cart/clear'
-  get 'cart/book'
+  patch 'cart/book'
+  post 'cart/book' => 'cart#finish_booking'
+  patch 'cart/finish_booking'
   get '/cart' => 'cart#index'
 
 end

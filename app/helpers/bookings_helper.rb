@@ -1,21 +1,20 @@
 module BookingsHelper
   def self.is_bookable(room, start_date, end_date)
-    bookings = Booking.joins(:rooms).where('rooms.id' => room.id)
+    if start_date.nil? && end_date.nil?
+      return true
+    end
 
-    puts '*** Bookings ***'
-    puts bookings.size
+    bookings = Booking.joins(:rooms).where.not('state' => 'CART').where('rooms.id' => room.id)
 
-    overlapings = 0
+    overlapping = 0
     bookings.each do |b|
       if overlaps(start_date, end_date, b)
-        overlapings += 1
+        overlapping += 1
       end
     end
 
-    puts '*** Overlapings ***'
-    puts overlapings
+    return true if overlapping < room.num_of_this
 
-    return true if overlapings < room.num_of_this
     return false
   end
 
@@ -24,7 +23,7 @@ module BookingsHelper
   end
 
   # Check if a given interval overlaps this interval
-  def self.overlaps(start_date, end_date, b2)
-    (start_date - b2.end_date) * (b2.start_date - end_date) >= 0
+  def self.overlaps(start_date, end_date, base)
+    (start_date - base.end_date) * (base.start_date - end_date) >= 0
   end
 end

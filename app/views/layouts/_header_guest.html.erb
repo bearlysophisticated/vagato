@@ -17,13 +17,16 @@
         <li class="<%= 'active' if current_page? accommodations_path %>"><%= link_to 'Szállások', accommodations_path %></li>
       </ul>
 
+      <% cart_size = CartHelper.get_cart_size_for(current_user.role) %>
       <ul class="nav navbar-nav navbar-right">
-        <li class="<%= 'active' if (current_page? '/cart') || (current_page? '/cart/index') %>"><a href="/cart"><i class="fa fa-shopping-cart fa-lg"></i></a></li>
+        <li class="<%= 'active' if (current_page? '/cart') || (current_page? '/cart/index') %>">
+          <a href="/cart"><i class="fa fa-shopping-cart fa-lg"></i><% if cart_size > 0 %>&nbsp;&nbsp;<span class="badge" style="background-color: #cc0000"><%= cart_size %></span><% end %></a>
+        </li>
         <li>&nbsp;</li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user fa-lg fa-fw"></i>&nbsp;<%= current_user.role.name %>&nbsp;&nbsp;<i class="fa fa-caret-down"></i></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#"><i class="fa fa-inbox fa-fw"></i>&nbsp;&nbsp;Fogalásaim</a></li>
+            <li><a href="<%= bookings_path %>"><i class="fa fa-inbox fa-fw"></i>&nbsp;&nbsp;Fogalásaim</a></li>
             <li><a href="<%= edit_user_registration_path %>"><i class="fa fa-user fa-fw"></i>&nbsp;&nbsp;Profilom</a></li>
             <li class="divider"></li>
             <li><a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow"><i class="fa fa-sign-out fa-fw"></i>&nbsp;&nbsp;Kijelentkezés</a> </li>

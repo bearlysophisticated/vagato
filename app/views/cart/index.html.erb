@@ -3,6 +3,38 @@
       <p style="font-style: italic">A kosarad üres</p>
     </div>
 <% else %>
+
+    <div class="well well-sm">
+      <div class="row">
+        <%= simple_form_for @cart, url: {controller: 'cart', action: 'add'} do |c| %>
+            <div class='col-md-5'>
+              <div class="form-group">
+                <div class='input-group'>
+                  <%= c.text_field :start_date, class: 'form-control', disabled: true %>
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <div class='input-group'>
+                  <%= c.text_field :num_of_nights, class: 'form-control', disabled: true %>
+                  <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
+                </div>
+              </div>
+            </div>
+            <div class='col-md-5'>
+              <div class="form-group">
+                <div class='input-group'>
+                  <%= c.text_field :end_date, class: 'form-control', disabled: true %>
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+
     <table class="table table-bordered">
       <% @rooms.each do |r| %>
           <tr>
@@ -13,7 +45,7 @@
             </td>
             <td class="fit-content"><%= @room_count[r.id] %></td>
             <td class="fit-content">
-              <%= simple_form_for @cart , url: {controller: 'cart', action: 'remove'} do |c| %>
+              <%= simple_form_for @cart, url: {controller: 'cart', action: 'remove'} do |c| %>
                   <%= c.hidden_field :room_id, :value => r.id %>
                   <%= c.hidden_field :cart_id, :value => @cart.id %>
                   <%= c.button :submit, 'Töröl', class: 'btn-danger btn-xs' %>
@@ -32,7 +64,7 @@
       </div>
       <div class="col-md-6">
         <%= simple_form_for @cart , url: {controller: 'cart', action: 'book'} do |c| %>
-            <%= c.hidden_field :cart_id, :value => @cart.id %>
+            <%= c.hidden_field :booking_id, :value => @cart.id %>
             <%= c.button :submit, 'Foglal', class: 'btn-success right' %>
         <% end %>
       </div>
