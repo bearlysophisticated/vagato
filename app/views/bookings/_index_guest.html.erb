@@ -1,0 +1,94 @@
+<h3>Foglalások</h3>
+
+<div class="panel panel-warning">
+  <div class="panel-heading">
+    <h2 class="panel-title">Függő foglalások</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+      <th>Foglalási szám</th>
+      <th>Szobák</th>
+      <th>Érkezés</th>
+      <th>Távozás</th>
+      <th>Éjszakák</th>
+      </thead>
+
+      <% @bookings['BOOKED'].each do |b| %>
+          <tr>
+            <td><%= b.id %></td>
+            <td>
+              <% b.rooms.each do |r| %>
+                  <%= link_to "#{r.name} (#{r.accommodation.name})", r %><br />
+              <% end %>
+            </td>
+            <td><%= b.start_date %></td>
+            <td><%= b.end_date %></td>
+            <td><%= b.num_of_nights %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h2 class="panel-title">Visszaigazolt foglalások</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+      <th>Foglalási szám</th>
+      <th>Szobák</th>
+      <th>Érkezés</th>
+      <th>Távozás</th>
+      <th>Éjszakák</th>
+      </thead>
+
+      <% @bookings['ANSWERED'].each do |b| %>
+          <tr>
+            <td><%= b.id %></td>
+            <td>
+              <% b.rooms.each do |r| %>
+                  <%= link_to "#{r.name} (#{r.accommodation.name})", r %><br />
+              <% end %>
+            </td>
+            <td><%= b.start_date %></td>
+            <td><%= b.end_date %></td>
+            <td><%= b.num_of_nights %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h2 class="panel-title">Teljesült foglalások</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+      <th>Foglalási szám</th>
+      <th>Szobák</th>
+      <th>Érkezés</th>
+      <th>Távozás</th>
+      <th>Éjszakák</th>
+      </thead>
+
+      <% @bookings['CLOSED'].each do |b| %>
+          <tr>
+            <td><%= b.id %></td>
+            <td>
+              <% b.rooms.each do |r| %>
+                  <%= link_to "#{r.name} (#{r.accommodation.name})", r %><br />
+              <% end %>
+            </td>
+            <td><%= b.start_date %></td>
+            <td><%= b.end_date %></td>
+            <td><%= b.num_of_nights %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

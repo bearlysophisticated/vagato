@@ -12,8 +12,10 @@ class RoomsController < ApplicationController
   # GET /rooms/1
   # GET /rooms/1.json
   def show
-    if current_user.guest?
-      @cart = CartHelper.get_cart_for(current_user.role)
+    if user_signed_in?
+      if current_user.guest?
+        @cart = CartHelper.get_cart_for(current_user.role)
+      end
     end
   end
 

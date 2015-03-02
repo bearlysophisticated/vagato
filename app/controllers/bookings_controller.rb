@@ -4,20 +4,40 @@ class BookingsController < ApplicationController
 
   # GET /bookings
   def index
-    if current_user.guest?
-      @bookings = Hash.new
-      @bookings['BOOKED'] = Array.new
-      @bookings['APPROVED'] = Array.new
-      @bookings['CLOSED'] = Array.new
+    @bookings = Hash.new
+    @bookings['BOOKED'] = Array.new
+    @bookings['ANSWERED'] = Array.new
+    @bookings['CLOSED'] = Array.new
 
+    if current_user.guest?
       Booking.where('guest_id' => current_user.role.id).where.not('state' => 'CART').each do |b|
-        @bookings[b.state].push(b)
+        if b.state == 'APPROVED' || b.state == 'DENIED'
+          @bookings['ANSWERED'].push(b)
+        else
+          @bookings[b.state].push(b)
+        end
       end
 
     elsif current_user.owner?
-      #@bookings = Booking.joins(:bookings_rooms).includes(:rooms).joins(:accommodations).where(:accommodations => { owner_id: current_user.role.id })
-      @bookings = Booking.joins(rooms: [:accommodation]).where('accommodations.owner_id' => current_user.role.id).uniq
-      puts @bookings.as_json.to_s
+      @rooms = Hash.new
+
+      Booking.joins(rooms: [:accommodation]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
+        if b.state == 'APPROVED' || b.state == 'DENIED'
+          @bookings['ANSWERED'].push(b)
+        else
+          @bookings[b.state].push(b)
+        end
+
+        b.rooms.each do |r|
+          if r.accommodation.owner == current_user.role
+            if @rooms[b.id].nil?
+              @rooms[b.id] = Array.new
+            end
+
+            @rooms[b.id].push(r)
+          end
+        end
+      end
     end
   end
 

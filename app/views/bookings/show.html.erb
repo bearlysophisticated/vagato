@@ -25,5 +25,14 @@
   <%= @booking.guest_id %>
 </p>
 
-<%= link_to 'Edit', edit_booking_path(@booking) %> |
+<%= simple_form_for @booking do |b| %>
+    <%= b.hidden_field :state, :value => 'APPROVED' %>
+    <%= b.button :submit, 'Elfogad', class: 'btn-success right' %>
+<% end %>
+
+<%= simple_form_for @booking do |b| %>
+    <%= b.hidden_field :state, :value => 'DENIED' %>
+    <%= b.button :submit, 'Elutasít', class: 'btn-danger right' %>
+<% end %>
+
 <%= link_to 'Back', bookings_path %>

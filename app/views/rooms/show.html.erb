@@ -1,7 +1,9 @@
 <p id="notice"><%= notice %></p>
 
+<% if user_signed_in? %>
 <% if current_user.owner? || current_user.admin? %>
     <%= link_to 'Szerkesztés', edit_room_path(@room), class: "btn btn-success right" %>
+<% end %>
 <% end %>
 
 
@@ -31,6 +33,7 @@
 	<strong>Ár:</strong> <%= @room.price.value_with_vat %> <%= @room.price.currency %> + <%= @room.price.ifa %> <%= @room.price.currency %>/fő/éj IFA
 </p><br />
 
+<% if user_signed_in? %>
 <% if current_user.guest? %>
     <div class="panel panel-info">
       <div class="panel-heading">
@@ -74,6 +77,7 @@
 
       </div>
     </div>
+<% end %>
 <% end %>
 
 <%= link_to 'Vissza', @room.accommodation %>
