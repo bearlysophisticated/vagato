@@ -1,4 +1,4 @@
-module SearchHelper
+module FilterHelper
   def self.filter_rooms(params)
     rooms = Array.new
 

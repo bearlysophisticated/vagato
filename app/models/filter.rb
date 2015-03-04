@@ -1,4 +1,4 @@
-class Search < ActiveRecord::Base
+class Filter < ActiveRecord::Base
   has_no_table
 
   column :start_date, :date

@@ -1,7 +1,7 @@
-class SearchController < ApplicationController
-  def search
+class FilterController < ApplicationController
+  def filter
 =begin
-    @search = Search.new(search_params)
+    @search = Filter.new(search_params)
 
     @search.attributes = search_params
 
@@ -14,8 +14,8 @@ class SearchController < ApplicationController
 
     url = '/rooms?search&'
 
-    params[:search].keys.each do |key|
-      url += "#{key}=#{params[:search][key]}&"
+    params[:filter].keys.each do |key|
+      url += "#{key}=#{params[:filter][key]}&"
     end
 
     puts params
@@ -32,6 +32,6 @@ class SearchController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def search_params
-    params.require(:search).permit(:start_date, :end_date, :smart) #, {equipment_ids: []}, {serviice_ids: []})
+    params.require(:filter).permit(:start_date, :end_date, :smart) #, {equipment_ids: []}, {serviice_ids: []})
   end
 end
