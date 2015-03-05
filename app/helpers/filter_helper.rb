@@ -6,12 +6,12 @@ module FilterHelper
     rooms_by_capacity = Array.new
     filter_viewpoints = 0
 
-    unless params[:capacity].empty?
+    if params.has_key? :capacity
       rooms_by_capacity = Room.where(:capacity => params[:capacity])
       filter_viewpoints += 1
     end
 
-    unless params[:equipment_ids].empty?
+    if params.has_key? :equipment_ids
       equipment_ids = params[:equipment_ids].split(',')
 
       Room.all.each do |room|
@@ -25,7 +25,7 @@ module FilterHelper
     end
 
 
-    if params[:serviice_ids]
+    if params.has_key? :serviice_ids
       serviice_ids = params[:serviice_ids].split(',')
 
       Accommodation.all.each do |accommodation|
@@ -39,7 +39,7 @@ module FilterHelper
     end
 
 
-    unless params[:start_date].empty? && params[:end_date].empty?
+    if params.has_key?(:start_date) && params.has_key?(:end_date)
       Room.all.each do |room|
         if BookingsHelper.is_bookable(room, Date.strptime(params[:start_date], '%Y.%m.%d'), Date.strptime(params[:end_date], '%Y.%m.%d'))
           rooms_by_date.push(room)

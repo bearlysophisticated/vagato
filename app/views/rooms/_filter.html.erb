@@ -4,10 +4,10 @@
   </button>
 </div><br />
 
-<div class="well" id="search_panel" style="display: block;">
+<div class="well" id="search_panel" style="display: none;">
 
     <%= form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
-        <%= f.hidden_field :smart, :value => false %>
+        <%= f.hidden_field :filter, :value => :fine %>
 
       <div class="row">
 
@@ -80,8 +80,43 @@
             $('#search_panel').slideUp();
             $('#search_button').html('Szűrés <i class="fa fa-chevron-down"></i>');
         } else {
+            fill_inputs();
             $('#search_panel').slideDown();
             $('#search_button').html('Szűrés <i class="fa fa-chevron-up"></i>');
         }
-    };
+    }
+
+    function fill_inputs() {
+        fill_dates();
+        fill_capacity();
+        fill_equipments();
+        fill_serviices();
+    }
+
+    function fill_dates() {
+        <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
+        $('#filter_start_date').val("<%= params[:start_date] %>");
+        $('#filter_end_date').val("<%= params[:end_date] %>");
+        <% end %>
+    }
+
+    function fill_capacity(capacity) {
+        <% if params.has_key? :capacity %>
+        $('#filter_capacity').val("<%= params[:capacity] %>");
+        <% end %>
+    }
+
+    function fill_equipments() {
+        <% if params.has_key? :equipment_ids
+           params[:equipment_ids].split(',').each do |e| %>
+            $('#filter_equipment_ids_<%= e %>').prop('checked', true);
+        <% end end %>
+    }
+
+    function fill_serviices() {
+        <% if params.has_key? :serviice_ids
+           params[:serviice_ids].split(',').each do |s| %>
+        $('#filter_serviice_ids_<%= s %>').prop('checked', true);
+        <% end end %>
+    }
 </script>
