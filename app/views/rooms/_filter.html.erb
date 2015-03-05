@@ -1,37 +1,87 @@
 <div align="center">
   <button id="search_button" class="btn btn-default" onclick="showOrHideSearchPanel();">
-    Keresés <i class="fa fa-chevron-down"></i>
+    Szűrés <i class="fa fa-chevron-down"></i>
   </button>
 </div><br />
 
-<div class="well" id="search_panel" style="display: none;">
-  <div class="row">
-    <%= form_for @filter, url: {controller: 'filter', action: 'filter'} do |s| %>
-        <%= s.hidden_field :smart, :value => false %>
+<div class="well" id="search_panel" style="display: block;">
 
-        <div class='col-md-4'>
+    <%= form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
+        <%= f.hidden_field :smart, :value => false %>
+
+      <div class="row">
+
+        <div class='col-md-5'>
           <div class="form-group">
             <div class='input-group'>
-              <%= s.text_field :start_date, class: 'form-control', required: true %>
+              <%= f.text_field :start_date, class: 'form-control' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
         </div>
 
-        <div class='col-md-4'>
+        <div class='col-md-5'>
           <div class="form-group">
             <div class='input-group'>
-              <%= s.text_field :end_date, class: 'form-control', required: true %>
+              <%= f.text_field :end_date, class: 'form-control' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
         </div>
 
-
-
-        <div class="col-md-1">
-          <%= button_tag 'Filter', class: 'btn btn-success' %>
+        <div class='col-md-2'>
+            <div class="form-group">
+              <div class='input-group'>
+                <%= f.number_field :capacity, class: 'form-control' %>
+                <span class="input-group-addon"><i class="fa fa-users"></i></span>
+              </div>
+            </div>
         </div>
+
+      </div>
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Felszereltség</div>
+            <div class="panel-body">
+              <div class="checkbox">
+                <%= f.collection_check_boxes(:equipment_ids, Equipment.all, :id, :name, {:item_wrapper_class => 'checkbox_container'}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Szolgáltatások</div>
+            <div class="panel-body">
+              <div class="checkbox">
+                <%= f.collection_check_boxes(:serviice_ids, Serviice.all, :id, :name, {:item_wrapper_class => 'checkbox_container'}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row" align="center">
+        <%= button_tag 'Szűrés' , class: 'btn btn-success' %>
+      </div>
     <% end %>
-  </div>
+
 </div>
+
+<script type="application/javascript">
+    function showOrHideSearchPanel() {
+        var isVisible = $('#search_panel').css('display') == 'block';
+
+        if (isVisible) {
+            $('#search_panel').slideUp();
+            $('#search_button').html('Szűrés <i class="fa fa-chevron-down"></i>');
+        } else {
+            $('#search_panel').slideDown();
+            $('#search_button').html('Szűrés <i class="fa fa-chevron-up"></i>');
+        }
+    };
+</script>

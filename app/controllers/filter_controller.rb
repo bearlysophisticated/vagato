@@ -12,11 +12,10 @@ class FilterController < ApplicationController
     @search.start_date = s_start_date
 =end
 
-    url = '/rooms?search&'
-
-    params[:filter].keys.each do |key|
-      url += "#{key}=#{params[:filter][key]}&"
-    end
+    params[:filter][:filter] = nil
+    params[:filter][:equipment_ids].delete_at(params[:filter][:equipment_ids].length-1) unless params[:filter][:equipment_ids].nil?
+    params[:filter][:serviices_ids].delete_at(params[:filter][:serviices_ids].length-1) unless params[:filter][:serviices_ids].nil?
+    url = UrlHelper.build_parameterised_url('/rooms', params[:filter])
 
     puts params
     puts url

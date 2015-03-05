@@ -34,17 +34,3 @@
       <% end %>
     </script>
 <% end %>
-
-<script type="application/javascript">
-  function showOrHideSearchPanel() {
-      var isVisible = $('#search_panel').css('display') == 'block';
-
-      if (isVisible) {
-          $('#search_panel').slideUp();
-          $('#search_button').html('Keresés <i class="fa fa-chevron-down"></i>');
-      } else {
-          $('#search_panel').slideDown();
-          $('#search_button').html('Keresés <i class="fa fa-chevron-up"></i>');
-      }
-  };
-</script>

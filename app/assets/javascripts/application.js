@@ -22,8 +22,8 @@
 
 var setupDatePickers = function() {
 
-    var start_date = document.getElementById('booking_start_date') == null ? $('#search_start_date') : $('#booking_start_date');
-    var end_date = document.getElementById('booking_end_date') == null ? $('#search_end_date') : $('#booking_end_date');
+    var start_date = document.getElementById('booking_start_date') == null ? $('#filter_start_date') : $('#booking_start_date');
+    var end_date = document.getElementById('booking_end_date') == null ? $('#filter_end_date') : $('#booking_end_date');
 
     if(start_date != undefined && end_date != undefined) {
         start_date.datetimepicker({
