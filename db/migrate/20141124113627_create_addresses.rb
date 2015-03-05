@@ -5,7 +5,10 @@ class CreateAddresses < ActiveRecord::Migration
       t.string :zip
       t.string :city
       t.string :address
-      t.integer :accommodation_id
+      t.float :latitude
+      t.float :longitude
+      t.integer :addressable_id
+      t.string :addressable_type
 
       t.timestamps
     end

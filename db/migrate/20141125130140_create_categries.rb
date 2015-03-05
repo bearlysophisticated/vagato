@@ -4,7 +4,6 @@ class CreateCategries < ActiveRecord::Migration
       t.string :name
       t.string :code
       t.integer :value
-      t.integer :accommodation_id
 
       t.timestamps
     end
