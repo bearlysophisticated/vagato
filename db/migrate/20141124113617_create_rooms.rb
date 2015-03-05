@@ -6,7 +6,7 @@ class CreateRooms < ActiveRecord::Migration
       t.integer :accommodation_id
       t.integer :num_of_this
       t.integer :capacity
-      t.string :description
+      t.text :description
 
       t.timestamps
     end

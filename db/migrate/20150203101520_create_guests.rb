@@ -3,8 +3,8 @@ class CreateGuests < ActiveRecord::Migration
     create_table :guests do |t|
       t.string :name
       t.string :phone
-      t.datetime :day_of_birth
-      t.integer :address_id
+      t.date :day_of_birth
+      t.integer :guest_id
 
       t.timestamps null: false
     end

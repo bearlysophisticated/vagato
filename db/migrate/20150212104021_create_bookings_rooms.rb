@@ -3,6 +3,7 @@ class CreateBookingsRooms < ActiveRecord::Migration
     create_table :bookings_rooms do |t|
       t.integer :booking_id
       t.integer :room_id
+      t.string :status
 
       t.timestamps
     end
