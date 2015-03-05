@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SearchControllerTest < ActionController::TestCase
+class FilterControllerTest < ActionController::TestCase
   test "should get search" do
     get :filter
     assert_response :success
