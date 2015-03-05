@@ -9,7 +9,7 @@ class RoomsController < ApplicationController
     @filter = Filter.new
 
     if params.has_key?('filter')
-      @filter = FilterHelper.load_filter_params(params)
+      # @filter = FilterHelper.load_filter_params(params)
       @rooms = FilterHelper.filter_rooms(params)
     else
       @rooms = Room.all

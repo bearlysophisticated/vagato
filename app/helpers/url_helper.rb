@@ -2,7 +2,7 @@ module UrlHelper
   def self.build_parameterised_url(base, params)
     url = base + '?'
 
-    params.keys.each do |key|
+    params.keys.each_with_index do |key, idx|
       url += "#{key}="
       if params[key].is_a? Array
         params[key].each_with_index do |v,i|
@@ -12,10 +12,11 @@ module UrlHelper
             url += ','
           end
         end
-        url += '&'
       else
-        url += "#{params[key]}&"
+        url += "#{params[key]}"
       end
+
+      url += '&' if idx + 1 < params.keys.length
     end
 
     url #return
