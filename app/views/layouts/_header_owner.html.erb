@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="<%= 'active' if (current_page? '/accommodations/index_owner') || (current_page? root_url) %>"><%= link_to 'Szállások', '/accommodations/index_owner' %></li>
-        <li class="<%= 'active' if current_page? '#' %>"><%= link_to 'Foglalások', '#' %></li>
+        <li class="<%= 'active' if current_page? bookings_path %>"><%= link_to 'Foglalások', bookings_path %></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">

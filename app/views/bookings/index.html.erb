@@ -1,0 +1,7 @@
+<%=
+    if current_user.guest?
+       render 'bookings/index_guest'
+    elsif current_user.owner?
+       render 'bookings/index_owner'
+    end
+%>

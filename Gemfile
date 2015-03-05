@@ -23,6 +23,13 @@ gem 'font-awesome-sass'
 gem 'simple_form'
 gem 'country_select'
 
+# DatePicker for Simple Form
+gem 'bootstrap3-datetimepicker-rails', '~> 4.0.0'
+# gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
+
+# MomentJS - Parse, validate, manipulate, and display dates in JavaScript; DatePicker dependency
+gem 'momentjs-rails', '>= 2.8.1'
+
 # Use Paperclip for uploading and showing pictures
 gem 'paperclip'
 # Use Paperclip for Dropbox to upload and retrieve pictures from Dropbox
@@ -30,6 +37,8 @@ gem 'paperclip-dropbox'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'
+# Tableless Model Implementation
+gem 'activerecord-tableless', '~> 1.0'
 # Use PostgreSQL as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
@@ -45,16 +54,3 @@ gem 'therubyracer',  platforms: :ruby
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-
-# Use Capistrano for deployment
-group :development do
-  gem 'capistrano', '~> 3.1.0'
-  gem 'capistrano-bundler', '~> 1.1.2'
-  gem 'capistrano-rails', '~> 1.1.1'
-
-  # Add this if you're using rbenv
-  gem 'capistrano-rbenv', github: 'capistrano/rbenv'
-end
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]

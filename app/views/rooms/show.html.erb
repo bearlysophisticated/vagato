@@ -1,6 +1,11 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Szerkesztés', edit_room_path(@room), class: "btn btn-success right" %>
+<% if user_signed_in? %>
+<% if current_user.owner? || current_user.admin? %>
+    <%= link_to 'Szerkesztés', edit_room_path(@room), class: "btn btn-success right" %>
+<% end %>
+<% end %>
+
 
 <small><%= @room.accommodation.name %></small>
 <h2>
@@ -26,6 +31,53 @@
 
 <p>
 	<strong>Ár:</strong> <%= @room.price.value_with_vat %> <%= @room.price.currency %> + <%= @room.price.ifa %> <%= @room.price.currency %>/fő/éj IFA
-</p>
+</p><br />
 
-<%= link_to 'Vissza', "/accommodations/#{@room.accommodation.id}" %>
+<% if user_signed_in? %>
+<% if current_user.guest? %>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Foglalás</h3>
+      </div>
+      <div class="panel-body">
+
+        <%= form_for @cart, url: {controller: 'cart', action: 'add'} do |c| %>
+            <%= c.hidden_field :room_id, :value => @room.id %>
+            <%= c.hidden_field :cart_id, :value => @cart.id %>
+
+            <div class='col-md-4'>
+                <div class="form-group">
+                  <div class='input-group'>
+                    <%= c.text_field :start_date, class: 'form-control', disabled: !@cart.start_date.nil?, required: true %>
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                  <div class='input-group'>
+                    <%= c.text_field :num_of_nights, class: 'form-control', disabled: true %>
+                    <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
+                  </div>
+              </div>
+            </div>
+            <div class='col-md-4'>
+                <div class="form-group">
+                  <div class='input-group'>
+                    <%= c.text_field :end_date, class: 'form-control', disabled: !@cart.end_date.nil?, required: true %>
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <%= button_tag 'Foglalás', class: 'btn btn-success', disabled: !BookingsHelper.is_bookable(@room, @cart.start_date, @cart.end_date) %>
+            </div>
+        <% end %>
+
+      </div>
+    </div>
+<% end %>
+<% end %>
+
+<%= link_to 'Vissza', @room.accommodation %>

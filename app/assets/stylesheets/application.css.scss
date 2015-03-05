@@ -1,5 +1,7 @@
+// import bootstrap-sprockets before bootstrap if using bootstrap >= 3.2
 @import "bootstrap-sprockets";
-@import "bootstrap";
+@import 'bootstrap';
+@import 'bootstrap-datetimepicker';
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
@@ -108,4 +110,43 @@ div.error_explanation {
 
 .table {
   background-color: #f8f8f8;
+}
+
+.fit-content {
+  width: 1px;
+}
+
+div.separator {
+  width: 100%;
+  height: 2px;
+  background-color: #DDD;
+  border-bottom: 1px solid #FFF;
+  margin-bottom: 5px;
+}
+
+.crop {
+  height: 200px;
+  overflow: hidden;
+}
+
+.crop img {
+  height: 200px;
+}
+
+.thumbnail {
+  width: 250px;
+}
+
+.checkbox_container {
+  margin: 5px 15px 5px 5px;
+}
+
+.checkbox_container > label > input {
+  margin: 0;
+  padding: 0;
+}
+
+.checkbox_container > label > label {
+  margin: 0;
+  padding: 0;
 }

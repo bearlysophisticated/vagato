@@ -11,23 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204175118) do
+ActiveRecord::Schema.define(version: 20150224152332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accommodations", force: :cascade do |t|
-    t.string   "name",               limit: 255
-    t.string   "code",               limit: 255
-    t.string   "description",        limit: 255
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image_file_name",    limit: 255
-    t.string   "image_content_type", limit: 255
+    t.string   "image_file_name"
+    t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "owner_id"
     t.integer  "categry_id"
+    t.text     "description"
   end
 
   create_table "accommodations_serviices", id: false, force: :cascade do |t|
@@ -36,10 +36,10 @@ ActiveRecord::Schema.define(version: 20150204175118) do
   end
 
   create_table "addresses", force: :cascade do |t|
-    t.string   "country",          limit: 255
-    t.string   "zip",              limit: 255
-    t.string   "city",             limit: 255
-    t.string   "address",          limit: 255
+    t.string   "country"
+    t.string   "zip"
+    t.string   "city"
+    t.string   "address"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "latitude"
@@ -55,17 +55,51 @@ ActiveRecord::Schema.define(version: 20150204175118) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "num_of_nights"
+    t.string   "state"
+    t.integer  "guest_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "bookings_guests", force: :cascade do |t|
+    t.integer  "guest_id"
+    t.integer  "booking_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "room_id"
+    t.string   "role"
+  end
+
+  create_table "bookings_rooms", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "room_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status"
+  end
+
   create_table "categries", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
+    t.string   "name"
+    t.string   "code"
     t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "equipment", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
+    t.string   "name"
+    t.string   "code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "equipment_rooms", force: :cascade do |t|
+    t.integer  "room_id"
+    t.integer  "equipment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -73,9 +107,10 @@ ActiveRecord::Schema.define(version: 20150204175118) do
   create_table "guests", force: :cascade do |t|
     t.string   "name"
     t.string   "phone"
-    t.datetime "day_of_birth"
+    t.date     "day_of_birth"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "guest_id"
   end
 
   create_table "owners", force: :cascade do |t|
@@ -86,7 +121,7 @@ ActiveRecord::Schema.define(version: 20150204175118) do
 
   create_table "prices", force: :cascade do |t|
     t.float    "value"
-    t.string   "currency",   limit: 255
+    t.string   "currency"
     t.float    "ifa"
     t.float    "vat"
     t.integer  "room_id"
@@ -95,39 +130,37 @@ ActiveRecord::Schema.define(version: 20150204175118) do
   end
 
   create_table "rooms", force: :cascade do |t|
-    t.string   "name",               limit: 255
-    t.string   "code",               limit: 255
+    t.string   "name"
+    t.string   "code"
     t.integer  "accommodation_id"
     t.integer  "num_of_this"
     t.integer  "capacity"
-    t.string   "description",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "image_file_name",    limit: 255
-    t.string   "image_content_type", limit: 255
+    t.string   "image_file_name"
+    t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.text     "description"
   end
 
   create_table "rooms_equipments", id: false, force: :cascade do |t|
-    t.integer "room_id"
-    t.integer "equipment_id"
   end
 
   create_table "serviices", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
-    t.string   "encrypted_password",     limit: 255, default: "", null: false
-    t.string   "reset_password_token",   limit: 255
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                      default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"

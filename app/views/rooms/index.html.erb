@@ -1,12 +1,36 @@
-<div id="rooms" class="row">
-  <% @rooms.each do |room| %>
-      <div class="col-sm-3">
+<%= render 'filter' %>
+
+<% i = 1 %>
+<% @rooms.each do |room| %>
+    <% if i % 4 == 0 %>
+        <div class="row" %>
+    <% end %>
+    <div class="col-sm-3 col-xs-6 col-md-3">
         <div class="thumbnail">
-          <%= image_tag room.image.url %>
+          <div class="thumbnail-img crop">
+            <%= image_tag room.image.url %>
+          </div>
           <div class="caption">
             <%= link_to room.name, room %>
           </div>
         </div>
-      </div>
-  <% end %>
-</div>
+    </div>
+    <% if i % 4 == 0 %>
+        </div>
+    <% end %>
+    <% i+=1 %>
+<% end %>
+
+<% if params.has_key?('search') %>
+    <script type="application/javascript">
+        $('#search_panel').slideDown();
+        $('#search_button').html('Keresés <i class="fa fa-chevron-up"></i>');
+
+      <% if params[:start_date] %>
+            $('#search_start_date').val('<%= params[:start_date] %>');
+      <% end %>
+      <% if params[:end_date] %>
+            $('#search_end_date').val('<%= params[:end_date] %>');
+      <% end %>
+    </script>
+<% end %>
