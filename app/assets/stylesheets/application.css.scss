@@ -136,3 +136,17 @@ div.separator {
 .thumbnail {
   width: 250px;
 }
+
+.checkbox_container {
+  margin: 5px 15px 5px 5px;
+}
+
+.checkbox_container > label > input {
+  margin: 0;
+  padding: 0;
+}
+
+.checkbox_container > label > label {
+  margin: 0;
+  padding: 0;
+}

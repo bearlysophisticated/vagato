@@ -1,3 +1,5 @@
+<%= render 'filter' %>
+
 <% i = 1 %>
 <% @rooms.each do |room| %>
     <% if i % 4 == 0 %>
@@ -19,3 +21,16 @@
     <% i+=1 %>
 <% end %>
 
+<% if params.has_key?('search') %>
+    <script type="application/javascript">
+        $('#search_panel').slideDown();
+        $('#search_button').html('Keresés <i class="fa fa-chevron-up"></i>');
+
+      <% if params[:start_date] %>
+            $('#search_start_date').val('<%= params[:start_date] %>');
+      <% end %>
+      <% if params[:end_date] %>
+            $('#search_end_date').val('<%= params[:end_date] %>');
+      <% end %>
+    </script>
+<% end %>
