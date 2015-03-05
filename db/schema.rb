@@ -11,23 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224152332) do
+ActiveRecord::Schema.define(version: 20150212120006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "accommodation_equipments", force: :cascade do |t|
+    t.integer  "accommodation_id"
+    t.integer  "equipment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "accommodations", force: :cascade do |t|
     t.string   "name"
     t.string   "code"
+    t.text     "description"
+    t.integer  "owner_id"
+    t.integer  "categry_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.integer  "owner_id"
-    t.integer  "categry_id"
-    t.text     "description"
   end
 
   create_table "accommodations_serviices", id: false, force: :cascade do |t|
@@ -40,12 +47,12 @@ ActiveRecord::Schema.define(version: 20150224152332) do
     t.string   "zip"
     t.string   "city"
     t.string   "address"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.float    "latitude"
     t.float    "longitude"
     t.integer  "addressable_id"
     t.string   "addressable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -68,18 +75,18 @@ ActiveRecord::Schema.define(version: 20150224152332) do
   create_table "bookings_guests", force: :cascade do |t|
     t.integer  "guest_id"
     t.integer  "booking_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "room_id"
     t.string   "role"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "bookings_rooms", force: :cascade do |t|
     t.integer  "booking_id"
     t.integer  "room_id"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status"
   end
 
   create_table "categries", force: :cascade do |t|
@@ -108,9 +115,9 @@ ActiveRecord::Schema.define(version: 20150224152332) do
     t.string   "name"
     t.string   "phone"
     t.date     "day_of_birth"
+    t.integer  "guest_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.integer  "guest_id"
   end
 
   create_table "owners", force: :cascade do |t|
@@ -135,16 +142,13 @@ ActiveRecord::Schema.define(version: 20150224152332) do
     t.integer  "accommodation_id"
     t.integer  "num_of_this"
     t.integer  "capacity"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.text     "description"
-  end
-
-  create_table "rooms_equipments", id: false, force: :cascade do |t|
   end
 
   create_table "serviices", force: :cascade do |t|
@@ -165,10 +169,10 @@ ActiveRecord::Schema.define(version: 20150224152332) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.string   "role_type"
+    t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "role_id"
-    t.string   "role_type"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
