@@ -36,5 +36,7 @@ Rails.application.routes.draw do
   get '/cart' => 'cart#index'
 
   post 'filter/filter'
+  get '/smartfilter' => 'filter#smartfilter'
+  post '/do_smartfilter' => 'filter#do_smartfilter'
 
 end

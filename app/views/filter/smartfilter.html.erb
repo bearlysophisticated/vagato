@@ -1,0 +1,110 @@
+<h1>Intelligens keresés</h1>
+
+<div class="well">
+
+  <%= form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
+      <%= f.hidden_field :filter, :value => :smart %>
+      <%= hidden_field_tag :base_url, '/smartfilter' %>
+
+      <div class="row">
+
+        <div class='col-md-4'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.text_field :city, class: 'form-control' %>
+              <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-3'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.text_field :start_date, class: 'form-control' %>
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-3'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.text_field :end_date, class: 'form-control' %>
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-2'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.number_field :guests, class: 'form-control' %>
+              <span class="input-group-addon"><i class="fa fa-users"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Felszereltség</div>
+            <div class="panel-body">
+              <div class="checkbox">
+                <%= f.collection_check_boxes(:equipment_ids, Equipment.all, :id, :name, {:item_wrapper_class => 'checkbox_container'}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Szolgáltatások</div>
+            <div class="panel-body">
+              <div class="checkbox">
+                <%= f.collection_check_boxes(:serviice_ids, Serviice.all, :id, :name, {:item_wrapper_class => 'checkbox_container'}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+              <%= f.label 'Legyen minél olcsóbb' %>
+              <%= check_box_tag :cheap %>&nbsp;&nbsp;
+              <%= f.label 'A szobák legyenek minél közelebb egymáshoz' %>
+              <%= check_box_tag :close %>
+            </div>
+        </div>
+      </div>
+
+      <div class="row" align="center">
+        <%= button_tag 'Keresés' , class: 'btn btn-success' %>
+      </div>
+  <% end %>
+
+</div>
+
+<h2>Találatok</h2>
+<% i = 1 %>
+<% @rooms.each do |room| %>
+    <% if i % 4 == 0 %>
+        <div class="row" %>
+    <% end %>
+    <div class="col-sm-3 col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <div class="thumbnail-img crop">
+          <%= image_tag room.image.url %>
+        </div>
+        <div class="caption">
+          <%= link_to room.name, room %>
+        </div>
+      </div>
+    </div>
+    <% if i % 4 == 0 %>
+        </div>
+    <% end %>
+    <% i+=1 %>
+<% end %>
