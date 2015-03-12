@@ -108,3 +108,63 @@
     <% end %>
     <% i+=1 %>
 <% end %>
+
+<script type="application/javascript">
+    var ready = function() {
+        fill_inputs();
+    };
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
+
+    function fill_inputs() {
+        fill_dates();
+        fill_city();
+        fill_guests();
+        fill_equipments();
+        fill_serviices();
+        fill_options();
+    }
+
+    function fill_dates() {
+        <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
+            $('#filter_start_date').val("<%= params[:start_date] %>");
+            $('#filter_end_date').val("<%= params[:end_date] %>");
+        <% end %>
+    }
+
+    function fill_city() {
+        <% if params.has_key? :city %>
+            $('#filter_city').val("<%= params[:city] %>");
+        <% end %>
+    }
+
+    function fill_guests() {
+        <% if params.has_key? :guests %>
+            $('#filter_guests').val("<%= params[:guests] %>");
+        <% end %>
+    }
+
+    function fill_equipments() {
+        <% if params.has_key? :equipment_ids
+         params[:equipment_ids].split(',').each do |e| %>
+            $('#filter_equipment_ids_<%= e %>').prop('checked', true);
+        <% end end %>
+    }
+
+    function fill_serviices() {
+        <% if params.has_key? :serviice_ids
+         params[:serviice_ids].split(',').each do |s| %>
+            $('#filter_serviice_ids_<%= s %>').prop('checked', true);
+        <% end end %>
+    }
+
+    function fill_options() {
+        <% if params.has_key? :cheap %>
+        $('#cheap').prop('checked', true);
+        <% end %>
+        <% if params.has_key? :close %>
+        $('#close').prop('checked', true);
+        <% end %>
+    }
+</script>

@@ -1,15 +1,15 @@
 <div align="center">
-  <button id="search_button" class="btn btn-default" onclick="showOrHideSearchPanel();">
+  <button id="filter_button" class="btn btn-default" onclick="showOrHideFilterPanel();">
     Szűrés <i class="fa fa-chevron-down"></i>
   </button>
   <a href="/smartfilter" style="float: right" class="btn btn-link">Intelligens keresés</a>
 </div><br />
 
-<div class="well" id="search_panel" style="display: none;">
+<div class="well" id="filter_panel" style="display: none;">
 
     <%= form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
         <%= f.hidden_field :filter, :value => :fine %>
-        <%= hidden_field_tag :base_url, :value => '/rooms' %>
+        <%= hidden_field_tag :base_url, '/rooms' %>
 
       <div class="row">
         <div class='col-md-4'>
@@ -82,22 +82,24 @@
 
 </div>
 
+
 <script type="application/javascript">
-    function showOrHideSearchPanel() {
-        var isVisible = $('#search_panel').css('display') == 'block';
+    function showOrHideFilterPanel() {
+        var isVisible = $('#filter_panel').css('display') == 'block';
 
         if (isVisible) {
-            $('#search_panel').slideUp();
-            $('#search_button').html('Szűrés <i class="fa fa-chevron-down"></i>');
+            $('#filter_panel').slideUp();
+            $('#filter_button').html('Szűrés <i class="fa fa-chevron-down"></i>');
         } else {
             fill_inputs();
-            $('#search_panel').slideDown();
-            $('#search_button').html('Szűrés <i class="fa fa-chevron-up"></i>');
+            $('#filter_panel').slideDown();
+            $('#filter_button').html('Szűrés <i class="fa fa-chevron-up"></i>');
         }
     }
 
     function fill_inputs() {
         fill_dates();
+        fill_city();
         fill_capacity();
         fill_equipments();
         fill_serviices();
@@ -107,6 +109,12 @@
         <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
         $('#filter_start_date').val("<%= params[:start_date] %>");
         $('#filter_end_date').val("<%= params[:end_date] %>");
+        <% end %>
+    }
+
+    function fill_city() {
+        <% if params.has_key? :city %>
+        $('#filter_city').val("<%= params[:city] %>");
         <% end %>
     }
 

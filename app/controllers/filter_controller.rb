@@ -38,9 +38,20 @@ class FilterController < ApplicationController
   def smartfilter
     @filter = Filter.new
 
-    @rooms = FilterHelper.filter_rooms(params)
+    @rooms = FilterHelper.filter_rooms(params).sort_by! { |id| }
     @rooms = FilterHelper.prepare_for_lp_solving(@rooms, params[:start_date], params[:end_date])
-    @rooms = LpModelHelper.find_cheap_solution(@rooms, params[:guests])
+
+    if params.has_key?(:cheap) && params.has_key?(:close)
+      distances = GeoHelper.calculate_distances_per_bed(@rooms)
+      @rooms = LpModelHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests])
+    elsif params.has_key? :cheap
+      @rooms = LpModelHelper.find_cheap_solution(@rooms, params[:guests])
+    elsif params.has_key? :close
+      distances = GeoHelper.calculate_distances_per_bed(@rooms)
+      @rooms = LpModelHelper.find_close_solution(@rooms, distances, params[:guests])
+    else
+      @rooms = Array.new
+    end
   end
 
 
