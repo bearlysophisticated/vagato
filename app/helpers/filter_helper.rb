@@ -1,10 +1,16 @@
 module FilterHelper
   def self.filter_rooms(params)
     rooms_by_date = Array.new
+    rooms_by_city = Array.new
     rooms_by_equipment = Array.new
     rooms_by_serviice = Array.new
     rooms_by_capacity = Array.new
     filter_viewpoints = 0
+
+    if params.has_key? :city
+      rooms_by_city = Room.joins(:accommodation => [:address]).where("addresses.city" => params[:city])
+      filter_viewpoints += 1
+    end
 
     if params.has_key? :capacity
       rooms_by_capacity = Room.where(:capacity => params[:capacity])
@@ -53,6 +59,7 @@ module FilterHelper
     intersected_rooms_ids = Hash.new
     intersected_rooms = Array.new
 
+    rooms_to_intersect.concat(rooms_by_city) unless rooms_by_city.empty?
     rooms_to_intersect.concat(rooms_by_capacity) unless rooms_by_capacity.empty?
     rooms_to_intersect.concat(rooms_by_serviice) unless rooms_by_serviice.empty?
     rooms_to_intersect.concat(rooms_by_equipment) unless rooms_by_equipment.empty?

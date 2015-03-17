@@ -95,7 +95,7 @@ module OptSolutionHelper
     rooms = Array.new
 
     skip = 0
-    solution.each_pair do |key, room|
+    solution.each_value do |room|
       if skip == 0
         rooms.push(room)
         skip = room.capacity - 1
