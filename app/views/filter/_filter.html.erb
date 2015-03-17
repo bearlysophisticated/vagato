@@ -7,7 +7,7 @@
 
 <div class="well" id="filter_panel" style="display: none;">
 
-    <%= form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
+    <%= simple_form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
         <%= f.hidden_field :filter, :value => :fine %>
         <%= hidden_field_tag :base_url, '/rooms' %>
 

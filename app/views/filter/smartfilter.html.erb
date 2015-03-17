@@ -2,7 +2,7 @@
 
 <div class="well">
 
-  <%= form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
+  <%= simple_form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
       <%= f.hidden_field :filter, :value => :smart %>
       <%= hidden_field_tag :base_url, '/smartfilter' %>
 
@@ -72,10 +72,15 @@
       <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-              <%= f.label 'Legyen minél olcsóbb' %>
-              <%= check_box_tag :cheap %>&nbsp;&nbsp;
-              <%= f.label 'A szobák legyenek minél közelebb egymáshoz' %>
-              <%= check_box_tag :close %>
+              <div class="panel-heading">Keresési szempontok</div>
+              <div class="panel-body" align="center">
+                  <label class="checkbox-inline">
+                        <%= check_box_tag :cheap, 1, false, :class => 'checkbox' %> A szobák legyenek minél olcsóbbak
+                  </label>
+                  <label class="checkbox-inline">
+                        <%= check_box_tag :close %> A szobák legyenek minél közelebb egymáshoz
+                  </label>
+              </div>
             </div>
         </div>
       </div>
