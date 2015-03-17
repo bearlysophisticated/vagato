@@ -8,7 +8,7 @@ module FilterHelper
     filter_viewpoints = 0
 
     if params.has_key? :city
-      rooms_by_city = Room.joins(:accommodation => [:address]).where("addresses.city" => params[:city])
+      rooms_by_city = Room.joins(:accommodation => [:address]).where('lower(addresses.city) = ?', params[:city].downcase)
       filter_viewpoints += 1
     end
 
