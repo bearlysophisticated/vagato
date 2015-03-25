@@ -39,13 +39,12 @@ class FilterController < ApplicationController
     @filter = Filter.new
 
     @rooms = FilterHelper.filter_rooms(params).sort_by! { |id| }
-    prices = @rooms.size
     lowest_price = get_lowest_price(@rooms)
     @rooms = FilterHelper.prepare_for_lp_solving(@rooms, params[:start_date], params[:end_date])
 
     if params.has_key?(:cheap) && params.has_key?(:close)
       distances = GeoHelper.calculate_distances_per_bed(@rooms)
-      @rooms = OptModelHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests], lowest_price, get_nearest_price(distances))
+      @rooms = OptModelHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests], lowest_price, get_nearest_distance(distances))
     elsif params.has_key? :cheap
       @rooms = OptModelHelper.find_cheap_solution(@rooms, params[:guests])
     elsif params.has_key? :close
@@ -70,7 +69,7 @@ class FilterController < ApplicationController
     return lpr
   end
 
-  def get_nearest_price(distances)
+  def get_nearest_distance(distances)
     ndst = Float::INFINITY
 
     distances.each_value do |d|
