@@ -7,9 +7,9 @@
   <%= link_to 'Szerkesztés', edit_accommodation_path(@accommodation), class: "btn btn-link right" %>
 <% end %>
 
-<h2><%= @accommodation.name %> <% @accommodation.categry.value.times { %><i class="fa fa-star"></i><% } %> </h2>
+<h2><%= @accommodation.name %> <% @accommodation.categry.value.times { %><i class="fa fa-star accommodation-class"></i><% } %> </h2>
 <% @accommodation.serviices.map do |serviice| %>
-  <span class="label label-info" style="margin-right: 5px;">
+  <span class="label label-success" style="margin-right: 5px;">
      <%= serviice.name %> 
   </span>
 <% end %>
@@ -19,10 +19,10 @@
 </p>
 
 <p>
-  <strong>Cím: </strong><%= @accommodation.address.zip %> <%= @accommodation.address.city %>, <%= @accommodation.address.address %>, <%= @accommodation.address.country %><br>
-  <small><%= @accommodation.address.latitude %>, <%= @accommodation.address.longitude %> </small><br>
-  <div style='width: 600px;'>
-    <div id="map" style='width: 600px; height: 200px;'></div>
+  <strong>Cím: </strong><%= @accommodation.address.zip %> <%= @accommodation.address.city %>, <%= @accommodation.address.address %>, <%= @accommodation.address.country %> <small>(<%= @accommodation.address.latitude %>, <%= @accommodation.address.longitude %>)</small><br>
+
+  <div>
+    <div id="accommodation-map"></div>
   </div>
 </p><br>
 
@@ -50,7 +50,7 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       },
       internal: {
-        id: 'map'
+        id: 'accommodation-map'
       }
     }, 
     function(){
