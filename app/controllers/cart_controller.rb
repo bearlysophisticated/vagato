@@ -74,6 +74,59 @@ class CartController < ApplicationController
     redirect_to room_path(room.id)
   end
 
+
+  def add_from_smartfilter
+    rooms = params[:rooms].split(' ').map(&:to_i)
+    puts rooms
+    cart = CartHelper.get_cart_for(current_user.role)
+
+    cart.rooms.clear
+    cart.start_date = nil
+    cart.end_date = nil
+
+    if params[:start_date] && params[:end_date]
+      start_date = params[:start_date].to_date
+      end_date = params[:end_date].to_date
+    end
+
+    if cart.save! && !start_date.nil? && !end_date.nil?
+
+      rooms.each do |r_id|
+        room = Room.find(r_id)
+
+        if room.nil? && cart.nil? && start_date.nil? && end_date.nil?
+          flash[:alert] = 'Nem sikerült a szobafoglalástokat a kosárba rakni.'
+
+        elsif CartHelper.is_addable(cart, room)
+          cart.rooms.push(room)
+
+          if cart.start_date.nil?
+            cart.start_date = start_date
+          end
+
+          if cart.end_date.nil?
+            cart.end_date = end_date
+          end
+
+          if cart.num_of_nights.nil?
+            cart.num_of_nights = end_date - start_date
+          end
+
+          if cart.save!
+            flash[:notice] = 'A szobafoglalást beraktam a kosárba!'
+          else
+            flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
+          end
+        else
+          flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
+        end
+      end
+    end
+
+    redirect_to '/cart'
+  end
+
+
   def remove
     cart = Booking.find(params[:booking][:cart_id])
     room = Room.find(params[:booking][:room_id])

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   get 'cart/index'
   patch 'cart/add'
+  post 'cart/add_from_smartfilter'
   patch 'cart/remove'
   patch 'cart/clear'
   patch 'cart/book'

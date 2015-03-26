@@ -93,9 +93,18 @@
 </div>
 
 <h2>Találatok</h2>
-<% i = 1 %>
-<% @rooms.each do |room| %>
-    <% if i % 4 == 0 %>
+
+<div align="right">
+  <%= form_tag ({controller: 'cart', action: 'add_from_smartfilter'}) do %>
+      <%= hidden_field_tag :start_date, params[:start_date] %>
+      <%= hidden_field_tag :end_date, params[:end_date] %>
+      <%= hidden_field_tag :rooms, @rooms.map { |r| r.id } %>
+      <button class="btn btn-primary">Kosárba <i class="fa fa-shopping-cart"></i></button>
+  <% end %>
+</div><br />
+
+<% @rooms.each_with_index do |room, i| %>
+    <% if (i+1) % 4 == 0 %>
         <div class="row" %>
     <% end %>
     <div class="col-sm-3 col-xs-6 col-md-3">
@@ -108,11 +117,11 @@
         </div>
       </div>
     </div>
-    <% if i % 4 == 0 %>
+    <% if (i+1) % 4 == 0 %>
         </div>
     <% end %>
-    <% i+=1 %>
 <% end %>
+
 
 <script type="application/javascript">
     var ready = function() {
