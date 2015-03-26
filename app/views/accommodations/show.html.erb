@@ -30,17 +30,10 @@
 <div class="row">
   <% @rooms.each do |room| %>
       <div class="col-sm-3">
-      	<div class="thumbnail">
-			<%= image_tag room.image.url %>
-			<div class="caption">
-        		<%= link_to room.name, "/rooms/#{room.id}" %>
-        	</div>
-        </div>
+        <%= render 'rooms/thumbnail', :room => room %>
       </div>
   <% end %>
 </div>
-
-<%= link_to 'Vissza', '/', class: "btn btn-link" %>
 
 <script type="text/javascript">
   handler = Gmaps.build('Google');
