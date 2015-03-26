@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# Ruby GLPK Wrapper
+gem 'rglpk'
+
 # Geocoding library
 gem 'geocoder'
 

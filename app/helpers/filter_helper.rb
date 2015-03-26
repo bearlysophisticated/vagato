@@ -1,10 +1,16 @@
 module FilterHelper
   def self.filter_rooms(params)
     rooms_by_date = Array.new
+    rooms_by_city = Array.new
     rooms_by_equipment = Array.new
     rooms_by_serviice = Array.new
     rooms_by_capacity = Array.new
     filter_viewpoints = 0
+
+    if params.has_key? :city
+      rooms_by_city = Room.joins(:accommodation => [:address]).where('lower(addresses.city) = ?', params[:city].downcase)
+      filter_viewpoints += 1
+    end
 
     if params.has_key? :capacity
       rooms_by_capacity = Room.where(:capacity => params[:capacity])
@@ -53,6 +59,7 @@ module FilterHelper
     intersected_rooms_ids = Hash.new
     intersected_rooms = Array.new
 
+    rooms_to_intersect.concat(rooms_by_city) unless rooms_by_city.empty?
     rooms_to_intersect.concat(rooms_by_capacity) unless rooms_by_capacity.empty?
     rooms_to_intersect.concat(rooms_by_serviice) unless rooms_by_serviice.empty?
     rooms_to_intersect.concat(rooms_by_equipment) unless rooms_by_equipment.empty?
@@ -79,6 +86,7 @@ module FilterHelper
     self.filter_rooms(params)
   end
 
+
   def self.load_filter_params(params)
     filter = Filter.new
 =begin
@@ -95,4 +103,22 @@ module FilterHelper
     self.load_filter_params(params)
   end
 
+
+  def self.prepare_for_lp_solving(rooms, start_date, end_date)
+    prepared_rooms = Hash.new
+
+    rooms.each_with_index do |r, idx|
+      BookingsHelper.get_free_rooms_count(r, start_date, end_date).times do |jdx|
+        r.capacity.times do |kdx|
+          prepared_rooms["x#{idx}#{jdx}#{kdx}"] = r
+        end
+      end
+    end
+
+    return prepared_rooms
+  end
+
+  def prepare_for_lp_solving(rooms, start_date, end_date)
+    return self.prepare_for_lp_solving(rooms, start_date, end_date)
+  end
 end

@@ -18,6 +18,8 @@
 # Ignore application configuration
 /config/application.yml
 
-.idea/
-.idea/*
+# Ignore IDE settings
 .idea
+
+# Ignore app-generated files
+smartfilter
