@@ -53,6 +53,8 @@ class FilterController < ApplicationController
     else
       @rooms = Array.new
     end
+
+    @map_hash = GeoHelper.create_map_hash_from(@rooms)
   end
 
 
