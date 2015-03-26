@@ -1,0 +1,184 @@
+<h1>Intelligens keresés</h1>
+
+<div class="well">
+
+  <%= simple_form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
+      <%= f.hidden_field :filter, :value => :smart %>
+      <%= hidden_field_tag :base_url, '/smartfilter' %>
+
+      <div class="row">
+
+        <div class='col-md-4'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.text_field :city, class: 'form-control', placeholder: 'Város' %>
+              <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-3'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.text_field :start_date, class: 'form-control', required: true, placeholder: 'Érkezés' %>
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-3'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.text_field :end_date, class: 'form-control', required: true, placeholder: 'Távozás' %>
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+
+        <div class='col-md-2'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= f.number_field :guests, class: 'form-control', required: true, placeholder: 'Vendégek' %>
+              <span class="input-group-addon"><i class="fa fa-users"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Felszereltség</div>
+            <div class="panel-body">
+              <div class="checkbox">
+                <%= f.collection_check_boxes(:equipment_ids, Equipment.all, :id, :name, {:item_wrapper_class => 'checkbox_container'}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Szolgáltatások</div>
+            <div class="panel-body">
+              <div class="checkbox">
+                <%= f.collection_check_boxes(:serviice_ids, Serviice.all, :id, :name, {:item_wrapper_class => 'checkbox_container'}) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+              <div class="panel-heading">Keresési szempontok</div>
+              <div class="panel-body" align="center">
+                  <label class="checkbox-inline">
+                        <%= check_box_tag :cheap, 1, false, :class => 'checkbox' %> A szobák legyenek minél olcsóbbak
+                  </label>
+                  <label class="checkbox-inline">
+                        <%= check_box_tag :close %> A szobák legyenek minél közelebb egymáshoz
+                  </label>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="row" align="center">
+        <%= button_tag 'Keresés' , class: 'btn btn-success' %>
+      </div>
+  <% end %>
+
+</div>
+
+<h2>Találatok</h2>
+
+<div align="right">
+  <%= form_tag ({controller: 'cart', action: 'add_from_smartfilter'}) do %>
+      <%= hidden_field_tag :start_date, params[:start_date] %>
+      <%= hidden_field_tag :end_date, params[:end_date] %>
+      <%= hidden_field_tag :rooms, @rooms.map { |r| r.id } %>
+      <button class="btn btn-primary">Kosárba <i class="fa fa-shopping-cart"></i></button>
+  <% end %>
+</div><br />
+
+<% @rooms.each_with_index do |room, i| %>
+    <% if (i+1) % 4 == 0 %>
+        <div class="row" %>
+    <% end %>
+    <div class="col-sm-3 col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <div class="thumbnail-img crop">
+          <%= image_tag room.image.url %>
+        </div>
+        <div class="caption">
+          <%= link_to room.name, room %>
+        </div>
+      </div>
+    </div>
+    <% if (i+1) % 4 == 0 %>
+        </div>
+    <% end %>
+<% end %>
+
+
+<script type="application/javascript">
+    var ready = function() {
+        fill_inputs();
+    };
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
+
+    function fill_inputs() {
+        fill_dates();
+        fill_city();
+        fill_guests();
+        fill_equipments();
+        fill_serviices();
+        fill_options();
+    }
+
+    function fill_dates() {
+        <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
+            $('#filter_start_date').val("<%= params[:start_date] %>");
+            $('#filter_end_date').val("<%= params[:end_date] %>");
+        <% end %>
+    }
+
+    function fill_city() {
+        <% if params.has_key? :city %>
+            $('#filter_city').val("<%= params[:city] %>");
+        <% end %>
+    }
+
+    function fill_guests() {
+        <% if params.has_key? :guests %>
+            $('#filter_guests').val("<%= params[:guests] %>");
+        <% end %>
+    }
+
+    function fill_equipments() {
+        <% if params.has_key? :equipment_ids
+         params[:equipment_ids].split(',').each do |e| %>
+            $('#filter_equipment_ids_<%= e %>').prop('checked', true);
+        <% end end %>
+    }
+
+    function fill_serviices() {
+        <% if params.has_key? :serviice_ids
+         params[:serviice_ids].split(',').each do |s| %>
+            $('#filter_serviice_ids_<%= s %>').prop('checked', true);
+        <% end end %>
+    }
+
+    function fill_options() {
+        <% if params.has_key? :cheap %>
+        $('#cheap').prop('checked', true);
+        <% end %>
+        <% if params.has_key? :close %>
+        $('#close').prop('checked', true);
+        <% end %>
+    }
+</script>
