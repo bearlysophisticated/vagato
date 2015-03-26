@@ -18,16 +18,18 @@
       </thead>
 
       <% Guest.all.each do |guest| %>
-          <tr>
-            <td><%= guest.name %></td>
-            <td><%= guest.phone %></td>
-            <td><%= guest.user.email %></td>
-            <td><%= guest.day_of_birth %></td>
-            <td class="col-md-1" align="center">
-              <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_guest_path(guest) %>&nbsp;
-              <%= link_to raw("<i class='fa fa-trash'></i>"), guest, method: :delete, data: { confirm: 'Are you sure?' } %>
-            </td>
-          </tr>
+          <% unless guest.user.nil? %>
+              <tr>
+                <td><%= guest.name %></td>
+                <td><%= guest.phone %></td>
+                <td><%= guest.user.email %></td>
+                <td><%= guest.day_of_birth %></td>
+                <td class="col-md-1" align="center">
+                  <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_guest_path(guest) %>&nbsp;
+                  <%= link_to raw("<i class='fa fa-trash'></i>"), guest, method: :delete, data: { confirm: 'Are you sure?' } %>
+                </td>
+              </tr>
+          <% end %>
       <% end %>
     </table>
 
