@@ -56,6 +56,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 
 # Use Capistrano for deployment
+=begin
 group :development do
   gem 'capistrano', '~> 3.1.0'
   gem 'capistrano-bundler', '~> 1.1.2'
@@ -64,6 +65,7 @@ group :development do
   # Add this if you're using rbenv
   gem 'capistrano-rbenv', github: 'capistrano/rbenv'
 end
+=end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
