@@ -92,7 +92,7 @@ var positionFooter = function() {
 }
 
 var ready = function() {
-    positionFooter();
+    //positionFooter();
     setupDatePickers();
 };
 
