@@ -6,14 +6,7 @@
         <div class="row" %>
     <% end %>
     <div class="col-sm-3 col-xs-6 col-md-3">
-        <div class="thumbnail">
-          <div class="thumbnail-img crop">
-            <%= image_tag room.image.url %>
-          </div>
-          <div class="caption">
-            <%= link_to room.name, room %>
-          </div>
-        </div>
+      <%= render 'rooms/thumbnail', :room => room %>
     </div>
     <% if i % 4 == 0 %>
         </div>

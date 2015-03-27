@@ -7,35 +7,40 @@
 <% end %>
 
 
-<small><%= @room.accommodation.name %></small>
-<h2>
-  <%= @room.name %>
-</h2>
+<h2><%= @room.name %> - <small><%= link_to @room.accommodation.name, @room.accommodation %></small></h2>
 <% @room.equipments.map do |equipment| %>
-  <span class="label label-info" style="margin-right: 5px;">
-     <%= equipment.name %> 
-  </span>
+    <span class="label label-success" style="margin-right: 5px;">
+         <%= equipment.name %>
+      </span>
 <% end %>
 
-<p class="italic"><br>
-  <%= @room.description %>
-</p>
+<div class="row">
+  <div class="col-md-7">
+    <p class="italic"><br>
+      <%= @room.description %>
+    </p>
 
-<p>
-	<strong>Kapacitás:</strong> <%= @room.capacity %>
-</p>
+    <p>
+        <strong>Kapacitás:</strong> <%= @room.capacity %>
+    </p>
 
-<p>
-	<strong>Hasonló szobák száma:</strong> <%= @room.num_of_this %>
-</p>
+    <p>
+        <strong>Hasonló szobák száma:</strong> <%= @room.num_of_this %>
+    </p>
 
-<p>
-	<strong>Ár:</strong> <%= @room.price.value_with_vat %> <%= @room.price.currency %> + <%= @room.price.ifa %> <%= @room.price.currency %>/fő/éj IFA
-</p><br />
+    <p>
+        <strong>Ár:</strong> <%= @room.price.value_with_vat %> <%= @room.price.currency %> + <%= @room.price.ifa %> <%= @room.price.currency %>/fő/éj IFA
+    </p>
+  </div>
+
+  <div class="col-md-5">
+    <%= image_tag @room.image.url, class: 'img-responsive room-prev' %>
+  </div>
+</div><br />
 
 <% if user_signed_in? %>
 <% if current_user.guest? %>
-    <div class="panel panel-info">
+    <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Foglalás</h3>
       </div>
@@ -79,5 +84,3 @@
     </div>
 <% end %>
 <% end %>
-
-<%= link_to 'Vissza', @room.accommodation %>

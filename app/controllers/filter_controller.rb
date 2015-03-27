@@ -38,54 +38,21 @@ class FilterController < ApplicationController
   def smartfilter
     @filter = Filter.new
 
-    @rooms = FilterHelper.filter_rooms(params).sort_by! { |id| }
-    lowest_price = get_lowest_price(@rooms)
-    @rooms = FilterHelper.prepare_for_lp_solving(@rooms, params[:start_date], params[:end_date])
+    @rooms = FilterHelper.filter_rooms(params).sort_by! { |r| r.id }
 
     if params.has_key?(:cheap) && params.has_key?(:close)
-      distances = GeoHelper.calculate_distances_per_bed(@rooms)
-      @rooms = OptModelHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests], lowest_price, get_nearest_distance(distances))
+      distances = GeoHelper.calculate_distances_per_room(@rooms)
+      @rooms = OptDataHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests])
     elsif params.has_key? :cheap
-      @rooms = OptModelHelper.find_cheap_solution(@rooms, params[:guests])
+      @rooms = OptDataHelper.find_cheap_solution(@rooms, params[:guests])
     elsif params.has_key? :close
-      distances = GeoHelper.calculate_distances_per_bed(@rooms)
-      @rooms = OptModelHelper.find_close_solution(@rooms, distances, params[:guests])
+      distances = GeoHelper.calculate_distances_per_room(@rooms)
+      @rooms = OptDataHelper.find_close_solution(@rooms, distances, params[:guests])
     else
       @rooms = Array.new
     end
+
+    @map_hash = GeoHelper.create_map_hash_from(@rooms)
   end
 
-
-  private
-  def get_lowest_price(rooms)
-    lpr = Float::INFINITY
-
-    rooms.each do |r|
-      if r.price.value_with_vat < lpr
-        lpr = r.price.value_with_vat
-      end
-    end
-
-    return lpr
-  end
-
-  def get_nearest_distance(distances)
-    ndst = Float::INFINITY
-
-    distances.each_value do |d|
-      d.each_value do |e|
-        if e < ndst && e != 0.0
-          ndst = e
-        end
-      end
-    end
-
-    return ndst
-  end
-
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def search_params
-    params.require(:filter).permit(:start_date, :end_date, :smart) #, {equipment_ids: []}, {serviice_ids: []})
-  end
 end
