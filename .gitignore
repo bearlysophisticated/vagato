@@ -22,4 +22,4 @@
 .idea
 
 # Ignore app-generated files
-smartfilter
+smartfilter/tasks
