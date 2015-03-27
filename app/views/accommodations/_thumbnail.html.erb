@@ -1,0 +1,10 @@
+<div class="thumbnail">
+  <a href="/accommodations/<%= accommodation.id %>">
+      <div class="crop">
+            <%= image_tag accommodation.image.url %>
+      </div>
+  </a>
+  <div class="caption">
+    <%= link_to accommodation.name, accommodation %>
+  </div>
+</div>
