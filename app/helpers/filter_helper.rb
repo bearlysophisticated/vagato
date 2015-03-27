@@ -86,39 +86,4 @@ module FilterHelper
     self.filter_rooms(params)
   end
 
-
-  def self.load_filter_params(params)
-    filter = Filter.new
-=begin
-    filter.start_date = params[:start_date]
-    filter.end_date = params[:end_date]
-    filter.smart = params[:smart]
-    filter.capacity = params[:capacity]
-=end
-
-    filter #return
-  end
-
-  def load_filter_params(params)
-    self.load_filter_params(params)
-  end
-
-
-  def self.prepare_for_lp_solving(rooms, start_date, end_date)
-    prepared_rooms = Hash.new
-
-    rooms.each_with_index do |r, idx|
-      BookingsHelper.get_free_rooms_count(r, start_date, end_date).times do |jdx|
-        r.capacity.times do |kdx|
-          prepared_rooms["x#{idx}#{jdx}#{kdx}"] = r
-        end
-      end
-    end
-
-    return prepared_rooms
-  end
-
-  def prepare_for_lp_solving(rooms, start_date, end_date)
-    return self.prepare_for_lp_solving(rooms, start_date, end_date)
-  end
 end

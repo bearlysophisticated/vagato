@@ -1,15 +1,14 @@
-module OptModelHelper
+module OptDataHelper
   def self.find_cheap_solution(rooms, guests)
-    problem = generate_model_name
-    subjects = 0
+    problem = generate_problem_name
 
-    File.open("smartfilter/#{problem}_model.lp", 'w') do |model|
-      write_lp_variables(rooms, model)
-      subjects = write_subjects(guests, rooms, model)
-      write_cheap_object(rooms, model)
+    File.open("smartfilter/tasks/#{problem}.dat", 'w') do |data|
+      write_rooms_set(rooms, data)
+      write_base_params(rooms, guests, data)
+      write_capacity_and_price_params(rooms, data)
     end
 
-    run_lp_solver_on(problem, rooms, subjects)
+    # run_lp_solver_on(problem, rooms, subjects)
   end
 
   def find_cheap_solution(rooms, guests)
@@ -18,16 +17,16 @@ module OptModelHelper
 
 
   def self.find_close_solution(rooms, distances, guests)
-    problem = generate_model_name
-    subjects = 0
+    problem = generate_problem_name
 
-    File.open("smartfilter/#{problem}_model.lp", 'w') do |model|
-      write_lp_variables(rooms, model)
-      subjects = write_subjects(guests, rooms, model)
-      write_close_object(distances, model)
+    File.open("smartfilter/tasks/#{problem}.dat", 'w') do |data|
+      write_rooms_set(rooms, data)
+      write_base_params(rooms, guests, data)
+      write_capacity_params(rooms, data)
+      write_distance_params(rooms, distances, data)
     end
 
-    run_lp_solver_on(problem, rooms, subjects)
+    # run_lp_solver_on(problem, rooms, subjects)
   end
 
   def find_close_solution(rooms, distances, guests)
@@ -35,19 +34,18 @@ module OptModelHelper
   end
 
 
-  def self.find_cheap_and_close_solution(rooms, distances, guests, lowest_price, nearest_distance)
-    problem = generate_model_name
+  def self.find_cheap_and_close_solution(rooms, distances, guests)
+    problem = generate_problem_name
 
-    File.open("smartfilter/#{problem}_model.nlp", 'w') do |model|
-      write_which_solver('bonmin', model)
-      write_params(lowest_price, nearest_distance, model)
-      write_nlp_variables(rooms, model)
-      write_subjects(guests, rooms, model)
-      write_cheap_and_close_object(rooms, distances, model)
-      write_display_output(rooms, model)
+    File.open("smartfilter/tasks/#{problem}.dat", 'w') do |data|
+      write_rooms_set(rooms, data)
+      write_base_params(rooms, guests, data)
+      write_extra_params(rooms, distances, data)
+      write_capacity_and_price_params(rooms, data)
+      write_distance_params(rooms, distances, data)
     end
 
-    run_ampl_solver_on(problem, rooms)
+    # run_ampl_solver_on(problem, rooms)
   end
 
   def find_cheap_and_close_solution(rooms, distances, guests)
@@ -87,8 +85,79 @@ module OptModelHelper
   end
 
 
-  def self.generate_model_name
+  def self.generate_problem_name
     return "#{DateTime.now}_VSF#{rand(100)}#{rand(100)}"
+  end
+
+
+  def self.write_rooms_set(rooms, data)
+    data.write('set ROOMS:= ')
+    rooms.each do |room|
+      data.write("R#{room.id} ")
+    end
+    data.write(";\n")
+  end
+
+
+  def self.write_base_params(rooms, guests, data)
+    min_capacity = Float::INFINITY
+    rooms.each do |room|
+      min_capacity = room.capacity if room.capacity < min_capacity
+    end
+    data.write("param min_capacity := #{min_capacity};\n")
+    data.write("param guests := #{guests};\n")
+  end
+
+
+  def self.write_extra_params(rooms, distances, data)
+    min_dist = Float::INFINITY
+    min_price = Float::INFINITY
+
+    rooms.each_with_index do |room, i|
+      min_price = room.price.value_with_vat if room.price.value_with_vat < min_price
+
+      rooms.each_with_index do |moor, j|
+        min_dist = distances[i][j] if distances[i][j] < min_dist && distances[i][j] > 0.0
+      end
+    end
+
+    data.write("param min_dist:= #{min_dist};\n")
+    data.write("param min_price:= #{min_price};\n")
+  end
+
+
+  def self.write_capacity_params(rooms, data)
+    data.write("param:\tcapacity :=\n")
+    rooms.each do |room|
+      data.write("\t\tR#{room.id}\t#{room.capacity}\n")
+    end
+    data.write(";\n")
+  end
+
+
+  def self.write_capacity_and_price_params(rooms, data)
+    data.write("param:\tcapacity\tprice :=\n")
+    rooms.each do |room|
+      data.write("\t\tR#{room.id}\t#{room.capacity}\t#{room.price.value_with_vat}\n")
+    end
+    data.write(";\n")
+  end
+
+
+  def self.write_distance_params(rooms, distances, data)
+    data.write("param\tdistance: ")
+    rooms.each do |room|
+      data.write("R#{room.id} ")
+    end
+    data.write(":=\n")
+    rooms.each_with_index do |room, i|
+      data.write("\t\tR#{room.id}\t")
+      rooms.each_with_index do |moor, j|
+        data.write("#{distances[i][j]}\t")
+      end
+      data.write("\n")
+    end
+    data.write(";\n")
   end
 
 

@@ -1,7 +1,16 @@
 module GeoHelper
 
-  def self.calculate_distances_per_rooms(rooms)
+  def self.calculate_distances_per_room(rooms)
+    distances = Array.new
+    rooms.each do |room|
+      sub_distances = Array.new
+      rooms.each do |moor|
+        sub_distances.push(moor.accommodation.address.distance_to(room.accommodation.address))
+      end
+      distances.push(sub_distances)
+    end
 
+    return distances
   end
 
   def calculate_distances_per_room(rooms)
