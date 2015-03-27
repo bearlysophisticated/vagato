@@ -8,13 +8,14 @@
 
       <%= g.input :name, label: 'Teljes név', autofocus: true %>
       <%= g.input :phone, label: 'Telefon' %>
-      <%= g.input :day_of_birth, as: :date, start_year: Date.today.year - 90,
-                  end_year: Date.today.year - 12,
-                  order: [:year, :month, :day] %>
+      <div class="form-group">
+          <%= g.label 'Születési idő' %>
+          <%= g.text_field :day_of_birth, class: 'form-control' %>
+      </div>
 
       <%= g.fields_for :address do |a| %>
           <%= a.input :country, label: 'Ország' %>
-          <%= a.input :zip, label: 'Irányítószám' %>
+          <%= a.input :zip, label: 'Irányítószám', type: 'number' %>
           <%= a.input :city, label: 'Város' %>
           <%= a.input :address, label: 'Cím' %>
       <% end %>
@@ -30,3 +31,19 @@
   <% end %>
 
 </div>
+
+<script type="application/javascript">
+    var setupRegistrationDatePicker = function() {
+        $('#guest_day_of_birth').datetimepicker({
+            locale: "hu",
+            format: "YYYY.MM.DD"
+        });
+    };
+
+    var ready = function() {
+        setupRegistrationDatePicker();
+    };
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
+</script>
