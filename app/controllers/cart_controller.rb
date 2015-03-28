@@ -6,6 +6,11 @@ class CartController < ApplicationController
     @cart = CartHelper.get_cart_for(current_user.role)
     @rooms = @cart.rooms.sort_by { |r| r[:id]}
     @room_count = Hash.new
+    @total_price = 0
+
+    @rooms.each do |room|
+      @total_price += room.price.value_with_vat
+    end
 
     i = 0
     while i < @rooms.size do
@@ -24,11 +29,8 @@ class CartController < ApplicationController
           i += 1
         end
       end
-
     end
 
-    puts @room_count.to_s
-    puts @rooms.to_s
   end
 
   def add

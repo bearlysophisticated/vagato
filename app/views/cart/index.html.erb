@@ -55,6 +55,11 @@
       <% end %>
     </table><br />
 
+    <div class="panel panel-default">
+      A foglalás teljes ára: <%= @total_price %> Ft. <br/>
+      A feltüntetett ár tartalmazza a 27%-os ÁFA-t. Az éjszakánként fizetendő Idegenforgalmi Adó mértéke szállodánként eltérhet.
+    </div>
+
     <div class="row">
       <div class="col-md-6">
         <%= simple_form_for @cart , url: {controller: 'cart', action: 'clear'} do |c| %>
@@ -69,4 +74,5 @@
         <% end %>
       </div>
     </div>
+
 <% end %>
