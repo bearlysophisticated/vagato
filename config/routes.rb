@@ -23,7 +23,6 @@ Rails.application.routes.draw do
   resources :owners
   resources :admins
   resources :users
-  resources :settings
   resources :bookings
 
   get 'cart/index'
@@ -39,5 +38,8 @@ Rails.application.routes.draw do
   post 'filter/filter'
   get '/smartfilter' => 'filter#smartfilter'
   post '/do_smartfilter' => 'filter#do_smartfilter'
+
+  get '/settings' => 'settings#index'
+  patch '/settings/update' => 'settings#update'
 
 end
