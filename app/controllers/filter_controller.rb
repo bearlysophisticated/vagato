@@ -38,7 +38,8 @@ class FilterController < ApplicationController
   def smartfilter
     @filter = Filter.new
 
-    @rooms = FilterHelper.filter_rooms(params).sort_by! { |r| r.id }
+    # @rooms = FilterHelper.filter_rooms(params).sort_by! { |r| r.id }
+    @rooms = FilterHelper.prepare_rooms_for_smartfilter(params)
 
     if params.has_key?(:cheap) && params.has_key?(:close)
       distances = GeoHelper.calculate_distances_per_room(@rooms)
@@ -49,7 +50,7 @@ class FilterController < ApplicationController
       distances = GeoHelper.calculate_distances_per_room(@rooms)
       @rooms = OptDataHelper.find_close_solution(@rooms, distances, params[:guests])
     else
-      @rooms = Array.new
+      @rooms = Hash.new
     end
 
     @map_hash = GeoHelper.create_map_hash_from(@rooms)

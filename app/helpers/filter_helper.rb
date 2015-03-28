@@ -86,4 +86,24 @@ module FilterHelper
     self.filter_rooms(params)
   end
 
+
+  def self.prepare_rooms_for_smartfilter(params)
+    rooms = self.filter_rooms(params).sort_by! { |r| r.id }
+    prepared_rooms = Hash.new
+
+    rooms.each do |room|
+      i = 1
+      BookingsHelper.get_free_rooms_count(room, params[:start_date], params[:end_date]).times do
+        prepared_rooms["R#{room.id}_#{i}"] = room
+        i+=1
+      end
+    end
+
+    puts prepared_rooms.to_s
+    return prepared_rooms
+  end
+
+  def prepare_rooms_for_smartfilter(params)
+    return self.prepare_rooms_for_smartfilter(params)
+  end
 end

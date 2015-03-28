@@ -5,13 +5,13 @@ module OptSolutionHelper
       l_idx = 1
       f.each_line do |line|
         if l_idx == 1
-          return rooms if feasibility(line) == 'Full'
+          return compact_solution(rooms) if feasibility(line) == 'Full'
           return nil unless feasibility(line) == 'Optimal'
         elsif l_idx > 2
           unless is_part_of_solution?(line)
-            room_id = extract_room_id_from(line)
-            room_to_delete = Room.find(room_id)
-            rooms.delete(room_to_delete)
+            room_key = extract_room_key_from(line)
+            puts 'ROOM_KEY: ' + room_key
+            rooms.delete(room_key)
           end
         end
 
@@ -19,7 +19,7 @@ module OptSolutionHelper
       end
     end
 
-    return rooms
+    return compact_solution(rooms)
   end
 
   def read_solution_for(problem, rooms)
@@ -37,13 +37,18 @@ module OptSolutionHelper
   end
 
   def self.is_part_of_solution?(line)
-    activity = /\w\d+\s+(?<activity>\d)/.match(line)[:activity]
+    activity = /\w\d+_\d+\s+(?<activity>\d)/.match(line)[:activity]
     return activity.to_i == 1
   end
 
-  def self.extract_room_id_from(line)
-    rid = /\w(?<rid>\d+)\s+\d/.match(line)[:rid]
-    return rid.to_i
+  def self.extract_room_key_from(line)
+    key = /(?<key>\w\d+_\d+)\s+\d/.match(line)[:key]
+    return key
   end
 
+  def self.compact_solution(rooms)
+    puts rooms
+    puts rooms.values
+    return rooms.values
+  end
 end

@@ -2,13 +2,15 @@ module GeoHelper
 
   def self.calculate_distances_per_room(rooms)
     distances = Array.new
-    rooms.each do |room|
+    rooms.each_value do |room|
       sub_distances = Array.new
-      rooms.each do |moor|
-        sub_distances.push(moor.accommodation.address.distance_to(room.accommodation.address))
+      rooms.each_value do |moor|
+        sub_distances.push(moor.accommodation.address.distance_to(room.accommodation.address)*1.6)
       end
       distances.push(sub_distances)
     end
+
+    puts distances
 
     return distances
   end
@@ -27,7 +29,7 @@ module GeoHelper
 
       rooms.each_pair do |subkey, subroom|
         destination = subroom.accommodation.address
-        distance = destination.distance_to(start)
+        distance = destination.distance_to(start, :km)
         sub_distances[subkey] = distance
       end
 
@@ -53,10 +55,6 @@ module GeoHelper
       marker.lat accommodation.address.latitude
       marker.lng accommodation.address.longitude
     end
-
-    puts "rooms = " + rooms.to_s
-    puts "accommodations = " + accommodations.to_s
-    puts "map_hash = " +  map_hash.to_s
 
     return map_hash
   end
