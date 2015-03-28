@@ -1,7 +1,7 @@
 class SettingsController < ApplicationController
   def index
     @properties = Hash.new
-    Property.all.each do |p|
+    Property.all.sort_by { |p| p.group }.each do |p|
       unless @properties.has_key? p.group
         @properties[p.group] = Hash.new
       end
@@ -12,15 +12,15 @@ class SettingsController < ApplicationController
 
   def update
     property = Property.find_by_key(params[:property][:key])
-    unless property.nil?
+    if property.nil?
+      flash[:warning] = 'Sikertelen mentés'
+    else
       property.value = params[:property][:value]
       if property.save!
         flash[:notice] = 'A beállítás mentve!'
       else
         flash[:warning] = 'Sikertelen mentés'
       end
-    else
-      flash[:warning] = 'Sikertelen mentés'
     end
 
     redirect_to '/settings'
