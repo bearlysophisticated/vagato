@@ -7,15 +7,15 @@ class AccommodationsController < ApplicationController
   # GET /accommodations
   # GET /accommodations.json
   def index
-    @accommodations = Accommodation.all
+    @accommodations = Accommodation.all.sort_by{|a| a.name}
   end
 
   def index_owner
-    @accommodations = Accommodation.where(owner: current_user.role)
+    @accommodations = Accommodation.where(owner: current_user.role).sort_by{|a| a.name}
   end
 
   def index_admin
-    @accommodations = Accommodation.all
+    @accommodations = Accommodation.all.sort_by{|a| a.name}
   end
 
   # GET /accommodations/1
