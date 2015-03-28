@@ -49,7 +49,7 @@ class FilterController < ApplicationController
       distances = GeoHelper.calculate_distances_per_room(@rooms)
       @rooms = OptDataHelper.find_close_solution(@rooms, distances, params[:guests])
     else
-      @rooms = Hash.new
+      @rooms = Array.new
     end
 
     @rooms.sort_by! { |r| r.accommodation.name }
