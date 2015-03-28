@@ -118,9 +118,30 @@
     <% end %>
 <% end %><br />
 
-<div>
-  <div id="smartfilter-map"></div>
-</div>
+<% if params.has_key?(:filter) && @rooms.size > 0 %>
+    <div>
+        <div id="smartfilter-map"></div>
+    </div>
+    <script>
+        handler = Gmaps.build('Google');
+        handler.buildMap({
+                    provider: {
+                        disableDefaultUI: true,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    },
+                    internal: {
+                        id: 'smartfilter-map'
+                    }
+                },
+                function(){
+                    markers = handler.addMarkers(<%=raw @map_hash.to_json %>);
+                    handler.bounds.extendWith(markers);
+                    handler.fitMapToBounds();
+                    handler.getMap().setZoom(12);
+                }
+        );
+    </script>
+<% end %>
 
 
 <script type="application/javascript">
@@ -181,24 +202,6 @@
         $('#close').prop('checked', true);
         <% end %>
     }
-
-    handler = Gmaps.build('Google');
-    handler.buildMap({
-                provider: {
-                    disableDefaultUI: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                },
-                internal: {
-                    id: 'smartfilter-map'
-                }
-            },
-            function(){
-                markers = handler.addMarkers(<%=raw @map_hash.to_json %>);
-                handler.bounds.extendWith(markers);
-                handler.fitMapToBounds();
-                handler.getMap().setZoom(12);
-            }
-    );
 
     var setupFilterDatePickers = function() {
         var start_date = $('#filter_start_date');
