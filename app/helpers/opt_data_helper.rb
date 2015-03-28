@@ -65,7 +65,7 @@ module OptDataHelper
       end
 
       lines = `cat smartfilter/tasks/#{problem}.solution | wc -l`
-      if lines.to_i <= rooms.size+1
+      if lines.to_i <= rooms.size+3
         puts 'NOT FEASIBLE'
         return Array.new
       else
