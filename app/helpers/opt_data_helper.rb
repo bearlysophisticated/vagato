@@ -8,7 +8,7 @@ module OptDataHelper
       write_capacity_and_price_params(rooms, data)
     end
 
-    run_solver_on(problem, 'cheap.mod', rooms)
+    run_solver_on(problem, PROPERTIES['smartfilter-models']['cheap'], rooms)
   end
 
   def find_cheap_solution(rooms, guests)
@@ -26,7 +26,7 @@ module OptDataHelper
       write_distance_params(rooms, distances, data)
     end
 
-    run_solver_on(problem, 'close.mod', rooms)
+    run_solver_on(problem, PROPERTIES['smartfilter-models']['close'], rooms)
   end
 
   def find_close_solution(rooms, distances, guests)
@@ -45,7 +45,7 @@ module OptDataHelper
       write_distance_params(rooms, distances, data)
     end
 
-    run_solver_on(problem, 'close_and_cheap.mod', rooms)
+    run_solver_on(problem, PROPERTIES['smartfilter-models']['cheap_and_close'], rooms)
   end
 
   def find_cheap_and_close_solution(rooms, distances, guests)
@@ -65,7 +65,7 @@ module OptDataHelper
       end
 
       lines = `cat smartfilter/tasks/#{problem}.solution | wc -l`
-      if lines.to_i <= rooms.size+1
+      if lines.to_i <= rooms.size+3
         puts 'NOT FEASIBLE'
         return Array.new
       else
@@ -84,8 +84,8 @@ module OptDataHelper
   def self.write_solver_script(problem, model)
     File.open("smartfilter/tasks/#{problem}.solve", 'w') do |s|
       s.write("option solver bonmin;\n")
-      s.write("model smartfilter/models/#{model}\n")
-      s.write("data smartfilter/tasks/#{problem}.dat;\n")
+      s.write(Property.find_by_key(model).value.to_s)
+      s.write("\ndata smartfilter/tasks/#{problem}.dat;\n")
       s.write("solve;\n")
       s.write('display Occupation;')
     end
@@ -94,8 +94,8 @@ module OptDataHelper
 
   def self.write_rooms_set(rooms, data)
     data.write('set ROOMS:= ')
-    rooms.each do |room|
-      data.write("R#{room.id} ")
+    rooms.each_key do |room_key|
+      data.write("#{room_key} ")
     end
     data.write(";\n")
   end
@@ -103,7 +103,7 @@ module OptDataHelper
 
   def self.write_base_params(rooms, guests, data)
     min_capacity = Float::INFINITY
-    rooms.each do |room|
+    rooms.each_value do |room|
       min_capacity = room.capacity if room.capacity < min_capacity
     end
     data.write("param min_capacity := #{min_capacity};\n")
@@ -115,12 +115,16 @@ module OptDataHelper
     min_dist = Float::INFINITY
     min_price = Float::INFINITY
 
-    rooms.each_with_index do |room, i|
+    i = 0
+    rooms.each_value do |room|
       min_price = room.price.value_with_vat if room.price.value_with_vat < min_price
 
-      rooms.each_with_index do |moor, j|
+      j = 0
+      rooms.each_value do |moor|
         min_dist = distances[i][j] if distances[i][j] < min_dist && distances[i][j] > 0.0
+        j += 1
       end
+      i += 1
     end
 
     data.write("param min_dist:= #{min_dist};\n")
@@ -130,8 +134,8 @@ module OptDataHelper
 
   def self.write_capacity_params(rooms, data)
     data.write("param:\tcapacity :=\n")
-    rooms.each do |room|
-      data.write("\t\tR#{room.id}\t#{room.capacity}\n")
+    rooms.each_pair do |key, room|
+      data.write("\t\t#{key}\t#{room.capacity}\n")
     end
     data.write(";\n")
   end
@@ -139,8 +143,8 @@ module OptDataHelper
 
   def self.write_capacity_and_price_params(rooms, data)
     data.write("param:\tcapacity\tprice :=\n")
-    rooms.each do |room|
-      data.write("\t\tR#{room.id}\t#{room.capacity}\t#{room.price.value_with_vat}\n")
+    rooms.each_pair do |key, room|
+      data.write("\t\t#{key}\t#{room.capacity}\t#{room.price.value_with_vat}\n")
     end
     data.write(";\n")
   end
@@ -148,18 +152,21 @@ module OptDataHelper
 
   def self.write_distance_params(rooms, distances, data)
     data.write("param\tdistance: ")
-    rooms.each do |room|
-      data.write("R#{room.id} ")
+    rooms.each_key do |key|
+      data.write("#{key} ")
     end
     data.write(":=\n")
-    rooms.each_with_index do |room, i|
-      data.write("\t\tR#{room.id}\t")
-      rooms.each_with_index do |moor, j|
+    i = 0
+    rooms.each_key do |key|
+      data.write("\t\t#{key}\t")
+      j = 0
+      rooms.each_value do |moor|
         data.write("#{distances[i][j]}\t")
+        j += 1
       end
       data.write("\n")
+      i += 1
     end
     data.write(";\n")
   end
-
 end

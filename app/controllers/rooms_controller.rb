@@ -10,9 +10,9 @@ class RoomsController < ApplicationController
 
     if params.has_key?('filter')
       # @filter = FilterHelper.load_filter_params(params)
-      @rooms = FilterHelper.filter_rooms(params)
+      @rooms = FilterHelper.filter_rooms(params).sort_by!{ |r| r.accommodation.name }
     else
-      @rooms = Room.all
+      @rooms = Room.all.sort_by{ |r| r.accommodation.name }
     end
   end
 

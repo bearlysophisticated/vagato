@@ -47,9 +47,9 @@ body {
   visibility: hidden;
 }
 
-.col-sm-3:mth-child(4n+1){
+/*.col-md-3:nth-child(4n+1){
   clear: left;
-}
+}*/
 
 div.narrow-30 {
   width: 30%; 
@@ -172,4 +172,28 @@ div.separator {
   height: 400px;
   border: 3px solid white;
   border-radius: 3px;
+}
+
+.model_cheap, .model_close, .model_cheap_and_close {
+  font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+  font-size: small;
+  min-height: 25em !important;
+  width: 100% !important;
+  background-color: #222222;
+  color: whitesmoke;
+  border: 2px solid #111;
+}
+
+.version {
+  height: 2.5em !important;
+  width: 100% !important;
+}
+
+.divider {
+  height: 2px;
+  width: 100%;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

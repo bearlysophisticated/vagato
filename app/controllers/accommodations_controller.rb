@@ -7,22 +7,22 @@ class AccommodationsController < ApplicationController
   # GET /accommodations
   # GET /accommodations.json
   def index
-    @accommodations = Accommodation.all
+    @accommodations = Accommodation.all.sort_by{|a| a.name}
   end
 
   def index_owner
-    @accommodations = Accommodation.where(owner: current_user.role)
+    @accommodations = Accommodation.where(owner: current_user.role).sort_by{|a| a.name}
   end
 
   def index_admin
-    @accommodations = Accommodation.all
+    @accommodations = Accommodation.all.sort_by{|a| a.name}
   end
 
   # GET /accommodations/1
   # GET /accommodations/1.json
   def show
     # @rooms = Accommodation.find(params[:id]).rooms
-    @rooms = @accommodation.rooms
+    @rooms = @accommodation.rooms.sort_by{|r| r.name }
     @hash = Gmaps4rails.build_markers(@accommodation.address) do |address, marker|
       marker.lat address.latitude
       marker.lng address.longitude

@@ -1,44 +1,11 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [:show, :edit, :update, :destroy]
+  before_action :set_booking, only: [:show, :edit, :destroy]
+  before_action :set_bookings, only: [:index]
   before_action :authenticate_user!
 
   # GET /bookings
   def index
-    @bookings = Hash.new
-    @bookings['BOOKED'] = Array.new
-    @bookings['ANSWERED'] = Array.new
-    @bookings['CLOSED'] = Array.new
-
-    if current_user.guest?
-      Booking.where('guest_id' => current_user.role.id).where.not('state' => 'CART').each do |b|
-        if b.state == 'APPROVED' || b.state == 'DENIED'
-          @bookings['ANSWERED'].push(b)
-        else
-          @bookings[b.state].push(b)
-        end
-      end
-
-    elsif current_user.owner?
-      @rooms = Hash.new
-
-      Booking.joins(rooms: [:accommodation]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
-        if b.state == 'APPROVED' || b.state == 'DENIED'
-          @bookings['ANSWERED'].push(b)
-        else
-          @bookings[b.state].push(b)
-        end
-
-        b.rooms.each do |r|
-          if r.accommodation.owner == current_user.role
-            if @rooms[b.id].nil?
-              @rooms[b.id] = Array.new
-            end
-
-            @rooms[b.id].push(r)
-          end
-        end
-      end
-    end
+    puts @bookings.to_s
   end
 
   # GET /bookings/1
@@ -67,11 +34,17 @@ class BookingsController < ApplicationController
 
   # PATCH/PUT /bookings/1
   def update
-    if @booking.update(booking_params)
-      redirect_to @booking, notice: 'Booking was successfully updated.'
-    else
-      render :edit
+    bookings_rooms = BookingsRoom.where(:booking_id => params[:booking][:id])
+
+    bookings_rooms.each do |br|
+      puts 'UPDATING::'
+      puts br.status
+      br.status = params[:booking][:state]
+      br.save!
+      puts br.status
     end
+
+    redirect_to "/bookings/#{params[:booking][:id]}"
   end
 
   # DELETE /bookings/1
@@ -84,6 +57,44 @@ class BookingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_booking
       @booking = Booking.find(params[:id])
+    end
+
+    def set_bookings
+      @bookings = Hash.new
+      @bookings['BOOKED'] = Array.new
+      @bookings['ANSWERED'] = Array.new
+      @bookings['CLOSED'] = Array.new
+
+      if current_user.guest?
+        Booking.where('guest_id' => current_user.role.id).where.not('state' => 'CART').each do |b|
+          if b.state == 'APPROVED' || b.state == 'DENIED'
+            @bookings['ANSWERED'].push(b)
+          else
+            @bookings[b.state].push(b)
+          end
+        end
+
+      elsif current_user.owner?
+        @rooms = Hash.new
+
+        Booking.joins(rooms: [:accommodation, :bookings_rooms]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
+          if b.state == 'APPROVED' || b.state == 'DENIED'
+            @bookings['ANSWERED'].push(b)
+          else
+            @bookings[b.state].push(b)
+          end
+
+          b.rooms.each do |r|
+            if r.accommodation.owner == current_user.role
+              if @rooms[b.id].nil?
+                @rooms[b.id] = Array.new
+              end
+
+              @rooms[b.id].push(r)
+            end
+          end
+        end
+      end
     end
 
     # Only allow a trusted parameter "white list" through.

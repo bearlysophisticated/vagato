@@ -137,4 +137,37 @@
         $('#filter_serviice_ids_<%= s %>').prop('checked', true);
         <% end end %>
     }
+
+    var setupFilterDatePickers = function() {
+        var start_date = $('#filter_start_date');
+        var end_date = $('#filter_end_date');
+
+        start_date.datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+        start_date.data("DateTimePicker").setMinDate(new Date());
+
+        end_date.datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+
+        start_date.on("dp.change", function (e) {
+            end_date.data("DateTimePicker").setMinDate(e.date.add(1, 'days'));
+            if(end_date.data("DateTimePicker").date <= e.date){
+                end_date.data("DateTimePicker").setDate(e.date);
+            }
+            setNightsInput();
+        });
+    };
+
+    var ready = function() {
+        setupFilterDatePickers();
+    };
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
 </script>

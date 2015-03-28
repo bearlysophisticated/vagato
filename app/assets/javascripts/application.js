@@ -20,45 +20,30 @@
 //= require bootstrap-datetimepicker
 //= require moment-hu/hu
 
-var setupDatePickers = function() {
-
+var setupBookingFilterDatePickers = function() {
     var start_date = document.getElementById('booking_start_date') == null ? $('#filter_start_date') : $('#booking_start_date');
     var end_date = document.getElementById('booking_end_date') == null ? $('#filter_end_date') : $('#booking_end_date');
 
-    if(start_date != undefined && end_date != undefined) {
-        start_date.datetimepicker({
-            locale: "hu",
-            calendarWeeks: true,
-            format: "YYYY.MM.DD"
-        });
-        start_date.data("DateTimePicker").setMinDate(new Date());
+    start_date.datetimepicker({
+        locale: "hu",
+        calendarWeeks: true,
+        format: "YYYY.MM.DD"
+    });
+    start_date.data("DateTimePicker").setMinDate(new Date());
 
-        end_date.datetimepicker({
-            locale: "hu",
-            calendarWeeks: true,
-            format: "YYYY.MM.DD"
-        });
+    end_date.datetimepicker({
+        locale: "hu",
+        calendarWeeks: true,
+        format: "YYYY.MM.DD"
+    });
 
-        start_date.on("dp.change", function (e) {
-            end_date.data("DateTimePicker").setMinDate(e.date.add(1, 'days'));
-            if(end_date.data("DateTimePicker").date <= e.date){
-                end_date.data("DateTimePicker").setDate(e.date);
-            }
-            setNightsInput();
-        });
-
-        /*$('#end_date').on("dp.change", function (e) {
-            setNightsInput();
-        });
-
-        $('#booking_nights').on("change", function (e) {
-            var start_date = $('#start_date').data("DateTimePicker").date;
-            console.log("Startdate " + start_date.toString());
-            var new_end_date = start_date.add($('#booking_nights').val(), 'days');
-            console.log("Enddate " + new_end_date.toString());
-            $('#end_date').data("DateTimePicker").setDate(new_end_date);
-        });*/
-    }
+    start_date.on("dp.change", function (e) {
+        end_date.data("DateTimePicker").setMinDate(e.date.add(1, 'days'));
+        if(end_date.data("DateTimePicker").date <= e.date){
+            end_date.data("DateTimePicker").setDate(e.date);
+        }
+        setNightsInput();
+    });
 };
 
 function setNightsInput(){
@@ -92,8 +77,8 @@ var positionFooter = function() {
 }
 
 var ready = function() {
-    positionFooter();
-    setupDatePickers();
+    //positionFooter();
+    //setupBookingFilterDatePickers();
 };
 
 $(document).ready(ready);

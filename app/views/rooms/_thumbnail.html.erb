@@ -1,7 +1,9 @@
 <div class="thumbnail">
-    <div class="thumbnail-img crop">
-      <%= image_tag room.image.url %>
-    </div>
+    <a href="/rooms/<%= room.id %>">
+        <div class="crop">
+            <%= image_tag room.image.url %>
+        </div>
+    </a>
     <div class="caption">
       <div class="row">
           <div align="left" class="col-md-8">

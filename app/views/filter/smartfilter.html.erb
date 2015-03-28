@@ -118,9 +118,30 @@
     <% end %>
 <% end %><br />
 
-<div>
-  <div id="smartfilter-map"></div>
-</div>
+<% if params.has_key?(:filter) && @rooms.size > 0 %>
+    <div>
+        <div id="smartfilter-map"></div>
+    </div>
+    <script>
+        handler = Gmaps.build('Google');
+        handler.buildMap({
+                    provider: {
+                        disableDefaultUI: true,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    },
+                    internal: {
+                        id: 'smartfilter-map'
+                    }
+                },
+                function(){
+                    markers = handler.addMarkers(<%=raw @map_hash.to_json %>);
+                    handler.bounds.extendWith(markers);
+                    handler.fitMapToBounds();
+                    handler.getMap().setZoom(12);
+                }
+        );
+    </script>
+<% end %>
 
 
 <script type="application/javascript">
@@ -182,21 +203,36 @@
         <% end %>
     }
 
-    handler = Gmaps.build('Google');
-    handler.buildMap({
-                provider: {
-                    disableDefaultUI: true,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                },
-                internal: {
-                    id: 'smartfilter-map'
-                }
-            },
-            function(){
-                markers = handler.addMarkers(<%=raw @map_hash.to_json %>);
-                handler.bounds.extendWith(markers);
-                handler.fitMapToBounds();
-                handler.getMap().setZoom(12);
+    var setupFilterDatePickers = function() {
+        var start_date = $('#filter_start_date');
+        var end_date = $('#filter_end_date');
+
+        start_date.datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+        start_date.data("DateTimePicker").setMinDate(new Date());
+
+        end_date.datetimepicker({
+            locale: "hu",
+            calendarWeeks: true,
+            format: "YYYY.MM.DD"
+        });
+
+        start_date.on("dp.change", function (e) {
+            end_date.data("DateTimePicker").setMinDate(e.date.add(1, 'days'));
+            if(end_date.data("DateTimePicker").date <= e.date){
+                end_date.data("DateTimePicker").setDate(e.date);
             }
-    );
+            setNightsInput();
+        });
+    };
+
+    var ready = function() {
+        setupFilterDatePickers();
+    };
+
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
 </script>
