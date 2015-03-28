@@ -4,7 +4,7 @@
          <h3 class="panel-title"><%= group.humanize %></h3>
       </div>
       <div class="panel-body">
-        <% properties.each_key do |key| %>
+        <% properties.each_with_index do |key, idx| %>
             <% property = Property.find_by_key(key) %>
             <%= simple_form_for property, url: {controller: 'settings', action: 'update'} do |p| %>
                 <%= p.hidden_field :key %>
@@ -13,7 +13,9 @@
                     <%= p.button :submit, 'Mentés', class: 'btn btn-success btn-sm' %>
                 </div>
             <% end %>
-            <div class="divider"></div>
+            <% unless idx+1 == properties.size %>
+                <div class="divider"></div>
+            <% end %>
         <% end %>
       </div>
     </div>
