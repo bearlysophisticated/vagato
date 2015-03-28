@@ -38,7 +38,6 @@ class FilterController < ApplicationController
   def smartfilter
     @filter = Filter.new
 
-    # @rooms = FilterHelper.filter_rooms(params).sort_by! { |r| r.id }
     @rooms = FilterHelper.prepare_rooms_for_smartfilter(params)
 
     if params.has_key?(:cheap) && params.has_key?(:close)
@@ -53,6 +52,7 @@ class FilterController < ApplicationController
       @rooms = Hash.new
     end
 
+    @rooms.sort_by! { |r| r.accommodation.name }
     @map_hash = GeoHelper.create_map_hash_from(@rooms)
   end
 
