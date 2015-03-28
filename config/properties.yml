@@ -1,2 +1,7 @@
 version: 
   number: 0.5.0
+
+smartfilter-models:
+    cheap: 'model_cheap'
+    close: 'model_close'
+    cheap_and_close: 'model_cheap_and_close'
