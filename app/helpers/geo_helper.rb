@@ -5,7 +5,7 @@ module GeoHelper
     rooms.each_value do |room|
       sub_distances = Array.new
       rooms.each_value do |moor|
-        sub_distances.push(moor.accommodation.address.distance_to(room.accommodation.address)*1.6)
+        sub_distances.push(moor.accommodation.address.distance_to(room.accommodation.address)*1.609344)
       end
       distances.push(sub_distances)
     end
