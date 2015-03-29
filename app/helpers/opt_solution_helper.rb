@@ -6,7 +6,7 @@ module OptSolutionHelper
       f.each_line do |line|
         if l_idx == 1
           return compact_solution(rooms) if feasibility(line) == 'Full'
-          return nil unless feasibility(line) == 'Optimal'
+          return Array.new unless feasibility(line) == 'Optimal'
         elsif l_idx > 2
           unless is_part_of_solution?(line)
             room_key = extract_room_key_from(line)
