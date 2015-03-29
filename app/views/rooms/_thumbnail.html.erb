@@ -6,13 +6,13 @@
     </a>
     <div class="caption">
       <div class="row">
-          <div align="left" class="col-md-8">
+          <div align="left" class="col-md-9">
             <strong><%= link_to room.name, "/rooms/#{room.id}" %></strong> - <small><%= link_to room.accommodation.name, room.accommodation %></small><br />
             <% (room.price.value_with_vat/10000).to_i.times do %>
                 <i class="fa fa-eur"></i>
             <% end %>
           </div>
-          <div align="right" class="col-md-4">
+          <div align="right" class="col-md-3">
             <% room.capacity.times do %>
                 <i class="fa fa-bed"></i>
             <% end %>

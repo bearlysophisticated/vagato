@@ -38,14 +38,7 @@
 
         <div class="row">
           <div class="col-md-3">
-            <div class="thumbnail">
-              <div class="thumbnail-img crop">
-                <%= image_tag r.image.url %>
-              </div>
-              <div class="caption">
-                <%= r.name %>,  <%= r.accommodation.name %>, <%= r.capacity %> fő
-              </div>
-            </div>
+            <%= render 'rooms/thumbnail', :room => r %>
           </div>
           <div class="col-md-9">
             <div class="well">
