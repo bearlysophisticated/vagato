@@ -16,6 +16,9 @@ gem 'bcrypt'
 # Bootstrap CSS library
 gem 'bootstrap-sass'
 
+# Bootstrap Switch extension
+gem 'bootstrap-switch-rails'
+
 # Font Awesome icons
 gem 'font-awesome-sass'
 

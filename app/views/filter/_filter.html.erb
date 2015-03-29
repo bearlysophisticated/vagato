@@ -15,7 +15,7 @@
         <div class='col-md-4'>
           <div class="form-group">
             <div class='input-group'>
-              <%= f.text_field :city, class: 'form-control', placeholder: 'Város' %>
+              <%= text_field_tag :city, class: 'form-control', placeholder: 'Város' %>
               <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
             </div>
           </div>
@@ -24,7 +24,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= f.text_field :start_date, class: 'form-control', placeholder: 'Érkezés' %>
+              <%= text_field_tag :start_date, class: 'form-control', placeholder: 'Érkezés' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -33,7 +33,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= f.text_field :end_date, class: 'form-control', placeholder: 'Távozás' %>
+              <%= text_field_tag :end_date, class: 'form-control', placeholder: 'Távozás' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -42,7 +42,7 @@
         <div class='col-md-2'>
             <div class="form-group">
               <div class='input-group'>
-                <%= f.number_field :capacity, class: 'form-control', placeholder: 'Ágyak' %>
+                <%= number_field_tag :capacity, class: 'form-control', placeholder: 'Ágyak' %>
                 <span class="input-group-addon"><i class="fa fa-hotel"></i></span>
               </div>
             </div>

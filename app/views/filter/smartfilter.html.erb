@@ -14,7 +14,7 @@
         <div class='col-md-4'>
           <div class="form-group">
             <div class='input-group'>
-              <%= f.text_field :city, class: 'form-control', placeholder: 'Város' %>
+              <%= text_field_tag :city, params[:city], class: 'form-control', placeholder: 'Város' %>
               <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
             </div>
           </div>
@@ -23,7 +23,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= f.text_field :start_date, class: 'form-control', required: true, placeholder: 'Érkezés' %>
+              <%= text_field_tag :start_date, params[:start_date], class: 'form-control', required: true, placeholder: 'Érkezés' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -32,7 +32,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= f.text_field :end_date, class: 'form-control', required: true, placeholder: 'Távozás' %>
+              <%= text_field_tag :end_date, params[:end_date], class: 'form-control', required: true, placeholder: 'Távozás' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -41,7 +41,7 @@
         <div class='col-md-2'>
           <div class="form-group">
             <div class='input-group'>
-              <%= f.number_field :guests, class: 'form-control', required: true, placeholder: 'Vendégek' %>
+              <%= number_field_tag :guests, params[:guests], class: 'form-control', required: true, placeholder: 'Vendégek' %>
               <span class="input-group-addon"><i class="fa fa-users"></i></span>
             </div>
           </div>
@@ -73,23 +73,52 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">Keresési szempontok</div>
-              <div class="panel-body" align="center">
-                  <label class="checkbox-inline">
-                        <%= check_box_tag :cheap, 1, false, :class => 'checkbox' %> A szobák legyenek minél olcsóbbak
-                  </label>
-                  <label class="checkbox-inline">
-                        <%= check_box_tag :close %> A szobák legyenek minél közelebb egymáshoz
-                  </label>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <strong>A szobák legyenek minél olcsóbbak:</strong>
+                  </div>
+                  <div class="col-md-4">
+                    <%= check_box_tag :cheap, 1, params.has_key?(:cheap) || (!params.has_key?(:cheap) && !params.has_key?(:close)), :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                  </div>
+                </div><br />
+                <div class="row">
+                  <div class="col-md-8">
+                    <strong>A szobák legyenek minél közelebb egymáshoz:</strong>
+                  </div>
+                  <div class="col-md-4">
+                    <%= check_box_tag :close, 1, params.has_key?(:close), :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                  </div>
+                </div>
               </div>
             </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Szobatípus</div>
+            <div class="panel-body">
+              <label class="checkbox-inline">
+                <%= check_box_tag :one_bed, 1, true, :class => 'checkbox' %> Egyágyas
+              </label>
+              <label class="checkbox-inline">
+                <%= check_box_tag :two_bed, 1, true, :class => 'checkbox' %> Kétágyas
+              </label>
+              <label class="checkbox-inline">
+                <%= check_box_tag :three_bed, 1, true, :class => 'checkbox' %> Háromágyas
+              </label>
+              <label class="checkbox-inline">
+                <%= check_box_tag :four_or_more_bed, 1, true, :class => 'checkbox' %> Négy vagy több ágyas
+              </label>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="row" align="center">
-        <%= button_tag 'Keresés' , class: 'btn btn-success' %>
+        <%= button_tag 'Keresés' , class: 'btn btn-primary', style: 'width: 200px' %>
       </div>
   <% end %>
 
@@ -146,39 +175,42 @@
 
 <script type="application/javascript">
     var ready = function() {
+        initialize_switches();
         fill_inputs();
     };
 
     $(document).ready(ready);
     $(document).on('page:load', ready);
 
-    function fill_inputs() {
-        fill_dates();
-        fill_city();
-        fill_guests();
-        fill_equipments();
-        fill_serviices();
-        fill_options();
+    function initialize_switches(){
+        $("#cheap").bootstrapSwitch();
+        $("#close").bootstrapSwitch();
     }
 
-    function fill_dates() {
+    function fill_inputs() {
+        fill_equipments();
+        fill_serviices();
+        fill_capacity_options();
+    }
+
+    /*function fill_dates() {
         <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
-            $('#filter_start_date').val("<%= params[:start_date] %>");
-            $('#filter_end_date').val("<%= params[:end_date] %>");
+            $('#start_date').val("<%= params[:start_date] %>");
+            $('#end_date').val("<%= params[:end_date] %>");
         <% end %>
     }
 
     function fill_city() {
         <% if params.has_key? :city %>
-            $('#filter_city').val("<%= params[:city] %>");
+            $('#city').val("<%= params[:city] %>");
         <% end %>
     }
 
     function fill_guests() {
         <% if params.has_key? :guests %>
-            $('#filter_guests').val("<%= params[:guests] %>");
+            $('#guests').val("<%= params[:guests] %>");
         <% end %>
-    }
+    }*/
 
     function fill_equipments() {
         <% if params.has_key? :equipment_ids
@@ -194,18 +226,40 @@
         <% end end %>
     }
 
-    function fill_options() {
-        <% if params.has_key? :cheap %>
-        $('#cheap').prop('checked', true);
+    /*function fill_options() {
+        <% unless params.has_key? :cheap %>
+            $('#cheap').bootstrapSwitch('toogleState');
         <% end %>
         <% if params.has_key? :close %>
-        $('#close').prop('checked', true);
+            $('#close').bootstrapSwitch('toogleState');
+        <% end %>
+    }*/
+
+    function fill_capacity_options() {
+        <% if (params.has_key?(:one_bed) || params.has_key?(:two_bed) || params.has_key?(:three_bed) || params.has_key?(:four_or_more_bed)) == false %>
+            $('#one_bed').attr('checked', true);
+            $('#two_bed').attr('checked', true);
+            $('#three_bed').attr('checked', true);
+            $('#four_or_more_bed').attr('checked', true);
+        <% else %>
+            <% unless params.has_key? :one_bed %>
+                $('#one_bed').removeAttr('checked');
+            <% end %>
+            <% unless params.has_key? :two_bed %>
+                $('#two_bed').removeAttr('checked');
+            <% end %>
+            <% unless params.has_key? :three_bed %>
+                $('#three_bed').removeAttr('checked');
+            <% end %>
+            <% unless params.has_key? :four_or_more_bed %>
+                $('#four_or_more_bed').removeAttr('checked');
+            <% end %>
         <% end %>
     }
 
     var setupFilterDatePickers = function() {
-        var start_date = $('#filter_start_date');
-        var end_date = $('#filter_end_date');
+        var start_date = $('#start_date');
+        var end_date = $('#end_date');
 
         start_date.datetimepicker({
             locale: "hu",
