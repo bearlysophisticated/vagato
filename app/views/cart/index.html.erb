@@ -41,9 +41,11 @@
             <td class="fit-content"><%= image_tag r.image.url, size: '75' %></td>
             <td>
               <%= link_to r.name, r %><br />
-              <small><%= r.accommodation.name %></small>
+              <small><%= r.accommodation.name %></small><br />
+              <% r.capacity.times do %><i class="fa fa-bed"></i>&nbsp<% end %>
             </td>
             <td class="fit-content"><%= @room_count[r.id] %></td>
+            <td class="fit-content"><%= r.price.value_with_vat %>&nbsp<%= r.price.currency %>/éj</td>
             <td class="fit-content">
               <%= simple_form_for @cart, url: {controller: 'cart', action: 'remove'} do |c| %>
                   <%= c.hidden_field :room_id, :value => r.id %>
@@ -55,9 +57,9 @@
       <% end %>
     </table><br />
 
-    <div class="panel panel-default">
-      A foglalás teljes ára: <%= @total_price %> Ft. <br/>
-      A feltüntetett ár tartalmazza a 27%-os ÁFA-t. Az éjszakánként fizetendő Idegenforgalmi Adó mértéke szállodánként eltérhet.
+    <div class="well" align="right">
+      <h4>A foglalás teljes ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
+      <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t. Az éjszakánként fizetendő idegenforgalmi adó mértéke szállodánként eltérhet.</small>
     </div>
 
     <div class="row">

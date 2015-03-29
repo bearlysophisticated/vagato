@@ -6,10 +6,12 @@ class CartController < ApplicationController
     @cart = CartHelper.get_cart_for(current_user.role)
     @rooms = @cart.rooms.sort_by { |r| r[:id]}
     @room_count = Hash.new
-    @total_price = 0
+    @total_price = Hash.new
+    @total_price['value'] = 0
+    @total_price['currency'] = @rooms.first.price.currency
 
     @rooms.each do |room|
-      @total_price += room.price.value_with_vat
+      @total_price['value'] += room.price.value_with_vat
     end
 
     i = 0
