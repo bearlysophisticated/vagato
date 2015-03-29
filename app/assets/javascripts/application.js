@@ -19,6 +19,7 @@
 //= require moment
 //= require bootstrap-datetimepicker
 //= require moment-hu/hu
+//= require bootstrap-switch
 
 var setupBookingFilterDatePickers = function() {
     var start_date = document.getElementById('booking_start_date') == null ? $('#filter_start_date') : $('#booking_start_date');
