@@ -14,7 +14,7 @@
         <div class='col-md-4'>
           <div class="form-group">
             <div class='input-group'>
-              <%= text_field_tag :city, nil, class: 'form-control', placeholder: 'Város' %>
+              <%= text_field_tag :city, params[:city], class: 'form-control', placeholder: 'Város' %>
               <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
             </div>
           </div>
@@ -23,7 +23,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= text_field_tag :start_date, nil, class: 'form-control', required: true, placeholder: 'Érkezés' %>
+              <%= text_field_tag :start_date, params[:start_date], class: 'form-control', required: true, placeholder: 'Érkezés' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -32,7 +32,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= text_field_tag :end_date, nil, class: 'form-control', required: true, placeholder: 'Távozás' %>
+              <%= text_field_tag :end_date, params[:end_date], class: 'form-control', required: true, placeholder: 'Távozás' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -41,7 +41,7 @@
         <div class='col-md-2'>
           <div class="form-group">
             <div class='input-group'>
-              <%= number_field_tag :guests, nil, class: 'form-control', required: true, placeholder: 'Vendégek' %>
+              <%= number_field_tag :guests, params[:guests], class: 'form-control', required: true, placeholder: 'Vendégek' %>
               <span class="input-group-addon"><i class="fa fa-users"></i></span>
             </div>
           </div>
@@ -82,7 +82,7 @@
                     <strong>A szobák legyenek minél olcsóbbak:</strong>
                   </div>
                   <div class="col-md-4">
-                    <%= check_box_tag :cheap, 1, true, :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                    <%= check_box_tag :cheap, 1, params.has_key?(:cheap) || (!params.has_key?(:cheap) && !params.has_key?(:close)), :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
                   </div>
                 </div><br />
                 <div class="row">
@@ -90,7 +90,7 @@
                     <strong>A szobák legyenek minél közelebb egymáshoz:</strong>
                   </div>
                   <div class="col-md-4">
-                    <%= check_box_tag :close, 1, false, :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                    <%= check_box_tag :close, 1, params.has_key?(:close), :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
                   </div>
                 </div>
               </div>
@@ -188,15 +188,12 @@
     }
 
     function fill_inputs() {
-        fill_dates();
-        fill_city();
-        fill_guests();
         fill_equipments();
         fill_serviices();
-        fill_options();
+        fill_capacity_options();
     }
 
-    function fill_dates() {
+    /*function fill_dates() {
         <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
             $('#start_date').val("<%= params[:start_date] %>");
             $('#end_date').val("<%= params[:end_date] %>");
@@ -213,7 +210,7 @@
         <% if params.has_key? :guests %>
             $('#guests').val("<%= params[:guests] %>");
         <% end %>
-    }
+    }*/
 
     function fill_equipments() {
         <% if params.has_key? :equipment_ids
@@ -229,12 +226,34 @@
         <% end end %>
     }
 
-    function fill_options() {
-        <% if params.has_key? :cheap %>
-        $('#cheap').prop('checked', true);
+    /*function fill_options() {
+        <% unless params.has_key? :cheap %>
+            $('#cheap').bootstrapSwitch('toogleState');
         <% end %>
         <% if params.has_key? :close %>
-        $('#close').prop('checked', true);
+            $('#close').bootstrapSwitch('toogleState');
+        <% end %>
+    }*/
+
+    function fill_capacity_options() {
+        <% if (params.has_key?(:one_bed) || params.has_key?(:two_bed) || params.has_key?(:three_bed) || params.has_key?(:four_or_more_bed)) == false %>
+            $('#one_bed').attr('checked', true);
+            $('#two_bed').attr('checked', true);
+            $('#three_bed').attr('checked', true);
+            $('#four_or_more_bed').attr('checked', true);
+        <% else %>
+            <% unless params.has_key? :one_bed %>
+                $('#one_bed').removeAttr('checked');
+            <% end %>
+            <% unless params.has_key? :two_bed %>
+                $('#two_bed').removeAttr('checked');
+            <% end %>
+            <% unless params.has_key? :three_bed %>
+                $('#three_bed').removeAttr('checked');
+            <% end %>
+            <% unless params.has_key? :four_or_more_bed %>
+                $('#four_or_more_bed').removeAttr('checked');
+            <% end %>
         <% end %>
     }
 
