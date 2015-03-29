@@ -1,0 +1,11 @@
+<%= simple_form_for @booking do |b| %>
+    <%= b.hidden_field :state, :value => 'APPROVED' %>
+    <%= b.hidden_field :id %>
+    <%= b.button :submit, 'Elfogad', class: 'btn-success right' %>
+<% end %>
+
+<%= simple_form_for @booking do |b| %>
+    <%= b.hidden_field :state, :value => 'DENIED' %>
+    <%= b.hidden_field :id %>
+    <%= b.button :submit, 'Elutasít', class: 'btn-danger right' %>
+<% end %>

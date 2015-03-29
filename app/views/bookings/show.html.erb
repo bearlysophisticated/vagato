@@ -1,40 +1,7 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Start date:</strong>
-  <%= @booking.start_date %>
-</p>
-
-<p>
-  <strong>End date:</strong>
-  <%= @booking.end_date %>
-</p>
-
-<p>
-  <strong>Num of nights:</strong>
-  <%= @booking.num_of_nights %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @booking.state %>
-</p>
-
-<p>
-  <strong>Guest:</strong>
-  <%= @booking.guest_id %>
-</p>
-
-<%= simple_form_for @booking do |b| %>
-    <%= b.hidden_field :state, :value => 'APPROVED' %>
-    <%= b.hidden_field :id %>
-    <%= b.button :submit, 'Elfogad', class: 'btn-success right' %>
-<% end %>
-
-<%= simple_form_for @booking do |b| %>
-    <%= b.hidden_field :state, :value => 'DENIED' %>
-    <%= b.hidden_field :id %>
-    <%= b.button :submit, 'Elutasít', class: 'btn-danger right' %>
-<% end %>
-
-<%= link_to 'Back', bookings_path %>
+<%=
+    if current_user.guest?
+      render 'bookings/show_guest'
+    elsif current_user.owner?
+      render 'bookings/show_owner'
+    end
+%>

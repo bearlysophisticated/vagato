@@ -1,7 +1,7 @@
 module BookingsHelper
   def self.is_bookable(room, start_date, end_date)
     if start_date.nil? && end_date.nil?
-      return false
+      return true
     end
 
     bookings = Booking.joins(:rooms).where.not('state' => 'CART').where('rooms.id' => room.id)
