@@ -1,0 +1,76 @@
+<h2><%= @booking.id %>. számú foglalás</h2>
+
+<div class="well well-sm">
+  <div class="row">
+    <%= simple_form_for @booking, url: {controller: 'cart', action: 'add'} do |c| %>
+        <div class='col-md-5'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= c.text_field :start_date, class: 'form-control', disabled: true %>
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <div class='input-group'>
+              <%= c.text_field :num_of_nights, class: 'form-control', disabled: true %>
+              <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
+            </div>
+          </div>
+        </div>
+        <div class='col-md-5'>
+          <div class="form-group">
+            <div class='input-group'>
+              <%= c.text_field :end_date, class: 'form-control', disabled: true %>
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+</div>
+
+<%= form_tag do |b| %>
+
+    <% @rooms.each_with_index do |r,j| %>
+        <div class="row">
+          <div class="col-md-3">
+            <%= render 'rooms/thumbnail', :room => r.room %>
+          </div>
+          <div class="col-md-9">
+            <div class="well">
+              <% i = 0 %>
+              <% while i < r.room.capacity do %>
+                  <div class="form-group">
+                    <%= label_tag 'Név' %>
+                    <%= text_field_tag nil, @guests["#{@booking.id}#{r.index}#{i+1}"].name, class: 'form-control', disabled: true %>
+                  </div>
+                  <div class="form-group">
+                    <%= label_tag 'Született' %>
+                    <div class="input-group">
+                      <%= text_field_tag nil, @guests["#{@booking.id}#{r.index}#{i+1}"].day_of_birth.to_s.gsub!('-','.'), class: 'form-control', disabled: true %>
+                      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                  </div>
+                  <% unless i+1 == r.room.capacity %>
+                      <div class="separator"></div>
+                  <% end %>
+
+                  <% i += 1 %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <% unless j+1 == @rooms.size %>
+            <div class="separator"></div><br/>
+        <% end %>
+    <% end %>
+
+    <div class="well" align="right">
+      <h4>A foglalás ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
+      <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t. Az éjszakánként fizetendő idegenforgalmi adó mértéke szállodánként eltérhet.</small>
+    </div>
+
+<% end %>

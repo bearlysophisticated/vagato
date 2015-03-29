@@ -8,10 +8,10 @@ class CartController < ApplicationController
     @room_count = Hash.new
     @total_price = Hash.new
     @total_price['value'] = 0
-    @total_price['currency'] = @rooms.first.price.currency
+    @total_price['currency'] = @rooms.size > 0 ? @rooms.first.price.currency : ''
 
-    @rooms.each do |room|
-      @total_price['value'] += room.price.value_with_vat
+    @rooms.each do |r|
+      @total_price['value'] += r.price.value_with_vat
     end
 
     i = 0
@@ -54,7 +54,12 @@ class CartController < ApplicationController
       flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
 
     elsif CartHelper.is_addable(cart, room)
-      cart.rooms.push(room)
+      # cart.rooms.push(room)
+      booking_room = BookingsRoom.new
+      booking_room.booking = cart
+      booking_room.room = room
+      booking_room.status = 'CART'
+      booking_room.index = get_next_room_index(cart)
 
       if cart.start_date.nil?
         cart.start_date = start_date
@@ -66,7 +71,7 @@ class CartController < ApplicationController
 
       cart.num_of_nights = end_date - start_date
 
-      if cart.save!
+      if cart.save! && booking_room.save!
         flash[:notice] = 'A szobafoglalást beraktam a kosárba!'
       else
         flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
@@ -102,7 +107,12 @@ class CartController < ApplicationController
           flash[:alert] = 'Nem sikerült a szobafoglalástokat a kosárba rakni.'
 
         elsif CartHelper.is_addable(cart, room)
-          cart.rooms.push(room)
+          # cart.rooms.push(room)
+          booking_room = BookingsRoom.new
+          booking_room.booking = cart
+          booking_room.room = room
+          booking_room.status = 'CART'
+          booking_room.index = get_next_room_index(cart)
 
           if cart.start_date.nil?
             cart.start_date = start_date
@@ -116,7 +126,7 @@ class CartController < ApplicationController
             cart.num_of_nights = end_date - start_date
           end
 
-          if cart.save!
+          if cart.save! && booking_room.save!
             flash[:notice] = 'A szobafoglalást beraktam a kosárba!'
           else
             flash[:alert] = 'Nem sikerült a szobafoglalást a kosárba rakni.'
@@ -187,6 +197,7 @@ class CartController < ApplicationController
 
   def book
     @booking = Booking.find(params[:booking][:booking_id])
+    @rooms = BookingsRoom.where(:booking_id => @booking.id).sort_by{ |br| br.index}
     @total_price = Hash.new
     @total_price['value'] = 0
     @total_price['currency'] = @booking.rooms.first.price.currency
@@ -198,6 +209,7 @@ class CartController < ApplicationController
 
   def finish_booking
     booking = Booking.find(params[:booking_id])
+    rooms = BookingsRoom.where(:booking_id => booking.id)
     can_book = true
 
     if booking.nil?
@@ -207,20 +219,21 @@ class CartController < ApplicationController
       redirect_to '/cart'
     else
 
-      booking.rooms.each do |r|
-        if BookingsHelper.is_bookable(r, booking.start_date, booking.end_date) && can_book
+      rooms.each do |r|
+        if BookingsHelper.is_bookable(r.room, booking.start_date, booking.end_date) && can_book
 
           i = 0
-          while i < r.capacity do
-            guest_name = params["name#{r.id}#{i+1}"]
-            guest_birth = params["birth#{r.id}#{i+1}"]
+          while i < r.room.capacity do
+            guest_name = params["name#{r.index}#{i+1}"]
+            guest_birth = params["birth#{r.index}#{i+1}"]
 
             unless guest_name.nil? && guest_birth.nil?
               if guest_name == current_user.role.name && guest_birth == current_user.role.day_of_birth.to_s.gsub!('-','.')
                 bookings_guest = BookingsGuest.where('booking_id' => booking.id).where('guest_id' => current_user.role.id).first(1)
-                bookings_guest[0].room = r
+                bookings_guest[0].room = r.room
                 bookings_guest[0].role = 'BOOKER'
                 bookings_guest[0].bed = i+1
+                bookings_guest[0].room_index = r.index
                 bookings_guest[0].save!
               else
                 guest = Guest.new
@@ -233,9 +246,10 @@ class CartController < ApplicationController
                   bookings_guest = BookingsGuest.new
                   bookings_guest.guest = guest
                   bookings_guest.booking = booking
-                  bookings_guest.room = r
+                  bookings_guest.room = r.room
                   bookings_guest.role = 'RELATIVE'
                   bookings_guest.bed = i+1
+                  bookings_guest.room_index = r.index
                   bookings_guest.save!
                 end
               end
@@ -250,7 +264,7 @@ class CartController < ApplicationController
           end
         else
           can_book = false
-          flash[:warn] = "Nem sikerült megtenni a foglalást. A #{r.name} szoba a(z) #{r.accommodation.name} szálláson nem elérhető a kiválasztott időszakban."
+          flash[:warn] = "Nem sikerült megtenni a foglalást. A #{r.room.name} szoba a(z) #{r.room.accommodation.name} szálláson nem elérhető a kiválasztott időszakban."
           puts 3
           redirect_to '/cart'
         end
@@ -262,7 +276,13 @@ class CartController < ApplicationController
           CartHelper.create_cart_for(current_user.role)
         end
 
-        if booking.save!
+        rooms_saved = true
+        rooms.each do |r|
+          r.status = 'BOOKED'
+          rooms_saved &= r.save!
+        end
+
+        if booking.save! && rooms_saved
           flash[:notice] = "A foglalás véglegesítve lett! Foglalási szám: #{booking.id}"
           puts 4
           redirect_to bookings_path
@@ -279,6 +299,15 @@ class CartController < ApplicationController
 
   def check_role
     return current_user.guest?
+  end
+
+  def get_next_room_index(cart)
+    next_index = 0
+    BookingsRoom.where(:booking_id =>  cart.id).each do |br|
+      next_index = br.index if next_index < br.index
+    end
+
+    return next_index+1
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

@@ -33,27 +33,27 @@
 
 <%= form_tag do |b| %>
 
-    <% @booking.rooms.each_with_index do |r,j| %>
+    <% @rooms.each_with_index do |r,j| %>
         <div class="row">
           <div class="col-md-3">
-            <%= render 'rooms/thumbnail', :room => r %>
+            <%= render 'rooms/thumbnail', :room => r.room %>
           </div>
           <div class="col-md-9">
             <div class="well">
               <% i = 0 %>
-              <% while i < r.capacity do %>
+              <% while i < r.room.capacity do %>
                   <div class="form-group">
                       <%= label_tag 'Név' %>
-                      <%= text_field_tag "name#{r.id}#{i+1}", j==0 && i==0 ? current_user.role.name : nil, required: true, class: 'form-control' %>
+                      <%= text_field_tag "name#{r.index}#{i+1}", j==0 && i==0 ? current_user.role.name : nil, required: true, class: 'form-control' %>
                   </div>
                   <div class="form-group">
                       <%= label_tag 'Született' %>
                     <div class="input-group">
-                      <%= text_field_tag "birth#{r.id}#{i+1}", j==0 && i==0  ? current_user.role.day_of_birth.to_s.gsub!('-','.') : nil, required: true, class: 'form-control' %>
+                      <%= text_field_tag "birth#{r.index}#{i+1}", j==0 && i==0  ? current_user.role.day_of_birth.to_s.gsub!('-','.') : nil, required: true, class: 'form-control' %>
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                   </div>
-                  <% unless i+1 == r.capacity %>
+                  <% unless i+1 == r.room.capacity %>
                     <div class="separator"></div>
                   <% end %>
 
@@ -63,7 +63,7 @@
           </div>
         </div>
 
-        <% unless j+1 == @booking.rooms.size %>
+        <% unless j+1 == @rooms.size %>
             <div class="separator"></div><br/>
         <% end %>
     <% end %>
@@ -85,14 +85,14 @@
 
     <script type="application/javascript">
         var setupBirthDatePickers = function() {
-        <% @booking.rooms.each do |r| %>
+        <% @rooms.each do |r| %>
             <% i = 0 %>
-            <% while i < r.capacity do %>
-                $('#birth<%= r.id %><%= i+1 %>').datetimepicker({
+            <% while i < r.room.capacity do %>
+                $('#birth<%= r.index %><%= i+1 %>').datetimepicker({
                     locale: "hu",
                     format: "YYYY.MM.DD"
                 });
-                $('#birth<%= r.id %><%= i+1 %>').data("DateTimePicker").setMaxDate(new Date());
+                $('#birth<%= r.index %><%= i+1 %>').data("DateTimePicker").setMaxDate(new Date());
                 <% i += 1 %>
             <% end %>
         <% end %>

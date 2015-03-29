@@ -10,6 +10,19 @@ class BookingsController < ApplicationController
 
   # GET /bookings/1
   def show
+    @rooms = BookingsRoom.where(:booking_id => @booking.id)
+    @total_price = Hash.new
+    @total_price['value'] = 0
+    @total_price['currency'] = @rooms.first.room.price.currency
+
+    @rooms.each do |r|
+      @total_price['value'] += r.room.price.value_with_vat
+    end
+
+    @guests = Hash.new
+    BookingsGuest.where(:booking_id => @booking.id).each do |bg|
+      @guests["#{@booking.id}#{bg.room_index}#{bg.bed}"] = bg.guest
+    end
   end
 
   # GET /bookings/new
