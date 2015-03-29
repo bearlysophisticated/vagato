@@ -76,13 +76,23 @@
         <div class="col-md-6">
             <div class="panel panel-default">
               <div class="panel-heading">Keresési szempontok</div>
-              <div class="panel-body" align="left">
-                  <label class="checkbox-inline">
-                        <%= check_box_tag :cheap, 1, true, :class => 'checkbox' %> A szobák legyenek minél olcsóbbak
-                  </label>
-                  <label class="checkbox-inline">
-                        <%= check_box_tag :close, 1, false, :class => 'checkbox' %> A szobák legyenek minél közelebb egymáshoz
-                  </label>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <strong>A szobák legyenek minél olcsóbbak:</strong>
+                  </div>
+                  <div class="col-md-4">
+                    <%= check_box_tag :cheap, 1, true, :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                  </div>
+                </div><br />
+                <div class="row">
+                  <div class="col-md-8">
+                    <strong>A szobák legyenek minél közelebb egymáshoz:</strong>
+                  </div>
+                  <div class="col-md-4">
+                    <%= check_box_tag :close, 1, false, :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                  </div>
+                </div>
               </div>
             </div>
         </div>
@@ -108,7 +118,7 @@
       </div>
 
       <div class="row" align="center">
-        <%= button_tag 'Keresés' , class: 'btn btn-success' %>
+        <%= button_tag 'Keresés' , class: 'btn btn-primary', style: 'width: 200px' %>
       </div>
   <% end %>
 
@@ -165,12 +175,17 @@
 
 <script type="application/javascript">
     var ready = function() {
+        initialize_switches();
         fill_inputs();
     };
 
     $(document).ready(ready);
     $(document).on('page:load', ready);
 
+    function initialize_switches(){
+        $("#cheap").bootstrapSwitch();
+        $("#close").bootstrapSwitch();
+    }
 
     function fill_inputs() {
         fill_dates();
