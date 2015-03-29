@@ -220,6 +220,7 @@ class CartController < ApplicationController
                 bookings_guest = BookingsGuest.where('booking_id' => booking.id).where('guest_id' => current_user.role.id).first(1)
                 bookings_guest[0].room = r
                 bookings_guest[0].role = 'BOOKER'
+                bookings_guest[0].bed = i+1
                 bookings_guest[0].save!
               else
                 guest = Guest.new
@@ -234,6 +235,7 @@ class CartController < ApplicationController
                   bookings_guest.booking = booking
                   bookings_guest.room = r
                   bookings_guest.role = 'RELATIVE'
+                  bookings_guest.bed = i+1
                   bookings_guest.save!
                 end
               end
