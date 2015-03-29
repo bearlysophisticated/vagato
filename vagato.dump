@@ -29,6 +29,42 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: accommodation_equipments; Type: TABLE; Schema: public; Owner: m3dw3; Tablespace: 
+--
+
+CREATE TABLE accommodation_equipments (
+    id integer NOT NULL,
+    accommodation_id integer,
+    equipment_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.accommodation_equipments OWNER TO m3dw3;
+
+--
+-- Name: accommodation_equipments_id_seq; Type: SEQUENCE; Schema: public; Owner: m3dw3
+--
+
+CREATE SEQUENCE accommodation_equipments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accommodation_equipments_id_seq OWNER TO m3dw3;
+
+--
+-- Name: accommodation_equipments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: m3dw3
+--
+
+ALTER SEQUENCE accommodation_equipments_id_seq OWNED BY accommodation_equipments.id;
+
+
+--
 -- Name: accommodations; Type: TABLE; Schema: public; Owner: m3dw3; Tablespace: 
 --
 
@@ -36,15 +72,15 @@ CREATE TABLE accommodations (
     id integer NOT NULL,
     name character varying,
     code character varying,
+    description text,
+    owner_id integer,
+    categry_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     image_file_name character varying,
     image_content_type character varying,
     image_file_size integer,
-    image_updated_at timestamp without time zone,
-    owner_id integer,
-    categry_id integer,
-    description text
+    image_updated_at timestamp without time zone
 );
 
 
@@ -93,12 +129,12 @@ CREATE TABLE addresses (
     zip character varying,
     city character varying,
     address character varying,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
     latitude double precision,
     longitude double precision,
     addressable_id integer,
-    addressable_type character varying
+    addressable_type character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -187,10 +223,10 @@ CREATE TABLE bookings_guests (
     id integer NOT NULL,
     guest_id integer,
     booking_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
     room_id integer,
-    role character varying
+    role character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -246,9 +282,9 @@ CREATE TABLE bookings_rooms (
     id integer NOT NULL,
     booking_id integer,
     room_id integer,
+    status character varying,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    status character varying
+    updated_at timestamp without time zone
 );
 
 
@@ -393,9 +429,9 @@ CREATE TABLE guests (
     name character varying,
     phone character varying,
     day_of_birth date,
+    guest_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    guest_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -497,6 +533,44 @@ ALTER SEQUENCE prices_id_seq OWNED BY prices.id;
 
 
 --
+-- Name: properties; Type: TABLE; Schema: public; Owner: m3dw3; Tablespace: 
+--
+
+CREATE TABLE properties (
+    id integer NOT NULL,
+    key character varying,
+    value text,
+    "group" character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    title character varying
+);
+
+
+ALTER TABLE public.properties OWNER TO m3dw3;
+
+--
+-- Name: properties_id_seq; Type: SEQUENCE; Schema: public; Owner: m3dw3
+--
+
+CREATE SEQUENCE properties_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.properties_id_seq OWNER TO m3dw3;
+
+--
+-- Name: properties_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: m3dw3
+--
+
+ALTER SEQUENCE properties_id_seq OWNED BY properties.id;
+
+
+--
 -- Name: rooms; Type: TABLE; Schema: public; Owner: m3dw3; Tablespace: 
 --
 
@@ -507,13 +581,13 @@ CREATE TABLE rooms (
     accommodation_id integer,
     num_of_this integer,
     capacity integer,
+    description text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     image_file_name character varying,
     image_content_type character varying,
     image_file_size integer,
-    image_updated_at timestamp without time zone,
-    description text
+    image_updated_at timestamp without time zone
 );
 
 
@@ -603,10 +677,10 @@ CREATE TABLE users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip inet,
     last_sign_in_ip inet,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    role_type character varying,
     role_id integer,
-    role_type character varying
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -631,6 +705,13 @@ ALTER TABLE public.users_id_seq OWNER TO m3dw3;
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: m3dw3
+--
+
+ALTER TABLE ONLY accommodation_equipments ALTER COLUMN id SET DEFAULT nextval('accommodation_equipments_id_seq'::regclass);
 
 
 --
@@ -721,6 +802,13 @@ ALTER TABLE ONLY prices ALTER COLUMN id SET DEFAULT nextval('prices_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: m3dw3
 --
 
+ALTER TABLE ONLY properties ALTER COLUMN id SET DEFAULT nextval('properties_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: m3dw3
+--
+
 ALTER TABLE ONLY rooms ALTER COLUMN id SET DEFAULT nextval('rooms_id_seq'::regclass);
 
 
@@ -739,14 +827,32 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Data for Name: accommodation_equipments; Type: TABLE DATA; Schema: public; Owner: m3dw3
+--
+
+COPY accommodation_equipments (id, accommodation_id, equipment_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: accommodation_equipments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
+--
+
+SELECT pg_catalog.setval('accommodation_equipments_id_seq', 1, false);
+
+
+--
 -- Data for Name: accommodations; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY accommodations (id, name, code, created_at, updated_at, image_file_name, image_content_type, image_file_size, image_updated_at, owner_id, categry_id, description) FROM stdin;
-2	Hotel 1	\N	2015-02-20 16:09:09.067244	2015-02-20 20:43:53.945305	hotel1.jpg	image/jpeg	225926	2015-02-20 20:43:52.456989	2	5	
-3	Hotel 2	\N	2015-02-20 16:18:08.967696	2015-02-20 20:46:42.835337	hotel2.jpg	image/jpeg	188728	2015-02-20 20:46:42.279544	3	4	
-4	Hotel 3	\N	2015-02-20 16:22:43.934142	2015-02-20 20:48:19.186893	hotel3.jpg	image/jpeg	1020563	2015-02-20 20:48:18.336204	4	3	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut massa at est cursus dictum ut sed nisl. Sed elementum a leo consectetur dignissim. Etiam non faucibus ex, sed molestie velit. Phasellus elementum hendrerit lectus at interdum. Aenean iaculis vestibulum ultrices. Vivamus a risus rhoncus, ultrices eros sit amet, ultricies ipsum. Integer in turpis ligula. Vivamus molestie dictum purus, quis tempus diam tincidunt nec. Pellentesque sagittis nunc tortor, id rhoncus felis lobortis ac. Sed felis justo, cursus eget nisi rutrum, luctus maximus arcu. Nunc elementum dapibus pharetra. Aliquam dapibus justo et ornare luctus. Phasellus tempor suscipit suscipit. Nam dignissim aliquet consequat. Morbi dapibus efficitur ante, quis interdum nisi. Sed elit nibh, sollicitudin quis dapibus sit amet, tempus sit amet risus.\r\n\r\nInteger sed turpis pharetra, lobortis augue vel, porttitor dolor. Ut faucibus efficitur libero, in consectetur nunc ullamcorper in. Donec efficitur gravida sem at semper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer malesuada nisi arcu, egestas feugiat purus venenatis at. Nulla facilisi. Donec maximus ultrices dolor, non viverra arcu viverra in. Vestibulum tempus non eros sit amet gravida. Proin molestie consectetur lacus quis pellentesque. Suspendisse maximus mi quis nisl dictum, quis egestas eros molestie. Nam aliquam tempus risus, in dignissim massa sollicitudin non. Phasellus nunc orci, imperdiet in nunc ac, lobortis mattis felis. Proin ante odio, ornare vel magna vitae, eleifend facilisis dolor. Nam suscipit quis lacus id porta. Vestibulum euismod vehicula justo.
-5	Hotel 4	\N	2015-02-20 16:23:47.184568	2015-02-20 20:48:55.13623	hotel4.jpg	image/jpeg	227782	2015-02-20 20:48:54.600584	4	4	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut massa at est cursus dictum ut sed nisl. Sed elementum a leo consectetur dignissim. Etiam non faucibus ex, sed molestie velit. Phasellus elementum hendrerit lectus at interdum. Aenean iaculis vestibulum ultrices. Vivamus a risus rhoncus, ultrices eros sit amet, ultricies ipsum. Integer in turpis ligula. Vivamus molestie dictum purus, quis tempus diam tincidunt nec. Pellentesque sagittis nunc tortor, id rhoncus felis lobortis ac. Sed felis justo, cursus eget nisi rutrum, luctus maximus arcu. Nunc elementum dapibus pharetra. Aliquam dapibus justo et ornare luctus. Phasellus tempor suscipit suscipit. Nam dignissim aliquet consequat. Morbi dapibus efficitur ante, quis interdum nisi. Sed elit nibh, sollicitudin quis dapibus sit amet, tempus sit amet risus.\r\n\r\nInteger sed turpis pharetra, lobortis augue vel, porttitor dolor. Ut faucibus efficitur libero, in consectetur nunc ullamcorper in. Donec efficitur gravida sem at semper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer malesuada nisi arcu, egestas feugiat purus venenatis at. Nulla facilisi. Donec maximus ultrices dolor, non viverra arcu viverra in. Vestibulum tempus non eros sit amet gravida. Proin molestie consectetur lacus quis pellentesque. Suspendisse maximus mi quis nisl dictum, quis egestas eros molestie. Nam aliquam tempus risus, in dignissim massa sollicitudin non. Phasellus nunc orci, imperdiet in nunc ac, lobortis mattis felis. Proin ante odio, ornare vel magna vitae, eleifend facilisis dolor. Nam suscipit quis lacus id porta. Vestibulum euismod vehicula justo.
+COPY accommodations (id, name, code, description, owner_id, categry_id, created_at, updated_at, image_file_name, image_content_type, image_file_size, image_updated_at) FROM stdin;
+2	Hotel 1	\N	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec dui dictum, vestibulum ante non, vestibulum enim. Nunc convallis neque eu elit mollis, nec tincidunt ex viverra. Pellentesque posuere, ex vitae dapibus viverra, justo libero vestibulum nunc, et congue leo velit a nisi. Aenean et scelerisque mi. Fusce nec molestie magna. Integer fringilla auctor metus sed commodo. Sed at aliquet neque. Nunc faucibus porta consectetur. Cras ac dui consectetur, rutrum magna consequat, eleifend tortor.\r\n\r\nCras dolor diam, tempus nec scelerisque vel, pretium sit amet nulla. Etiam luctus leo sed ipsum tincidunt, id ornare leo vestibulum. Maecenas nisi elit, cursus non fermentum quis, viverra et massa. In sollicitudin justo tortor, id efficitur dolor volutpat sed. Proin ac metus odio. Integer tempus ac purus a mattis. Pellentesque accumsan dolor mattis dui pellentesque viverra.	2	5	2015-02-20 16:09:09.067244	2015-03-27 17:19:23.741037	hotel1.jpg	image/jpeg	225926	2015-03-27 17:19:23.030537
+3	Hotel 2	\N	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec nec dui dictum, vestibulum ante non, vestibulum enim. Nunc convallis neque eu elit mollis, nec tincidunt ex viverra. Pellentesque posuere, ex vitae dapibus viverra, justo libero vestibulum nunc, et congue leo velit a nisi. Aenean et scelerisque mi. Fusce nec molestie magna. Integer fringilla auctor metus sed commodo. Sed at aliquet neque. Nunc faucibus porta consectetur. Cras ac dui consectetur, rutrum magna consequat, eleifend tortor.\r\n\r\nCras dolor diam, tempus nec scelerisque vel, pretium sit amet nulla. Etiam luctus leo sed ipsum tincidunt, id ornare leo vestibulum. Maecenas nisi elit, cursus non fermentum quis, viverra et massa. In sollicitudin justo tortor, id efficitur dolor volutpat sed. Proin ac metus odio. Integer tempus ac purus a mattis. Pellentesque accumsan dolor mattis dui pellentesque viverra.	3	4	2015-02-20 16:18:08.967696	2015-03-27 17:20:48.040515	hotel2.jpg	image/jpeg	188728	2015-03-27 17:20:47.650846
+4	Hotel 3	\N	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut massa at est cursus dictum ut sed nisl. Sed elementum a leo consectetur dignissim. Etiam non faucibus ex, sed molestie velit. Phasellus elementum hendrerit lectus at interdum. Aenean iaculis vestibulum ultrices. Vivamus a risus rhoncus, ultrices eros sit amet, ultricies ipsum. Integer in turpis ligula. Vivamus molestie dictum purus, quis tempus diam tincidunt nec. Pellentesque sagittis nunc tortor, id rhoncus felis lobortis ac. Sed felis justo, cursus eget nisi rutrum, luctus maximus arcu. Nunc elementum dapibus pharetra. Aliquam dapibus justo et ornare luctus. Phasellus tempor suscipit suscipit. Nam dignissim aliquet consequat. Morbi dapibus efficitur ante, quis interdum nisi. Sed elit nibh, sollicitudin quis dapibus sit amet, tempus sit amet risus.\r\n\r\nInteger sed turpis pharetra, lobortis augue vel, porttitor dolor. Ut faucibus efficitur libero, in consectetur nunc ullamcorper in. Donec efficitur gravida sem at semper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer malesuada nisi arcu, egestas feugiat purus venenatis at. Nulla facilisi. Donec maximus ultrices dolor, non viverra arcu viverra in. Vestibulum tempus non eros sit amet gravida. Proin molestie consectetur lacus quis pellentesque. Suspendisse maximus mi quis nisl dictum, quis egestas eros molestie. Nam aliquam tempus risus, in dignissim massa sollicitudin non. Phasellus nunc orci, imperdiet in nunc ac, lobortis mattis felis. Proin ante odio, ornare vel magna vitae, eleifend facilisis dolor. Nam suscipit quis lacus id porta. Vestibulum euismod vehicula justo.	4	3	2015-02-20 16:22:43.934142	2015-03-27 17:23:46.588471	hotel3.jpg	image/jpeg	1020563	2015-03-27 17:23:45.950071
+5	Hotel 4	\N	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ut massa at est cursus dictum ut sed nisl. Sed elementum a leo consectetur dignissim. Etiam non faucibus ex, sed molestie velit. Phasellus elementum hendrerit lectus at interdum. Aenean iaculis vestibulum ultrices. Vivamus a risus rhoncus, ultrices eros sit amet, ultricies ipsum. Integer in turpis ligula. Vivamus molestie dictum purus, quis tempus diam tincidunt nec. Pellentesque sagittis nunc tortor, id rhoncus felis lobortis ac. Sed felis justo, cursus eget nisi rutrum, luctus maximus arcu. Nunc elementum dapibus pharetra. Aliquam dapibus justo et ornare luctus. Phasellus tempor suscipit suscipit. Nam dignissim aliquet consequat. Morbi dapibus efficitur ante, quis interdum nisi. Sed elit nibh, sollicitudin quis dapibus sit amet, tempus sit amet risus.\r\n\r\nInteger sed turpis pharetra, lobortis augue vel, porttitor dolor. Ut faucibus efficitur libero, in consectetur nunc ullamcorper in. Donec efficitur gravida sem at semper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer malesuada nisi arcu, egestas feugiat purus venenatis at. Nulla facilisi. Donec maximus ultrices dolor, non viverra arcu viverra in. Vestibulum tempus non eros sit amet gravida. Proin molestie consectetur lacus quis pellentesque. Suspendisse maximus mi quis nisl dictum, quis egestas eros molestie. Nam aliquam tempus risus, in dignissim massa sollicitudin non. Phasellus nunc orci, imperdiet in nunc ac, lobortis mattis felis. Proin ante odio, ornare vel magna vitae, eleifend facilisis dolor. Nam suscipit quis lacus id porta. Vestibulum euismod vehicula justo.	4	4	2015-02-20 16:23:47.184568	2015-03-27 17:24:13.201612	hotel4.jpg	image/jpeg	227782	2015-03-27 17:24:12.816145
+6	Hotel Lővér Sopron	\N	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2	3	2015-03-29 08:53:23.91417	2015-03-29 08:53:23.91417	\N	\N	\N	\N
+7	Hotel Sopron 	\N	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2	4	2015-03-29 08:59:38.763643	2015-03-29 08:59:38.763643	\N	\N	\N	\N
+8	Hotel Szieszta	\N	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2	3	2015-03-29 09:13:05.921333	2015-03-29 09:13:05.921333	\N	\N	\N	\N
 \.
 
 
@@ -754,7 +860,7 @@ COPY accommodations (id, name, code, created_at, updated_at, image_file_name, im
 -- Name: accommodations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('accommodations_id_seq', 5, true);
+SELECT pg_catalog.setval('accommodations_id_seq', 8, true);
 
 
 --
@@ -772,6 +878,19 @@ COPY accommodations_serviices (accommodation_id, serviice_id) FROM stdin;
 5	3
 5	4
 5	5
+6	1
+6	2
+6	3
+6	4
+6	5
+7	1
+7	2
+7	5
+8	1
+8	2
+8	3
+8	4
+8	5
 \.
 
 
@@ -779,13 +898,17 @@ COPY accommodations_serviices (accommodation_id, serviice_id) FROM stdin;
 -- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY addresses (id, country, zip, city, address, created_at, updated_at, latitude, longitude, addressable_id, addressable_type) FROM stdin;
-1	AL	0123	Sopron	Deák Ferenc tér 1.	2015-02-20 15:35:05.870613	2015-02-20 15:35:05.870613	\N	\N	1	Guest
-2	HU	1000	Budapest	Váci utca 1	2015-02-20 15:58:32.218611	2015-02-20 15:58:32.218611	47.5139834000000008	19.0594125000000005	1	Accommodation
-3	HU	1000	Budapest	Váci utca 1.	2015-02-20 16:09:09.082167	2015-02-20 16:09:09.082167	47.5139834000000008	19.0594125000000005	2	Accommodation
-5	HU	1000	Budapest	Pannónia utca 116	2015-02-20 16:22:43.947529	2015-02-20 16:22:43.947529	47.5267211999999972	19.0594058000000004	4	Accommodation
-6	HU	1000	Budapest	Budaörsi út 4.	2015-02-20 16:23:47.19805	2015-02-20 16:23:47.19805	47.4872376000000003	19.0248358000000017	5	Accommodation
-4	HU	1000	Budapest	Kossuth tér 2.	2015-02-20 16:18:08.982951	2015-02-20 20:46:42.839152	47.4581661000000068	19.1460673999999997	3	Accommodation
+COPY addresses (id, country, zip, city, address, latitude, longitude, addressable_id, addressable_type, created_at, updated_at) FROM stdin;
+1	AL	0123	Sopron	Deák Ferenc tér 1.	\N	\N	1	Guest	2015-02-20 15:35:05.870613	2015-02-20 15:35:05.870613
+2	HU	1000	Budapest	Váci utca 1	47.5139834000000008	19.0594125000000005	1	Accommodation	2015-02-20 15:58:32.218611	2015-02-20 15:58:32.218611
+3	HU	1000	Budapest	Váci utca 1.	47.5139834000000008	19.0594125000000005	2	Accommodation	2015-02-20 16:09:09.082167	2015-02-20 16:09:09.082167
+5	HU	1000	Budapest	Pannónia utca 116	47.5267211999999972	19.0594058000000004	4	Accommodation	2015-02-20 16:22:43.947529	2015-02-20 16:22:43.947529
+6	HU	1000	Budapest	Budaörsi út 4.	47.4872376000000003	19.0248358000000017	5	Accommodation	2015-02-20 16:23:47.19805	2015-02-20 16:23:47.19805
+7	HU	8200	Veszprém	Egyetem utca 12.	47.0846238999999969	17.9095340999999983	58	Guest	2015-03-27 17:15:34.341617	2015-03-27 17:15:34.341617
+4	HU	1000	Budapest	Kossuth tér 2.	47.4581661000000068	19.1460673999999997	3	Accommodation	2015-02-20 16:18:08.982951	2015-03-27 17:20:48.043053
+8	HU	9400	Sopron	Várisi út. 4.	47.6679835999999995	16.5789696999999983	6	Accommodation	2015-03-29 08:53:23.924298	2015-03-29 10:36:30.230121
+9	HU	9400	Sopron	Fövényverem utca 7.	47.6888891999999984	16.5937315000000005	7	Accommodation	2015-03-29 08:59:38.77102	2015-03-29 10:36:56.741453
+10	HU	9400	Sopron	Lővér körút 37.	47.6710303999999994	16.5751612000000002	8	Accommodation	2015-03-29 09:13:05.930913	2015-03-29 10:37:11.008125
 \.
 
 
@@ -793,7 +916,7 @@ COPY addresses (id, country, zip, city, address, created_at, updated_at, latitud
 -- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('addresses_id_seq', 6, true);
+SELECT pg_catalog.setval('addresses_id_seq', 10, true);
 
 
 --
@@ -824,6 +947,7 @@ COPY bookings (id, start_date, end_date, num_of_nights, state, guest_id, created
 13	2015-02-24	2015-02-25	1	BOOKED	1	2015-02-24 16:41:19.825095	2015-02-24 16:46:39.404464
 14	2015-02-24	2015-02-25	1	BOOKED	1	2015-02-24 16:46:39.906397	2015-02-24 16:49:32.180411
 15	2015-02-24	2015-02-25	1	BOOKED	1	2015-02-24 16:49:33.03912	2015-02-24 17:04:51.296266
+20	2015-03-28	2015-03-31	3	CART	58	2015-03-27 17:17:41.122081	2015-03-27 17:19:46.839739
 \.
 
 
@@ -831,39 +955,40 @@ COPY bookings (id, start_date, end_date, num_of_nights, state, guest_id, created
 -- Data for Name: bookings_guests; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY bookings_guests (id, guest_id, booking_id, created_at, updated_at, room_id, role) FROM stdin;
-43	1	13	2015-02-24 16:41:19.838081	2015-02-24 16:46:39.370648	2	\N
-44	31	13	2015-02-24 16:46:39.391108	2015-02-24 16:46:39.391108	2	\N
-45	1	14	2015-02-24 16:46:39.914001	2015-02-24 16:49:32.150881	3	BOOKER
-46	32	14	2015-02-24 16:49:32.173398	2015-02-24 16:49:32.173398	3	RELATIVE
-47	1	15	2015-02-24 16:49:33.060814	2015-02-24 17:00:09.605531	4	BOOKER
-49	34	15	2015-02-24 17:04:51.273268	2015-02-24 17:04:51.273268	4	RELATIVE
-50	1	16	2015-02-24 17:04:51.885502	2015-02-24 19:11:09.001438	6	BOOKER
-51	35	16	2015-02-24 19:11:09.025447	2015-02-24 19:11:09.025447	6	RELATIVE
-52	36	16	2015-02-24 19:11:09.041366	2015-02-24 19:11:09.041366	8	RELATIVE
-53	37	16	2015-02-24 19:11:09.059125	2015-02-24 19:11:09.059125	8	RELATIVE
-54	1	17	2015-02-24 19:11:09.485302	2015-02-25 16:00:03.239626	2	BOOKER
-55	38	17	2015-02-25 16:00:03.275076	2015-02-25 16:00:03.275076	2	RELATIVE
-56	39	17	2015-02-25 16:00:03.306628	2015-02-25 16:00:03.306628	3	RELATIVE
-57	40	17	2015-02-25 16:00:03.409175	2015-02-25 16:00:03.409175	3	RELATIVE
-58	41	17	2015-02-25 16:00:03.433719	2015-02-25 16:00:03.433719	4	RELATIVE
-59	42	17	2015-02-25 16:00:03.445552	2015-02-25 16:00:03.445552	4	RELATIVE
-60	43	17	2015-02-25 16:00:03.46659	2015-02-25 16:00:03.46659	5	RELATIVE
-61	44	17	2015-02-25 16:00:03.479317	2015-02-25 16:00:03.479317	5	RELATIVE
-62	45	17	2015-02-25 16:00:03.492668	2015-02-25 16:00:03.492668	9	RELATIVE
-63	46	17	2015-02-25 16:00:03.503273	2015-02-25 16:00:03.503273	9	RELATIVE
-64	47	17	2015-02-25 16:00:03.518849	2015-02-25 16:00:03.518849	6	RELATIVE
-65	48	17	2015-02-25 16:00:03.531105	2015-02-25 16:00:03.531105	6	RELATIVE
-66	49	17	2015-02-25 16:00:03.55338	2015-02-25 16:00:03.55338	8	RELATIVE
-67	50	17	2015-02-25 16:00:03.565688	2015-02-25 16:00:03.565688	8	RELATIVE
-68	51	17	2015-02-25 16:00:03.592228	2015-02-25 16:00:03.592228	7	RELATIVE
-69	52	17	2015-02-25 16:00:03.603852	2015-02-25 16:00:03.603852	7	RELATIVE
-70	53	17	2015-02-25 16:00:03.624229	2015-02-25 16:00:03.624229	1	RELATIVE
-71	54	17	2015-02-25 16:00:03.636025	2015-02-25 16:00:03.636025	1	RELATIVE
-72	1	18	2015-02-25 16:00:04.254867	2015-03-03 19:14:45.728777	2	BOOKER
-73	55	18	2015-03-03 19:14:45.772415	2015-03-03 19:14:45.772415	2	RELATIVE
-74	56	18	2015-03-03 19:14:45.797616	2015-03-03 19:14:45.797616	2	RELATIVE
-75	1	19	2015-03-03 19:14:46.360468	2015-03-03 19:14:46.360468	\N	\N
+COPY bookings_guests (id, guest_id, booking_id, room_id, role, created_at, updated_at) FROM stdin;
+43	1	13	2	\N	2015-02-24 16:41:19.838081	2015-02-24 16:46:39.370648
+44	31	13	2	\N	2015-02-24 16:46:39.391108	2015-02-24 16:46:39.391108
+45	1	14	3	BOOKER	2015-02-24 16:46:39.914001	2015-02-24 16:49:32.150881
+46	32	14	3	RELATIVE	2015-02-24 16:49:32.173398	2015-02-24 16:49:32.173398
+47	1	15	4	BOOKER	2015-02-24 16:49:33.060814	2015-02-24 17:00:09.605531
+49	34	15	4	RELATIVE	2015-02-24 17:04:51.273268	2015-02-24 17:04:51.273268
+50	1	16	6	BOOKER	2015-02-24 17:04:51.885502	2015-02-24 19:11:09.001438
+51	35	16	6	RELATIVE	2015-02-24 19:11:09.025447	2015-02-24 19:11:09.025447
+52	36	16	8	RELATIVE	2015-02-24 19:11:09.041366	2015-02-24 19:11:09.041366
+53	37	16	8	RELATIVE	2015-02-24 19:11:09.059125	2015-02-24 19:11:09.059125
+54	1	17	2	BOOKER	2015-02-24 19:11:09.485302	2015-02-25 16:00:03.239626
+55	38	17	2	RELATIVE	2015-02-25 16:00:03.275076	2015-02-25 16:00:03.275076
+56	39	17	3	RELATIVE	2015-02-25 16:00:03.306628	2015-02-25 16:00:03.306628
+57	40	17	3	RELATIVE	2015-02-25 16:00:03.409175	2015-02-25 16:00:03.409175
+58	41	17	4	RELATIVE	2015-02-25 16:00:03.433719	2015-02-25 16:00:03.433719
+59	42	17	4	RELATIVE	2015-02-25 16:00:03.445552	2015-02-25 16:00:03.445552
+60	43	17	5	RELATIVE	2015-02-25 16:00:03.46659	2015-02-25 16:00:03.46659
+61	44	17	5	RELATIVE	2015-02-25 16:00:03.479317	2015-02-25 16:00:03.479317
+62	45	17	9	RELATIVE	2015-02-25 16:00:03.492668	2015-02-25 16:00:03.492668
+63	46	17	9	RELATIVE	2015-02-25 16:00:03.503273	2015-02-25 16:00:03.503273
+64	47	17	6	RELATIVE	2015-02-25 16:00:03.518849	2015-02-25 16:00:03.518849
+65	48	17	6	RELATIVE	2015-02-25 16:00:03.531105	2015-02-25 16:00:03.531105
+66	49	17	8	RELATIVE	2015-02-25 16:00:03.55338	2015-02-25 16:00:03.55338
+67	50	17	8	RELATIVE	2015-02-25 16:00:03.565688	2015-02-25 16:00:03.565688
+68	51	17	7	RELATIVE	2015-02-25 16:00:03.592228	2015-02-25 16:00:03.592228
+69	52	17	7	RELATIVE	2015-02-25 16:00:03.603852	2015-02-25 16:00:03.603852
+70	53	17	1	RELATIVE	2015-02-25 16:00:03.624229	2015-02-25 16:00:03.624229
+71	54	17	1	RELATIVE	2015-02-25 16:00:03.636025	2015-02-25 16:00:03.636025
+72	1	18	2	BOOKER	2015-02-25 16:00:04.254867	2015-03-03 19:14:45.728777
+73	55	18	2	RELATIVE	2015-03-03 19:14:45.772415	2015-03-03 19:14:45.772415
+74	56	18	2	RELATIVE	2015-03-03 19:14:45.797616	2015-03-03 19:14:45.797616
+75	1	19	\N	\N	2015-03-03 19:14:46.360468	2015-03-03 19:14:46.360468
+76	58	20	\N	\N	2015-03-27 17:17:41.130628	2015-03-27 17:17:41.130628
 \.
 
 
@@ -871,38 +996,47 @@ COPY bookings_guests (id, guest_id, booking_id, created_at, updated_at, room_id,
 -- Name: bookings_guests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('bookings_guests_id_seq', 75, true);
+SELECT pg_catalog.setval('bookings_guests_id_seq', 76, true);
 
 
 --
 -- Name: bookings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('bookings_id_seq', 19, true);
+SELECT pg_catalog.setval('bookings_id_seq', 20, true);
 
 
 --
 -- Data for Name: bookings_rooms; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY bookings_rooms (id, booking_id, room_id, created_at, updated_at, status) FROM stdin;
-18	13	2	2015-02-24 16:45:21.423128	2015-02-24 16:45:21.423128	\N
-21	14	3	2015-02-24 16:49:16.318645	2015-02-24 16:49:16.318645	\N
-25	15	4	2015-02-24 16:59:50.994202	2015-02-24 16:59:50.994202	\N
-26	16	6	2015-02-24 19:09:52.541975	2015-02-24 19:09:52.541975	\N
-27	16	8	2015-02-24 19:10:04.145808	2015-02-24 19:10:04.145808	\N
-28	17	2	2015-02-25 15:57:39.242883	2015-02-25 15:57:39.242883	\N
-29	17	3	2015-02-25 15:57:51.476309	2015-02-25 15:57:51.476309	\N
-30	17	4	2015-02-25 15:58:00.495417	2015-02-25 15:58:00.495417	\N
-31	17	5	2015-02-25 15:58:08.482202	2015-02-25 15:58:08.482202	\N
-32	17	9	2015-02-25 15:58:16.569512	2015-02-25 15:58:16.569512	\N
-33	17	6	2015-02-25 15:58:23.507118	2015-02-25 15:58:23.507118	\N
-34	17	8	2015-02-25 15:58:30.664385	2015-02-25 15:58:30.664385	\N
-35	17	7	2015-02-25 15:58:37.200125	2015-02-25 15:58:37.200125	\N
-36	17	1	2015-02-25 15:58:46.288822	2015-02-25 15:58:46.288822	\N
-37	18	2	2015-03-03 19:13:37.223928	2015-03-03 19:13:37.223928	\N
-38	18	2	2015-03-03 19:13:41.123872	2015-03-03 19:13:41.123872	\N
-39	19	2	2015-03-03 19:15:04.199397	2015-03-03 19:15:04.199397	\N
+COPY bookings_rooms (id, booking_id, room_id, status, created_at, updated_at) FROM stdin;
+18	13	2	\N	2015-02-24 16:45:21.423128	2015-02-24 16:45:21.423128
+21	14	3	\N	2015-02-24 16:49:16.318645	2015-02-24 16:49:16.318645
+25	15	4	\N	2015-02-24 16:59:50.994202	2015-02-24 16:59:50.994202
+26	16	6	\N	2015-02-24 19:09:52.541975	2015-02-24 19:09:52.541975
+27	16	8	\N	2015-02-24 19:10:04.145808	2015-02-24 19:10:04.145808
+28	17	2	\N	2015-02-25 15:57:39.242883	2015-02-25 15:57:39.242883
+29	17	3	\N	2015-02-25 15:57:51.476309	2015-02-25 15:57:51.476309
+30	17	4	\N	2015-02-25 15:58:00.495417	2015-02-25 15:58:00.495417
+31	17	5	\N	2015-02-25 15:58:08.482202	2015-02-25 15:58:08.482202
+32	17	9	\N	2015-02-25 15:58:16.569512	2015-02-25 15:58:16.569512
+33	17	6	\N	2015-02-25 15:58:23.507118	2015-02-25 15:58:23.507118
+34	17	8	\N	2015-02-25 15:58:30.664385	2015-02-25 15:58:30.664385
+35	17	7	\N	2015-02-25 15:58:37.200125	2015-02-25 15:58:37.200125
+36	17	1	\N	2015-02-25 15:58:46.288822	2015-02-25 15:58:46.288822
+37	18	2	\N	2015-03-03 19:13:37.223928	2015-03-03 19:13:37.223928
+38	18	2	\N	2015-03-03 19:13:41.123872	2015-03-03 19:13:41.123872
+39	19	2	\N	2015-03-03 19:15:04.199397	2015-03-03 19:15:04.199397
+40	20	1	\N	2015-03-27 17:19:46.829793	2015-03-27 17:19:46.829793
+41	20	2	\N	2015-03-27 17:19:46.844095	2015-03-27 17:19:46.844095
+42	20	3	\N	2015-03-27 17:19:46.848491	2015-03-27 17:19:46.848491
+43	20	4	\N	2015-03-27 17:19:46.852901	2015-03-27 17:19:46.852901
+44	20	5	\N	2015-03-27 17:19:46.858304	2015-03-27 17:19:46.858304
+45	20	6	\N	2015-03-27 17:19:46.862624	2015-03-27 17:19:46.862624
+46	20	7	\N	2015-03-27 17:19:46.866804	2015-03-27 17:19:46.866804
+47	20	8	\N	2015-03-27 17:19:46.870884	2015-03-27 17:19:46.870884
+48	20	9	\N	2015-03-27 17:19:46.875152	2015-03-27 17:19:46.875152
 \.
 
 
@@ -910,7 +1044,7 @@ COPY bookings_rooms (id, booking_id, room_id, created_at, updated_at, status) FR
 -- Name: bookings_rooms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('bookings_rooms_id_seq', 39, true);
+SELECT pg_catalog.setval('bookings_rooms_id_seq', 48, true);
 
 
 --
@@ -987,6 +1121,31 @@ COPY equipment_rooms (id, room_id, equipment_id, created_at, updated_at) FROM st
 25	8	1	2015-02-20 16:25:35.113931	2015-02-20 16:25:35.113931
 26	8	7	2015-02-20 16:25:35.11731	2015-02-20 16:25:35.11731
 27	9	3	2015-02-20 16:26:17.229519	2015-02-20 16:26:17.229519
+28	10	1	2015-03-29 08:55:29.501598	2015-03-29 08:55:29.501598
+29	10	3	2015-03-29 08:55:29.503387	2015-03-29 08:55:29.503387
+30	10	4	2015-03-29 08:55:29.504751	2015-03-29 08:55:29.504751
+31	11	1	2015-03-29 08:56:28.262408	2015-03-29 08:56:28.262408
+32	11	3	2015-03-29 08:56:28.263929	2015-03-29 08:56:28.263929
+33	11	4	2015-03-29 08:56:28.265369	2015-03-29 08:56:28.265369
+34	11	7	2015-03-29 08:56:28.266699	2015-03-29 08:56:28.266699
+35	12	1	2015-03-29 09:02:27.047323	2015-03-29 09:02:27.047323
+36	12	7	2015-03-29 09:02:27.048738	2015-03-29 09:02:27.048738
+37	13	1	2015-03-29 09:04:05.405135	2015-03-29 09:04:05.405135
+38	13	7	2015-03-29 09:04:05.406624	2015-03-29 09:04:05.406624
+39	14	1	2015-03-29 09:06:13.345197	2015-03-29 09:06:13.345197
+40	14	5	2015-03-29 09:06:13.346665	2015-03-29 09:06:13.346665
+41	14	7	2015-03-29 09:06:13.347947	2015-03-29 09:06:13.347947
+42	15	1	2015-03-29 09:07:26.065034	2015-03-29 09:07:26.065034
+43	15	4	2015-03-29 09:07:26.066788	2015-03-29 09:07:26.066788
+44	15	7	2015-03-29 09:07:26.068468	2015-03-29 09:07:26.068468
+45	16	1	2015-03-29 09:08:42.032327	2015-03-29 09:08:42.032327
+46	16	7	2015-03-29 09:08:42.034588	2015-03-29 09:08:42.034588
+47	17	1	2015-03-29 09:10:41.593636	2015-03-29 09:10:41.593636
+48	17	7	2015-03-29 09:10:41.595084	2015-03-29 09:10:41.595084
+49	18	3	2015-03-29 09:14:47.382815	2015-03-29 09:14:47.382815
+50	19	3	2015-03-29 09:15:34.68379	2015-03-29 09:15:34.68379
+51	19	4	2015-03-29 09:15:34.685426	2015-03-29 09:15:34.685426
+52	19	7	2015-03-29 09:15:34.68684	2015-03-29 09:15:34.68684
 \.
 
 
@@ -994,40 +1153,41 @@ COPY equipment_rooms (id, room_id, equipment_id, created_at, updated_at) FROM st
 -- Name: equipment_rooms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('equipment_rooms_id_seq', 27, true);
+SELECT pg_catalog.setval('equipment_rooms_id_seq', 52, true);
 
 
 --
 -- Data for Name: guests; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY guests (id, name, phone, day_of_birth, created_at, updated_at, guest_id) FROM stdin;
-1	Nagy Gábor	0123435	1925-02-20	2015-02-20 15:35:05.864469	2015-02-20 15:35:05.864469	\N
-31	Nagy Gáborné	0	2015-02-24	2015-02-24 16:46:39.380424	2015-02-24 16:46:39.380424	\N
-32	Nagy István	0	2015-02-24	2015-02-24 16:49:32.162812	2015-02-24 16:49:32.162812	\N
-34	Németh Vilmos	0	2015-02-24	2015-02-24 17:04:51.266305	2015-02-24 17:04:51.266305	1
-35	sdfsd	0	2015-02-24	2015-02-24 19:11:09.015952	2015-02-24 19:11:09.015952	1
-36	asd	0	2015-02-24	2015-02-24 19:11:09.034986	2015-02-24 19:11:09.034986	1
-37	asdasd	0	2015-02-24	2015-02-24 19:11:09.053269	2015-02-24 19:11:09.053269	1
-38	asd	0	2015-02-25	2015-02-25 16:00:03.260924	2015-02-25 16:00:03.260924	1
-39	sdf	0	2015-02-25	2015-02-25 16:00:03.298606	2015-02-25 16:00:03.298606	1
-40	dfg	0	2015-02-25	2015-02-25 16:00:03.389646	2015-02-25 16:00:03.389646	1
-41	fgh	0	2015-02-25	2015-02-25 16:00:03.42722	2015-02-25 16:00:03.42722	1
-42	ghj	0	2015-02-25	2015-02-25 16:00:03.438901	2015-02-25 16:00:03.438901	1
-43	hjk	0	2015-02-25	2015-02-25 16:00:03.461106	2015-02-25 16:00:03.461106	1
-44	jkl	0	2015-02-25	2015-02-25 16:00:03.47284	2015-02-25 16:00:03.47284	1
-45	klé	0	2015-02-25	2015-02-25 16:00:03.487815	2015-02-25 16:00:03.487815	1
-46	léá	0	2015-02-25	2015-02-25 16:00:03.498597	2015-02-25 16:00:03.498597	1
-47	éáű	0	2015-02-25	2015-02-25 16:00:03.513972	2015-02-25 16:00:03.513972	1
-48	qwe	0	2015-02-25	2015-02-25 16:00:03.523848	2015-02-25 16:00:03.523848	1
-49	wer	0	2015-02-25	2015-02-25 16:00:03.547942	2015-02-25 16:00:03.547942	1
-50	ert	0	2015-02-25	2015-02-25 16:00:03.559296	2015-02-25 16:00:03.559296	1
-51	rtz	0	2015-02-25	2015-02-25 16:00:03.57608	2015-02-25 16:00:03.57608	1
-52	tzu	0	2015-02-25	2015-02-25 16:00:03.597061	2015-02-25 16:00:03.597061	1
-53	zui	0	2015-02-25	2015-02-25 16:00:03.615846	2015-02-25 16:00:03.615846	1
-54	uio	0	2015-02-25	2015-02-25 16:00:03.629065	2015-02-25 16:00:03.629065	1
-55	dsa	0	1925-02-20	2015-03-03 19:14:45.752423	2015-03-03 19:14:45.752423	1
-56	dsa	0	1925-02-20	2015-03-03 19:14:45.790476	2015-03-03 19:14:45.790476	1
+COPY guests (id, name, phone, day_of_birth, guest_id, created_at, updated_at) FROM stdin;
+1	Nagy Gábor	0123435	1925-02-20	\N	2015-02-20 15:35:05.864469	2015-02-20 15:35:05.864469
+31	Nagy Gáborné	0	2015-02-24	\N	2015-02-24 16:46:39.380424	2015-02-24 16:46:39.380424
+32	Nagy István	0	2015-02-24	\N	2015-02-24 16:49:32.162812	2015-02-24 16:49:32.162812
+34	Németh Vilmos	0	2015-02-24	1	2015-02-24 17:04:51.266305	2015-02-24 17:04:51.266305
+35	sdfsd	0	2015-02-24	1	2015-02-24 19:11:09.015952	2015-02-24 19:11:09.015952
+36	asd	0	2015-02-24	1	2015-02-24 19:11:09.034986	2015-02-24 19:11:09.034986
+37	asdasd	0	2015-02-24	1	2015-02-24 19:11:09.053269	2015-02-24 19:11:09.053269
+38	asd	0	2015-02-25	1	2015-02-25 16:00:03.260924	2015-02-25 16:00:03.260924
+39	sdf	0	2015-02-25	1	2015-02-25 16:00:03.298606	2015-02-25 16:00:03.298606
+40	dfg	0	2015-02-25	1	2015-02-25 16:00:03.389646	2015-02-25 16:00:03.389646
+41	fgh	0	2015-02-25	1	2015-02-25 16:00:03.42722	2015-02-25 16:00:03.42722
+42	ghj	0	2015-02-25	1	2015-02-25 16:00:03.438901	2015-02-25 16:00:03.438901
+43	hjk	0	2015-02-25	1	2015-02-25 16:00:03.461106	2015-02-25 16:00:03.461106
+44	jkl	0	2015-02-25	1	2015-02-25 16:00:03.47284	2015-02-25 16:00:03.47284
+45	klé	0	2015-02-25	1	2015-02-25 16:00:03.487815	2015-02-25 16:00:03.487815
+46	léá	0	2015-02-25	1	2015-02-25 16:00:03.498597	2015-02-25 16:00:03.498597
+47	éáű	0	2015-02-25	1	2015-02-25 16:00:03.513972	2015-02-25 16:00:03.513972
+48	qwe	0	2015-02-25	1	2015-02-25 16:00:03.523848	2015-02-25 16:00:03.523848
+49	wer	0	2015-02-25	1	2015-02-25 16:00:03.547942	2015-02-25 16:00:03.547942
+50	ert	0	2015-02-25	1	2015-02-25 16:00:03.559296	2015-02-25 16:00:03.559296
+51	rtz	0	2015-02-25	1	2015-02-25 16:00:03.57608	2015-02-25 16:00:03.57608
+52	tzu	0	2015-02-25	1	2015-02-25 16:00:03.597061	2015-02-25 16:00:03.597061
+53	zui	0	2015-02-25	1	2015-02-25 16:00:03.615846	2015-02-25 16:00:03.615846
+54	uio	0	2015-02-25	1	2015-02-25 16:00:03.629065	2015-02-25 16:00:03.629065
+55	dsa	0	1925-02-20	1	2015-03-03 19:14:45.752423	2015-03-03 19:14:45.752423
+56	dsa	0	1925-02-20	1	2015-03-03 19:14:45.790476	2015-03-03 19:14:45.790476
+58	Drescher Adrienn	+36302341209	1990-03-29	\N	2015-03-27 17:15:34.33497	2015-03-27 17:15:34.33497
 \.
 
 
@@ -1035,7 +1195,7 @@ COPY guests (id, name, phone, day_of_birth, created_at, updated_at, guest_id) FR
 -- Name: guests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('guests_id_seq', 56, true);
+SELECT pg_catalog.setval('guests_id_seq', 58, true);
 
 
 --
@@ -1047,6 +1207,9 @@ COPY owners (id, name, created_at, updated_at) FROM stdin;
 2	szállásadó1	2015-02-20 15:51:26.912395	2015-02-20 15:51:26.912395
 3	szállásadó2	2015-02-20 15:51:42.202822	2015-02-20 15:51:42.202822
 4	szállásadó3	2015-02-20 15:51:56.521448	2015-02-20 15:51:56.521448
+5	Öreg szőlő vendégház	2015-03-27 17:40:36.595468	2015-03-27 17:40:36.595468
+6	Marcsi Apartman	2015-03-27 17:44:03.95401	2015-03-27 17:44:03.95401
+7	Hotel Szilán	2015-03-27 17:47:23.290175	2015-03-27 17:47:23.290175
 \.
 
 
@@ -1054,7 +1217,7 @@ COPY owners (id, name, created_at, updated_at) FROM stdin;
 -- Name: owners_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('owners_id_seq', 4, true);
+SELECT pg_catalog.setval('owners_id_seq', 7, true);
 
 
 --
@@ -1071,6 +1234,16 @@ COPY prices (id, value, currency, ifa, vat, room_id, created_at, updated_at) FRO
 7	10000	Ft	350	0.270000000000000018	7	2015-02-20 16:25:05.983939	2015-02-20 16:25:05.983939
 8	10000	Ft	350	0.270000000000000018	8	2015-02-20 16:25:35.121457	2015-02-20 16:25:35.121457
 9	10000	Ft	350	0.270000000000000018	9	2015-02-20 16:26:17.232675	2015-02-20 16:26:17.232675
+11	26000	Ft	350	0.270000000000000018	11	2015-03-29 08:56:28.268217	2015-03-29 08:56:28.268217
+10	24000	Ft	350	0.270000000000000018	10	2015-03-29 08:55:29.506567	2015-03-29 08:56:52.914379
+12	19450	Ft	350	0.270000000000000018	12	2015-03-29 09:02:27.050268	2015-03-29 09:02:27.050268
+13	28900	Ft	350	0.270000000000000018	13	2015-03-29 09:04:05.408344	2015-03-29 09:04:05.408344
+14	32400	Ft	350	0.270000000000000018	14	2015-03-29 09:06:13.349455	2015-03-29 09:06:13.349455
+15	37800	Ft	350	0.270000000000000018	15	2015-03-29 09:07:26.070498	2015-03-29 09:07:26.070498
+16	51900	Ft	350	0.270000000000000018	16	2015-03-29 09:08:42.036498	2015-03-29 09:08:42.036498
+17	57600	Ft	350	0.270000000000000018	17	2015-03-29 09:10:41.596748	2015-03-29 09:10:41.596748
+18	26000	Ft	350	0.270000000000000018	18	2015-03-29 09:14:47.385084	2015-03-29 09:14:47.385084
+19	30000	Ft	350	0.270000000000000018	19	2015-03-29 09:15:34.68844	2015-03-29 09:15:34.68844
 \.
 
 
@@ -1078,23 +1251,51 @@ COPY prices (id, value, currency, ifa, vat, room_id, created_at, updated_at) FRO
 -- Name: prices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('prices_id_seq', 9, true);
+SELECT pg_catalog.setval('prices_id_seq', 19, true);
+
+
+--
+-- Data for Name: properties; Type: TABLE DATA; Schema: public; Owner: m3dw3
+--
+
+COPY properties (id, key, value, "group", created_at, updated_at, title) FROM stdin;
+1	model_cheap	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam price {ROOMS} >= 0;\t\t\t\t# room price/night\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected rooms overall capacity have to be equal to guests\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsum{i in ROOMS} Occupation[i]*price[i];	smartfilter	2015-03-29 11:49:46.844	2015-03-29 09:53:09.125817	Olcsó modell
+2	model_close	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam distance {ROOMS,ROOMS} >= 0;\t\t# destination between rooms\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected overall room capacity has to be equal to guests or minimum room capacity\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsum{(i,j) in {ROOMS,ROOMS}} (Occupation[i]*Occupation[j])*distance[i,j];	smartfilter	2015-03-29 11:49:59.064	2015-03-29 09:53:19.529561	Közeli modell
+3	model_cheap_and_close	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam min_dist >= 0;\t\t\t\r\nparam min_price >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam price {ROOMS} >= 0;\t\t\t\t# room price/night\r\nparam distance {ROOMS,ROOMS} >= 0;\t\t# destination between rooms\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected rooms overall capacity have to be equal to guests\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsqrt((sum{i in ROOMS} Occupation[i]*((price[i]-min_price)^2))/occupied_rooms + 1)/min_price +\r\n\tif occupied_rooms > 1 then (\r\n\t\tsqrt((sum{(i,j) in {ROOMS,ROOMS}} (Occupation[i]*Occupation[j])*((distance[i,j]-min_dist)^2))/occupied_rooms + 1)\r\n\t\t\t\t/min_dist\r\n\t);	smartfilter	2015-03-29 11:51:04.096	2015-03-29 09:53:28.125587	Olcsó és közeli modell
+\.
+
+
+--
+-- Name: properties_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
+--
+
+SELECT pg_catalog.setval('properties_id_seq', 1, false);
 
 
 --
 -- Data for Name: rooms; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY rooms (id, name, code, accommodation_id, num_of_this, capacity, created_at, updated_at, image_file_name, image_content_type, image_file_size, image_updated_at, description) FROM stdin;
-2	Room 2	\N	2	2	2	2015-02-20 16:16:34.723982	2015-02-20 20:46:06.838012	room2.jpg	image/jpeg	701004	2015-02-20 20:46:06.019755	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-3	Room 3	\N	3	2	2	2015-02-20 16:18:55.24333	2015-02-20 20:46:57.028719	room3.jpg	image/jpeg	1173423	2015-02-20 20:46:56.318443	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-4	Room 4	\N	3	2	2	2015-02-20 16:20:13.695761	2015-02-20 20:47:12.950413	room4.jpg	image/jpeg	169500	2015-02-20 20:47:11.920795	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-5	Room 5	\N	3	2	2	2015-02-20 16:20:40.671781	2015-02-20 20:47:24.832136	room5.jpg	image/jpeg	890864	2015-02-20 20:47:23.31131	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-9	Room 6	\N	4	2	2	2015-02-20 16:26:17.221565	2015-02-20 20:48:37.052154	room6.jpg	image/jpeg	146398	2015-02-20 20:48:36.604223	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-6	Room 7	\N	5	2	2	2015-02-20 16:24:35.356275	2015-02-20 20:49:17.92127	room7.jpg	image/jpeg	2953860	2015-02-20 20:49:16.555754	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-8	Room 9	\N	5	2	2	2015-02-20 16:25:35.110717	2015-02-20 20:49:30.747268	room9.jpg	image/jpeg	133859	2015-02-20 20:49:30.374966	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-7	Room 8	\N	5	2	2	2015-02-20 16:25:05.963632	2015-02-20 20:49:56.967867	room8.jpg	image/jpeg	2152927	2015-02-20 20:49:55.907947	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
-1	Room 1	\N	2	2	2	2015-02-20 16:14:51.604893	2015-02-20 20:45:40.222208	room1.jpg	image/jpeg	133133	2015-02-20 20:45:39.731003	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.
+COPY rooms (id, name, code, accommodation_id, num_of_this, capacity, description, created_at, updated_at, image_file_name, image_content_type, image_file_size, image_updated_at) FROM stdin;
+1	Room 1	\N	2	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:14:51.604893	2015-03-27 17:20:06.63185	room1.jpg	image/jpeg	133133	2015-03-27 17:20:06.245916
+3	Room 3	\N	3	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:18:55.24333	2015-03-27 17:22:56.299235	room3.jpg	image/jpeg	139227	2015-03-27 17:22:56.072695
+4	Room 4	\N	3	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:20:13.695761	2015-03-27 17:23:12.777701	room4.jpg	image/jpeg	169500	2015-03-27 17:23:12.007849
+5	Room 5	\N	3	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:20:40.671781	2015-03-27 17:23:27.460106	room5.jpg	image/jpeg	890864	2015-03-27 17:23:26.368928
+9	Room 6	\N	4	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:26:17.221565	2015-03-27 17:23:59.582461	room6.jpg	image/jpeg	146398	2015-03-27 17:23:59.292902
+6	Room 7	\N	5	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:24:35.356275	2015-03-27 17:25:11.142639	room7.jpg	image/jpeg	599775	2015-03-27 17:25:10.617593
+8	Room 9	\N	5	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:25:35.110717	2015-03-27 17:25:22.593618	room9.jpg	image/jpeg	133859	2015-03-27 17:25:22.365074
+7	Room 8	\N	5	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:25:05.963632	2015-03-27 17:25:57.992726	room8.jpg	image/jpeg	322251	2015-03-27 17:25:57.587994
+2	Room 2	\N	2	2	2	Praesent euismod, eros quis lacinia eleifend, elit nulla iaculis sem, et vulputate orci lacus ut nisi. Cras sodales nisi dolor. Curabitur non eros in dui faucibus pharetra sed a leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis leo lorem, dignissim ac nulla convallis, rhoncus lacinia ipsum. Vivamus rutrum non lectus sed vehicula. Cras aliquam dignissim volutpat. Fusce mattis eleifend dignissim. Maecenas a felis nec nunc condimentum porta at quis augue. Ut tristique diam at urna faucibus, quis pretium dui malesuada. Nulla pulvinar congue feugiat. Quisque nec nisi vitae lacus blandit sagittis in sed urna. Pellentesque vitae fermentum risus, non viverra lorem. In porta ornare tortor ut sagittis.	2015-02-20 16:16:34.723982	2015-03-27 17:19:50.883492	room2.jpg	image/jpeg	701004	2015-03-27 17:19:50.277422
+10	Standard kétágyas 	\N	6	3	2	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 08:55:29.499324	2015-03-29 10:42:51.905959	\N	\N	\N	\N
+11	Superior kétágyas 	\N	6	4	2	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 08:56:28.26051	2015-03-29 10:43:11.557611	\N	\N	\N	\N
+12	Fürdőszobás Standard egyágyas 	\N	7	2	1	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:02:27.045462	2015-03-29 09:02:27.045462	\N	\N	\N	\N
+15	Fürdőszobás Standard háromágyas 	\N	7	2	3	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:07:26.062759	2015-03-29 09:07:26.062759	\N	\N	\N	\N
+13	Fürdőszobás Standard kétágyas 	\N	7	2	2	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:04:05.402958	2015-03-29 09:27:26.245553	\N	\N	\N	\N
+14	Panorámás Premium franciaágyas 	\N	7	2	2	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:06:13.342195	2015-03-29 09:06:13.342195	\N	\N	\N	\N
+16	Panorámás Premium 3 fős apartman 	\N	7	2	3	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:08:42.030588	2015-03-29 09:08:42.030588	\N	\N	\N	\N
+18	Erkélyes Classic kétágyas 	\N	8	2	2	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:14:47.379996	2015-03-29 09:28:20.374317	\N	\N	\N	\N
+19	Erkélyes Standard kétágyas 	\N	8	2	2	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:15:34.681861	2015-03-29 09:28:32.507023	\N	\N	\N	\N
+17	Standard Family négyágyas 	\N	7	3	4	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec tincidunt justo. Suspendisse potenti. Nunc vehicula cursus sagittis. Etiam mollis justo leo, vitae consequat diam sollicitudin sed. Etiam tincidunt, nibh vestibulum faucibus condimentum, odio massa dictum turpis, a cursus enim nibh quis ante. Nulla facilisi. Ut viverra est vitae neque laoreet, finibus aliquam nisi ultricies. Etiam tempor, nunc eget viverra aliquam, felis nibh finibus sapien, vitae aliquet ante diam eget purus. Nam eleifend elementum massa in luctus. Nullam varius sapien ipsum. Sed ut nunc libero.	2015-03-29 09:10:41.591707	2015-03-29 09:27:49.75539	\N	\N	\N	\N
 \.
 
 
@@ -1102,7 +1303,7 @@ COPY rooms (id, name, code, accommodation_id, num_of_this, capacity, created_at,
 -- Name: rooms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('rooms_id_seq', 9, true);
+SELECT pg_catalog.setval('rooms_id_seq', 19, true);
 
 
 --
@@ -1115,47 +1316,22 @@ COPY schema_migrations (version) FROM stdin;
 20141124113627
 20141124113637
 20141124113647
-20141124113951
 20141125112859
 20141125112917
 20141125130140
 20141125153213
-20141125153312
-20141125182911
 20141126105640
-20141126134346
-20141126175825
 20141126180619
 20141126180716
-20150203095636
-20150203101147
-20150203101342
 20150203101520
 20150203101553
-20150203101624
-20150203101655
-20150203153911
-20150203154121
-20150203201803
 20150203203021
-20150204174617
-20150204175050
-20150204175118
 20150211210112
-20150211210146
 20150212103821
 20150212104021
-20150212115354
 20150212120006
-20150212120242
-20150221161507
-20150222142226
-20150222143351
-20150222143608
-20150222144837
-20150222145609
-20150222145630
-20150224152332
+20150328102239
+20150328105336
 \.
 
 
@@ -1183,13 +1359,17 @@ SELECT pg_catalog.setval('serviices_id_seq', 5, true);
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, role_id, role_type) FROM stdin;
-1	s@s.hu	$2a$10$spbnTM7Vej0Gh/vZQPj7qe3OCJViKL3o1qNFlXaqRAf1T38c8H8/G	\N	\N	\N	1	2015-02-20 15:35:41.153365	2015-02-20 15:35:41.153365	127.0.0.1	127.0.0.1	2015-02-20 15:34:31.885121	2015-02-20 15:35:41.156024	1	Owner
-6	a@v.hu	$2a$10$/H98kpx/jQYODdZhdMuBVOANz50GPThreBhT9mkYKQWLt0X/JUzTq	\N	\N	\N	2	2015-02-20 16:03:31.629434	2015-02-20 16:01:56.238	127.0.0.1	127.0.0.1	2015-02-20 17:00:51.836	2015-02-20 16:03:31.63142	1	Admin
-3	s1@v.hu	$2a$10$V4Qqzvs3smm/hZT3ZQjn7ebDrtCHpZ6O4npjqZy1BsvyQKu5xaYBu	\N	\N	\N	6	2015-02-25 16:00:32.01317	2015-02-24 20:07:53.434097	127.0.0.1	127.0.0.1	2015-02-20 15:51:26.915447	2015-02-25 16:00:32.016516	2	Owner
-4	s2@v.hu	$2a$10$Wz5FRatWcipFoN8fDRGJ/ODpDdxcbCuH8/iMbN4m4/qFouC5xTmuO	\N	\N	\N	4	2015-02-25 16:00:55.872865	2015-02-24 20:33:20.08399	127.0.0.1	127.0.0.1	2015-02-20 15:51:42.205162	2015-02-25 16:00:55.877788	3	Owner
-5	s3@v.hu	$2a$10$dHFSFDwncVkHmKMg9PAhCu1qDkyCzi0quKZsDMcc6E7TRp3UOMd0y	\N	\N	\N	4	2015-02-25 16:01:15.850659	2015-02-24 20:35:39.943288	127.0.0.1	127.0.0.1	2015-02-20 15:51:56.523254	2015-02-25 16:01:15.854656	4	Owner
-2	v@v.hu	$2a$10$fQFYzR7U9iAPmVvpY0IQF.2iZOBXjgquvN/hy.8SYh1CEBwoQaKK6	\N	\N	\N	14	2015-03-03 08:47:38.40619	2015-03-03 08:44:52.814156	127.0.0.1	127.0.0.1	2015-02-20 15:35:05.868171	2015-03-03 08:47:38.408573	1	Guest
+COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, role_type, role_id, created_at, updated_at) FROM stdin;
+1	s@s.hu	$2a$10$spbnTM7Vej0Gh/vZQPj7qe3OCJViKL3o1qNFlXaqRAf1T38c8H8/G	\N	\N	\N	1	2015-02-20 15:35:41.153365	2015-02-20 15:35:41.153365	127.0.0.1	127.0.0.1	Owner	1	2015-02-20 15:34:31.885121	2015-02-20 15:35:41.156024
+4	s2@v.hu	$2a$10$Wz5FRatWcipFoN8fDRGJ/ODpDdxcbCuH8/iMbN4m4/qFouC5xTmuO	\N	\N	\N	4	2015-02-25 16:00:55.872865	2015-02-24 20:33:20.08399	127.0.0.1	127.0.0.1	Owner	3	2015-02-20 15:51:42.205162	2015-02-25 16:00:55.877788
+5	s3@v.hu	$2a$10$dHFSFDwncVkHmKMg9PAhCu1qDkyCzi0quKZsDMcc6E7TRp3UOMd0y	\N	\N	\N	4	2015-02-25 16:01:15.850659	2015-02-24 20:35:39.943288	127.0.0.1	127.0.0.1	Owner	4	2015-02-20 15:51:56.523254	2015-02-25 16:01:15.854656
+2	v@v.hu	$2a$10$fQFYzR7U9iAPmVvpY0IQF.2iZOBXjgquvN/hy.8SYh1CEBwoQaKK6	\N	\N	\N	14	2015-03-03 08:47:38.40619	2015-03-03 08:44:52.814156	127.0.0.1	127.0.0.1	Guest	1	2015-02-20 15:35:05.868171	2015-03-03 08:47:38.408573
+7	adrus90@gmail.com	$2a$10$iX41rpy6AxWgkPm3i4t6hOTj0D1AMxEj2xjlRyerYU5NhsRMfBU5y	\N	\N	2015-03-27 17:17:41.091616	1	2015-03-27 17:17:41.097379	2015-03-27 17:17:41.097379	84.21.7.41	84.21.7.41	Guest	58	2015-03-27 17:15:34.338889	2015-03-27 17:17:41.098649
+10	marcsi@v.hu	$2a$10$8z9rKUezutV/gjBsfZttueJPCxkoTZCCKhLPEh621LbA43uCppnV6	\N	\N	\N	1	2015-03-27 17:44:12.945679	2015-03-27 17:44:12.945679	84.21.7.41	84.21.7.41	Owner	6	2015-03-27 17:44:03.955469	2015-03-27 17:44:12.947699
+11	szilan@v.hu	$2a$10$Ofq.a1vzKEA5lTFl7evKduTCuO2QgiRGA/pnE.iNvEHXUTtPY0yfu	\N	\N	\N	0	\N	\N	\N	\N	Owner	7	2015-03-27 17:47:23.291728	2015-03-27 17:47:23.291728
+8	proba.jozska@lakimail.com	$2a$10$VaK25CfnOcSyMC3qq2xjDuluQG7WRYMCVaXaFSdUNHq.Uv2iWDCrC	\N	\N	\N	2	2015-03-27 17:55:52.736416	2015-03-27 17:33:30.319943	78.131.22.36	78.131.22.36	\N	\N	2015-03-27 17:33:30.311743	2015-03-27 17:55:52.738596
+3	s1@v.hu	$2a$10$V4Qqzvs3smm/hZT3ZQjn7ebDrtCHpZ6O4npjqZy1BsvyQKu5xaYBu	\N	\N	\N	9	2015-03-29 09:26:27.471132	2015-03-29 08:51:08.581828	84.21.7.41	84.21.7.41	Owner	2	2015-02-20 15:51:26.915447	2015-03-29 09:26:27.472983
+6	a@v.hu	$2a$10$/H98kpx/jQYODdZhdMuBVOANz50GPThreBhT9mkYKQWLt0X/JUzTq	\N	\N	\N	7	2015-03-29 09:48:30.113208	2015-03-27 17:53:02.31138	127.0.0.1	84.21.7.41	Admin	1	2015-02-20 17:00:51.836	2015-03-29 09:48:30.116753
 \.
 
 
@@ -1197,7 +1377,15 @@ COPY users (id, email, encrypted_password, reset_password_token, reset_password_
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('users_id_seq', 5, true);
+SELECT pg_catalog.setval('users_id_seq', 11, true);
+
+
+--
+-- Name: accommodation_equipments_pkey; Type: CONSTRAINT; Schema: public; Owner: m3dw3; Tablespace: 
+--
+
+ALTER TABLE ONLY accommodation_equipments
+    ADD CONSTRAINT accommodation_equipments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1294,6 +1482,14 @@ ALTER TABLE ONLY owners
 
 ALTER TABLE ONLY prices
     ADD CONSTRAINT prices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: properties_pkey; Type: CONSTRAINT; Schema: public; Owner: m3dw3; Tablespace: 
+--
+
+ALTER TABLE ONLY properties
+    ADD CONSTRAINT properties_pkey PRIMARY KEY (id);
 
 
 --

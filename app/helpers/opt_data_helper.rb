@@ -87,6 +87,7 @@ module OptDataHelper
       s.write(Property.find_by_key(model).value.to_s)
       s.write("\ndata smartfilter/tasks/#{problem}.dat;\n")
       s.write("solve;\n")
+      s.write("option display_1col 1000000;\n")
       s.write('display Occupation;')
     end
   end
