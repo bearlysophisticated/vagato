@@ -110,7 +110,17 @@
             }
             setNightsInput();
         });
+
+        end_date.on("dp.change", function (e) {
+           setNightsInput();
+        });
     };
+
+    function setNightsInput(){
+        var nights = $('#booking_end_date').data("DateTimePicker").date.diff($('#booking_start_date').data("DateTimePicker").date, 'days');
+        console.log(nights);
+        $('#booking_num_of_nights').val(nights);
+    }
 
     var ready = function() {
         setupBookingDatePickers();

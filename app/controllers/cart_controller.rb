@@ -184,6 +184,7 @@ class CartController < ApplicationController
       cart.rooms.clear
       cart.start_date = nil
       cart.end_date = nil
+      cart.num_of_nights = nil
 
       if cart.save!
         flash[:notice] = 'Kiürítettem a kosarat!'
