@@ -10,19 +10,41 @@ class FilterController < ApplicationController
       params[:filter][:equipment_ids].delete_at(params[:filter][:equipment_ids].length-1) unless params[:filter][:equipment_ids].nil?
       params[:filter][:serviice_ids].delete_at(params[:filter][:serviice_ids].length-1) unless params[:filter][:serviice_ids].nil?
 
-      params[:filter].delete(:city) if params[:filter][:city].empty?
-      params[:filter].delete(:start_date) if params[:filter][:start_date].empty?
-      params[:filter].delete(:end_date) if params[:filter][:end_date].empty?
+      if params[:city].empty?
+        params.delete(:city)
+      else
+        params[:filter][:city] = params[:city]
+      end
+      if params[:start_date].empty?
+        params.delete(:start_date)
+      else
+        params[:filter][:start_date] = params[:start_date]
+      end
+      if params[:end_date].empty?
+        params.delete(:end_date)
+      else
+        params[:filter][:end_date] = params[:end_date]
+      end
+
       params[:filter].delete(:equipment_ids) if params[:filter][:equipment_ids].empty?
       params[:filter].delete(:serviice_ids) if params[:filter][:serviice_ids].empty?
 
       if params[:filter][:filter] == 'fine'
-        params[:filter].delete(:capacity) if params[:filter][:capacity].empty?
+        if params[:capacity].empty?
+          params.delete(:capacity)
+        else
+          params[:filter][:capacity] = params[:capacity]
+        end
+
       elsif params[:filter][:filter] == 'smart'
         params[:filter][:close] = params[:close] if params.has_key?('close')
         params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
 
-        params[:filter].delete(:guests) if params[:filter][:guests].empty?
+        if params[:guests].empty?
+          params.delete(:guests)
+        else
+          params[:filter][:guests] = params[:guests]
+        end
       end
 
       url = UrlHelper.build_parameterised_url(base_url, params[:filter])
