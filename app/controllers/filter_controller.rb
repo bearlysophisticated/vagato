@@ -7,6 +7,9 @@ class FilterController < ApplicationController
       redirect_to '/rooms'
     else
 
+      puts params
+
+
       params[:filter][:equipment_ids].delete_at(params[:filter][:equipment_ids].length-1) unless params[:filter][:equipment_ids].nil?
       params[:filter][:serviice_ids].delete_at(params[:filter][:serviice_ids].length-1) unless params[:filter][:serviice_ids].nil?
 
@@ -40,10 +43,10 @@ class FilterController < ApplicationController
         params[:filter][:close] = params[:close] if params.has_key?('close')
         params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
 
-        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
-        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
-        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
-        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
+        params[:filter][:one_bed] = params[:one_bed] if params.has_key?('one_bed')
+        params[:filter][:two_bed] = params[:two_bed] if params.has_key?('two_bed')
+        params[:filter][:three_bed] = params[:three_bed] if params.has_key?('three_bed')
+        params[:filter][:four_or_more_bed] = params[:four_or_more_bed] if params.has_key?('four_or_more_bed')
 
         if params[:guests].empty?
           params.delete(:guests)

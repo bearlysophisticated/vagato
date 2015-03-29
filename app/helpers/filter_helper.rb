@@ -15,6 +15,30 @@ module FilterHelper
     if params.has_key? :capacity
       rooms_by_capacity = Room.where(:capacity => params[:capacity])
       filter_viewpoints += 1
+    else
+      is_filtering_by_beds = false
+
+      if params.has_key? :one_bed
+        rooms_by_capacity.concat(Room.where(:capacity => 1))
+        is_filtering_by_beds = true
+      end
+
+      if params.has_key? :two_bed
+        rooms_by_capacity.concat(Room.where(:capacity => 2))
+        is_filtering_by_beds = true
+      end
+
+      if params.has_key? :three_bed
+        rooms_by_capacity.concat(Room.where(:capacity => 3))
+        is_filtering_by_beds = true
+      end
+
+      if params.has_key? :four_or_more_bed
+        rooms_by_capacity.concat(Room.where('capacity >= ?', 4))
+        is_filtering_by_beds = true
+      end
+
+      filter_viewpoints += 1 if is_filtering_by_beds
     end
 
     if params.has_key? :equipment_ids
