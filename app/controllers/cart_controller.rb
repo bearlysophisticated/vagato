@@ -11,7 +11,7 @@ class CartController < ApplicationController
     @total_price['currency'] = @rooms.size > 0 ? @rooms.first.price.currency : ''
 
     @rooms.each do |r|
-      @total_price['value'] += r.price.value_with_vat
+      @total_price['value'] += r.price.value_with_vat*@cart.num_of_nights
     end
 
     i = 0
@@ -203,7 +203,7 @@ class CartController < ApplicationController
     @total_price['currency'] = @booking.rooms.first.price.currency
 
     @booking.rooms.each do |room|
-      @total_price['value'] += room.price.value_with_vat
+      @total_price['value'] += room.price.value_with_vat*@booking.num_of_nights
     end
   end
 

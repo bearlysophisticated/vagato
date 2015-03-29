@@ -16,7 +16,7 @@ class BookingsController < ApplicationController
     @total_price['currency'] = @rooms.first.room.price.currency
 
     @rooms.each do |r|
-      @total_price['value'] += r.room.price.value_with_vat
+      @total_price['value'] += r.room.price.value_with_vat*@booking.num_of_nights
     end
 
     @guests = Hash.new
