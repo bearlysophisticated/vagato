@@ -16,7 +16,7 @@
 
       <% @bookings['BOOKED'].each do |b| %>
           <tr>
-            <td><%= b.id %></td>
+            <td><%= link_to b.id, b %></td>
             <td>
               <% b.rooms.each do |r| %>
                   <%= link_to "#{r.name} (#{r.accommodation.name})", r %><br />
@@ -47,7 +47,7 @@
 
       <% @bookings['ANSWERED'].each do |b| %>
           <tr>
-            <td><%= b.id %></td>
+            <td><%= link_to b.id, b %></td>
             <td>
               <% b.rooms.each do |r| %>
                   <%= link_to "#{r.name} (#{r.accommodation.name})", r %><br />
@@ -78,7 +78,7 @@
 
       <% @bookings['CLOSED'].each do |b| %>
           <tr>
-            <td><%= b.id %></td>
+            <td><%= link_to b.id, b %></td>
             <td>
               <% b.rooms.each do |r| %>
                   <%= link_to "#{r.name} (#{r.accommodation.name})", r %><br />
