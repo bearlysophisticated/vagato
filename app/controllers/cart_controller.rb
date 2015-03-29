@@ -187,6 +187,13 @@ class CartController < ApplicationController
 
   def book
     @booking = Booking.find(params[:booking][:booking_id])
+    @total_price = Hash.new
+    @total_price['value'] = 0
+    @total_price['currency'] = @booking.rooms.first.price.currency
+
+    @booking.rooms.each do |room|
+      @total_price['value'] += room.price.value_with_vat
+    end
   end
 
   def finish_booking

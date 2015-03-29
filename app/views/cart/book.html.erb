@@ -33,9 +33,7 @@
 
 <%= form_tag do |b| %>
 
-    <% @booking.rooms.each do |r| %>
-        <div class="separator"></div>
-
+    <% @booking.rooms.each_with_index do |r,j| %>
         <div class="row">
           <div class="col-md-3">
             <%= render 'rooms/thumbnail', :room => r %>
@@ -46,25 +44,34 @@
               <% while i < r.capacity do %>
                   <div class="form-group">
                       <%= label_tag 'Név' %>
-                      <%= text_field_tag "name#{r.id}#{i+1}", r==@booking.rooms.first && i==0 ? current_user.role.name : nil, required: true, class: 'form-control' %>
+                      <%= text_field_tag "name#{r.id}#{i+1}", j==0 && i==0 ? current_user.role.name : nil, required: true, class: 'form-control' %>
                   </div>
                   <div class="form-group">
                       <%= label_tag 'Született' %>
                     <div class="input-group">
-                      <%= text_field_tag "birth#{r.id}#{i+1}", r==@booking.rooms.first && i==0  ? current_user.role.day_of_birth.to_s.gsub!('-','.') : nil, required: true, class: 'form-control' %>
+                      <%= text_field_tag "birth#{r.id}#{i+1}", j==0 && i==0  ? current_user.role.day_of_birth.to_s.gsub!('-','.') : nil, required: true, class: 'form-control' %>
                       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                   </div>
-                  <% i += 1 %>
-                  <% if i < r.capacity %>
+                  <% unless i+1 == r.capacity %>
                     <div class="separator"></div>
                   <% end %>
+
+                  <% i += 1 %>
               <% end %>
             </div>
           </div>
         </div>
 
+        <% unless j+1 == @booking.rooms.size %>
+            <div class="separator"></div><br/>
+        <% end %>
     <% end %>
+
+    <div class="well" align="right">
+      <h4>A foglalás ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
+      <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t. Az éjszakánként fizetendő idegenforgalmi adó mértéke szállodánként eltérhet.</small>
+    </div>
 
     <div class="row">
       <div class="col-md-6">
