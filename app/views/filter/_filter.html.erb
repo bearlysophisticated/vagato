@@ -107,20 +107,20 @@
 
     function fill_dates() {
         <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
-        $('#filter_start_date').val("<%= params[:start_date] %>");
-        $('#filter_end_date').val("<%= params[:end_date] %>");
+        $('#start_date').val("<%= params[:start_date] %>");
+        $('#end_date').val("<%= params[:end_date] %>");
         <% end %>
     }
 
     function fill_city() {
         <% if params.has_key? :city %>
-        $('#filter_city').val("<%= params[:city] %>");
+        $('#city').val("<%= params[:city] %>");
         <% end %>
     }
 
     function fill_capacity(capacity) {
         <% if params.has_key? :capacity %>
-        $('#filter_capacity').val("<%= params[:capacity] %>");
+        $('#capacity').val("<%= params[:capacity] %>");
         <% end %>
     }
 
@@ -139,8 +139,8 @@
     }
 
     var setupFilterDatePickers = function() {
-        var start_date = $('#filter_start_date');
-        var end_date = $('#filter_end_date');
+        var start_date = $('#start_date');
+        var end_date = $('#end_date');
 
         start_date.datetimepicker({
             locale: "hu",
@@ -160,7 +160,6 @@
             if(end_date.data("DateTimePicker").date <= e.date){
                 end_date.data("DateTimePicker").setDate(e.date);
             }
-            setNightsInput();
         });
     };
 
