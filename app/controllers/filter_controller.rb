@@ -40,6 +40,11 @@ class FilterController < ApplicationController
         params[:filter][:close] = params[:close] if params.has_key?('close')
         params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
 
+        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
+        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
+        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
+        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
+
         if params[:guests].empty?
           params.delete(:guests)
         else
