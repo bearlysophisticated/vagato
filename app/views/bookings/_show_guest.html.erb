@@ -1,83 +1,136 @@
 <h2><%= @booking.id %>. számú foglalás</h2>
 
-<div class="well well-sm">
-  <div class="row">
-    <%= simple_form_for @booking, url: {controller: 'cart', action: 'add'} do |c| %>
-        <div class='col-md-5'>
-          <div class="form-group">
-            <div class='input-group'>
-              <%= c.text_field :start_date, class: 'form-control', disabled: true %>
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Időszak</h2>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+        <%= simple_form_for @booking, url: {controller: 'cart', action: 'add'} do |c| %>
+            <div class='col-md-5'>
+              <div class="form-group">
+                <div class='input-group'>
+                  <%= c.text_field :start_date, class: 'form-control', disabled: true %>
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="col-md-2">
-          <div class="form-group">
-            <div class='input-group'>
-              <%= c.text_field :num_of_nights, class: 'form-control', disabled: true %>
-              <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
+            <div class="col-md-2">
+              <div class="form-group">
+                <div class='input-group'>
+                  <%= c.text_field :num_of_nights, class: 'form-control', disabled: true %>
+                  <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class='col-md-5'>
-          <div class="form-group">
-            <div class='input-group'>
-              <%= c.text_field :end_date, class: 'form-control', disabled: true %>
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <div class='col-md-5'>
+              <div class="form-group">
+                <div class='input-group'>
+                  <%= c.text_field :end_date, class: 'form-control', disabled: true %>
+                  <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+              </div>
             </div>
-          </div>
+        <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Elhelyezés</h2>
+  </div>
+  <div class="panel-body">
+    <%= form_tag do |b| %>
+
+        <% @rooms.each_with_index do |r,j| %>
+            <div class="row">
+              <div class="col-md-3">
+                <%= render 'rooms/thumbnail', :room => r.room %>
+              </div>
+              <div class="col-md-9">
+                <div class="well">
+                  <% i = 0 %>
+                  <% while i < r.room.capacity do %>
+                      <table class="table-condensed">
+                        <tr>
+                          <td class="fit-content"><strong>Név:</strong></td>
+                          <td class="full-width">
+                            <%= text_field_tag nil, @guests["#{@booking.id}#{r.index}#{i+1}"].name, class: 'form-control', disabled: true %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="fit-content"><strong>Született:</strong></td>
+                          <td class="full-width">
+                            <div class="input-group full-width">
+                              <%= text_field_tag nil, @guests["#{@booking.id}#{r.index}#{i+1}"].day_of_birth.to_s.gsub!('-','.'), class: 'form-control', disabled: true %>
+                              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <% unless i+1 == r.room.capacity %>
+                          <div class="separator"></div>
+                      <% end %>
+
+                      <% i += 1 %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <% unless j+1 == @rooms.size %>
+                <div class="separator"></div><br/>
+            <% end %>
+        <% end %>
+
+        <div class="well" align="right">
+          <h4>A foglalás ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
+          <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t. Az éjszakánként fizetendő idegenforgalmi adó mértéke szállodánként eltérhet.</small>
         </div>
+
     <% end %>
   </div>
 </div>
 
-<%= form_tag do |b| %>
-
-    <% @rooms.each_with_index do |r,j| %>
-        <div class="row">
-          <div class="col-md-3">
-            <%= render 'rooms/thumbnail', :room => r.room %>
-          </div>
-          <div class="col-md-9">
-            <div class="well">
-              <% i = 0 %>
-              <% while i < r.room.capacity do %>
-                  <table class="table-condensed">
-                    <tr>
-                      <td class="fit-content"><strong>Név:</strong></td>
-                      <td class="full-width">
-                        <%= text_field_tag nil, @guests["#{@booking.id}#{r.index}#{i+1}"].name, class: 'form-control', disabled: true %>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="fit-content"><strong>Született:</strong></td>
-                      <td class="full-width">
-                        <div class="input-group full-width">
-                          <%= text_field_tag nil, @guests["#{@booking.id}#{r.index}#{i+1}"].day_of_birth.to_s.gsub!('-','.'), class: 'form-control', disabled: true %>
-                          <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-
-                  <% unless i+1 == r.room.capacity %>
-                      <div class="separator"></div>
-                  <% end %>
-
-                  <% i += 1 %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-
-        <% unless j+1 == @rooms.size %>
-            <div class="separator"></div><br/>
-        <% end %>
-    <% end %>
-
-    <div class="well" align="right">
-      <h4>A foglalás ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
-      <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t. Az éjszakánként fizetendő idegenforgalmi adó mértéke szállodánként eltérhet.</small>
+<% if @booking.state == 'BOOKED' %>
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <h2 class="panel-title">Státusz - válaszra vár</h2>
+      </div>
+      <div class="panel-body" align="center">
+        A foglalást vissza kell igazolnia a szálláshely(ek)nek.
+      </div>
     </div>
 
+<% elsif @booking.state == 'DENIED' %>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <h2 class="panel-title">Státusz - visszautasítva</h2>
+      </div>
+      <div class="panel-body" align="center">
+        A foglalás vissza lett utasítva a szálláshely(ek) által.
+      </div>
+    </div>
+
+<% elsif @booking.state == 'APPROVED' %>
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h2 class="panel-title">Státusz - teljesítésre vár</h2>
+      </div>
+      <div class="panel-body" align="center">
+        A foglalást elfogadásra került a szálláshely(ek) által.
+      </div>
+    </div>
+
+<% elsif @booking.state == 'CLOSED' %>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h2 class="panel-title">Státusz - teljesítve</h2>
+      </div>
+      <div class="panel-body" align="center">
+        A foglalás teljesült.
+      </div>
+    </div>
 <% end %>
