@@ -112,8 +112,12 @@ div.error_explanation {
   background-color: #f8f8f8;
 }
 
-.fit-content {
+td.fit-content {
   width: 1px;
+}
+
+.full-width {
+  width: 100%;
 }
 
 div.separator {
@@ -122,6 +126,7 @@ div.separator {
   background-color: #DDD;
   border-bottom: 1px solid #FFF;
   margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .crop {
