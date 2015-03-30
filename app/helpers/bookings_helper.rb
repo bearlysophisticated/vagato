@@ -49,4 +49,27 @@ module BookingsHelper
   def self.overlaps(start_date, end_date, base)
     (start_date - base.end_date) * (base.start_date - end_date) >= 0
   end
+
+
+  def self.check_and_set_booking_status(booking)
+    status = Hash.new
+    status['BOOKED'] = 0
+    status['APPROVED'] = 0
+    status['DENIED'] = 0
+    BookingsRoom.where(:booking_id => booking.id).each do |br|
+      status[br.status] += 1
+    end
+
+    if status['BOOKED'] == 0 && status['DENIED'] > 0
+      booking.state = 'DENIED'
+      booking.save!
+    elsif status['BOOKED'] == 0
+      booking.state = 'APPROVED'
+      booking.save!
+    end
+  end
+
+  def check_and_set_booking_status(booking)
+    return self.check_and_set_booking_status(booking)
+  end
 end

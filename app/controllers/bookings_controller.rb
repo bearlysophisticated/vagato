@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [:show, :edit, :destroy]
+  before_action :set_booking, only: [:show, :edit, :destroy, :update]
   before_action :set_bookings, only: [:index]
   before_action :authenticate_user!
 
@@ -47,15 +47,14 @@ class BookingsController < ApplicationController
 
   # PATCH/PUT /bookings/1
   def update
-    bookings_rooms = BookingsRoom.where(:booking_id => params[:booking][:id])
+    bookings_rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
 
     bookings_rooms.each do |br|
-      puts 'UPDATING::'
-      puts br.status
       br.status = params[:booking][:state]
       br.save!
-      puts br.status
     end
+
+    BookingsHelper.check_and_set_booking_status(@booking)
 
     redirect_to "/bookings/#{params[:booking][:id]}"
   end
