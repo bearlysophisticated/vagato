@@ -36,6 +36,10 @@ body {
   float: right;
 }
 
+.left {
+  float: left;
+}
+
 .margin-right {
 	margin-right: 10px;
 }
@@ -112,8 +116,12 @@ div.error_explanation {
   background-color: #f8f8f8;
 }
 
-.fit-content {
+td.fit-content {
   width: 1px;
+}
+
+.full-width {
+  width: 100%;
 }
 
 div.separator {
@@ -122,6 +130,7 @@ div.separator {
   background-color: #DDD;
   border-bottom: 1px solid #FFF;
   margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .crop {
@@ -188,4 +197,16 @@ div.separator {
 .version {
   height: 2.5em !important;
   width: 100% !important;
+}
+
+.btn-answer-half {
+  width: 40%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.btn-answer-full {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }

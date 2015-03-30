@@ -1,16 +1,21 @@
 class BookingsController < ApplicationController
-  before_action :set_booking, only: [:show, :edit, :destroy]
+  before_action :set_booking, only: [:show, :edit, :destroy, :update]
   before_action :set_bookings, only: [:index]
   before_action :authenticate_user!
 
   # GET /bookings
   def index
-    puts @bookings.to_s
   end
 
   # GET /bookings/1
   def show
-    @rooms = BookingsRoom.where(:booking_id => @booking.id)
+    if current_user.owner?
+      @rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
+      @inherited_booking_status = BookingsHelper.get_inherited_booking_status(@booking, current_user.role)
+    elsif current_user.guest?
+      @rooms = BookingsRoom.where(:booking_id => @booking.id)
+    end
+
     @total_price = Hash.new
     @total_price['value'] = 0
     @total_price['currency'] = @rooms.first.room.price.currency
@@ -20,7 +25,12 @@ class BookingsController < ApplicationController
     end
 
     @guests = Hash.new
-    BookingsGuest.where(:booking_id => @booking.id).each do |bg|
+    if current_user.owner?
+      tmp_guests = BookingsGuest.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
+    elsif current_user.guest?
+      tmp_guests = BookingsGuest.where(:booking_id => @booking.id)
+    end
+    tmp_guests.each do |bg|
       @guests["#{@booking.id}#{bg.room_index}#{bg.bed}"] = bg.guest
     end
   end
@@ -47,15 +57,14 @@ class BookingsController < ApplicationController
 
   # PATCH/PUT /bookings/1
   def update
-    bookings_rooms = BookingsRoom.where(:booking_id => params[:booking][:id])
+    bookings_rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
 
     bookings_rooms.each do |br|
-      puts 'UPDATING::'
-      puts br.status
       br.status = params[:booking][:state]
       br.save!
-      puts br.status
     end
+
+    BookingsHelper.check_and_set_booking_status(@booking)
 
     redirect_to "/bookings/#{params[:booking][:id]}"
   end
@@ -90,11 +99,13 @@ class BookingsController < ApplicationController
       elsif current_user.owner?
         @rooms = Hash.new
 
-        Booking.joins(rooms: [:accommodation, :bookings_rooms]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
-          if b.state == 'APPROVED' || b.state == 'DENIED'
+        Booking.joins(rooms: [:accommodation]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
+          inherited_booking_status = BookingsHelper.get_inherited_booking_status(b, current_user.role)
+
+          if inherited_booking_status == 'APPROVED' || inherited_booking_status == 'DENIED'
             @bookings['ANSWERED'].push(b)
           else
-            @bookings[b.state].push(b)
+            @bookings[inherited_booking_status].push(b)
           end
 
           b.rooms.each do |r|
