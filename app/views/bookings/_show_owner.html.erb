@@ -147,15 +147,56 @@
   </div>
 </div>
 
+<% if @inherited_booking_status == 'BOOKED' %>
+    <div class="panel panel-warning">
+     <div class="panel-heading">
+       <h2 class="panel-title">Státusz - válaszra vár</h2>
+     </div>
+      <div class="panel-body" align="center">
+          <%= simple_form_for @booking do |b| %>
+              <%= b.hidden_field :state, :value => 'DENIED' %>
+              <%= b.hidden_field :id %>
+              <%= b.button :submit, 'Elutasít', class: 'btn-danger btn-answer-half left' %>
+          <% end %>
+        <%= simple_form_for @booking do |b| %>
+            <%= b.hidden_field :state, :value => 'APPROVED' %>
+            <%= b.hidden_field :id %>
+            <%= b.button :submit, 'Elfogad', class: 'btn-success btn-answer-half right' %>
+        <% end %>
+      </div>
+    </div>
 
-<%= simple_form_for @booking do |b| %>
-    <%= b.hidden_field :state, :value => 'APPROVED' %>
-    <%= b.hidden_field :id %>
-    <%= b.button :submit, 'Elfogad', class: 'btn-success right' %>
-<% end %>
+<% elsif @inherited_booking_status == 'DENIED' %>
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <h2 class="panel-title">Státusz - visszautasítva</h2>
+      </div>
+      <div class="panel-body" align="center">
+          A foglalás vissza lett utasítva.
+      </div>
+    </div>
 
-<%= simple_form_for @booking do |b| %>
-    <%= b.hidden_field :state, :value => 'DENIED' %>
-    <%= b.hidden_field :id %>
-    <%= b.button :submit, 'Elutasít', class: 'btn-danger right' %>
+<% elsif @inherited_booking_status == 'APPROVED' %>
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h2 class="panel-title">Státusz - teljesítésre vár</h2>
+      </div>
+      <div class="panel-body" align="center">
+        <%= simple_form_for @booking do |b| %>
+            <%= b.hidden_field :state, :value => 'CLOSED' %>
+            <%= b.hidden_field :id %>
+            <%= b.button :submit, 'Teljesítve', class: 'btn-primary btn-answer-full', disabled: @booking.end_date >= DateTime.now %>
+        <% end %>
+      </div>
+    </div>
+
+<% elsif @inherited_booking_status == 'CLOSED' %>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h2 class="panel-title">Státusz - teljesítve</h2>
+      </div>
+      <div class="panel-body" align="center">
+        A foglalás teljesült.
+      </div>
+    </div>
 <% end %>

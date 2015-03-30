@@ -36,6 +36,10 @@ body {
   float: right;
 }
 
+.left {
+  float: left;
+}
+
 .margin-right {
 	margin-right: 10px;
 }
@@ -193,4 +197,16 @@ div.separator {
 .version {
   height: 2.5em !important;
   width: 100% !important;
+}
+
+.btn-answer-half {
+  width: 40%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.btn-answer-full {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }

@@ -11,6 +11,7 @@ class BookingsController < ApplicationController
   def show
     if current_user.owner?
       @rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
+      @inherited_booking_status = BookingsHelper.get_inherited_booking_status(@booking, current_user.role)
     elsif current_user.guest?
       @rooms = BookingsRoom.where(:booking_id => @booking.id)
     end
@@ -99,12 +100,12 @@ class BookingsController < ApplicationController
         @rooms = Hash.new
 
         Booking.joins(rooms: [:accommodation]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
-          booking_rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => b.id).where('accommodations.owner_id = ?', current_user.role.id)
+          inherited_booking_status = BookingsHelper.get_inherited_booking_status(b, current_user.role)
 
-          if booking_rooms.first.status == 'APPROVED' || booking_rooms.first.status == 'DENIED'
+          if inherited_booking_status == 'APPROVED' || inherited_booking_status == 'DENIED'
             @bookings['ANSWERED'].push(b)
           else
-            @bookings[booking_rooms.first.status].push(b)
+            @bookings[inherited_booking_status].push(b)
           end
 
           b.rooms.each do |r|
