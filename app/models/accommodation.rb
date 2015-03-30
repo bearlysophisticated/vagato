@@ -4,6 +4,7 @@ class Accommodation < ActiveRecord::Base
   belongs_to :categry
   has_and_belongs_to_many :serviices
   has_many :rooms
+  has_many :comments
 
   accepts_nested_attributes_for :address
   accepts_nested_attributes_for :categry

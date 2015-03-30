@@ -11,6 +11,8 @@ class Guest < ActiveRecord::Base
   # has_many :participations, through: :participations, :as => :participations
   belongs_to :relative, :foreign_key => 'guest_id', :class_name => 'Guest'
 
+  has_many :comments
+
   accepts_nested_attributes_for :user
   accepts_nested_attributes_for :address
 

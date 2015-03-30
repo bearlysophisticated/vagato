@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'comment/create'
+
   # devise_for :users
   devise_for :users, controllers: { sessions: 'users/sessions'}
 
