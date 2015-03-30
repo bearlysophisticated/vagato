@@ -72,4 +72,5 @@ module BookingsHelper
   def check_and_set_booking_status(booking)
     return self.check_and_set_booking_status(booking)
   end
+
 end

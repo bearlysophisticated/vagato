@@ -5,12 +5,16 @@ class BookingsController < ApplicationController
 
   # GET /bookings
   def index
-    puts @bookings.to_s
   end
 
   # GET /bookings/1
   def show
-    @rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
+    if current_user.owner?
+      @rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
+    elsif current_user.guest?
+      @rooms = BookingsRoom.where(:booking_id => @booking.id)
+    end
+
     @total_price = Hash.new
     @total_price['value'] = 0
     @total_price['currency'] = @rooms.first.room.price.currency
@@ -20,7 +24,12 @@ class BookingsController < ApplicationController
     end
 
     @guests = Hash.new
-    BookingsGuest.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id).each do |bg|
+    if current_user.owner?
+      tmp_guests = BookingsGuest.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
+    elsif current_user.guest?
+      tmp_guests = BookingsGuest.where(:booking_id => @booking.id)
+    end
+    tmp_guests.each do |bg|
       @guests["#{@booking.id}#{bg.room_index}#{bg.bed}"] = bg.guest
     end
   end
@@ -89,11 +98,13 @@ class BookingsController < ApplicationController
       elsif current_user.owner?
         @rooms = Hash.new
 
-        Booking.joins(rooms: [:accommodation, :bookings_rooms]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
-          if b.state == 'APPROVED' || b.state == 'DENIED'
+        Booking.joins(rooms: [:accommodation]).where('accommodations.owner_id' => current_user.role.id).where.not('bookings.state' => 'CART').uniq.each do |b|
+          booking_rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => b.id).where('accommodations.owner_id = ?', current_user.role.id)
+
+          if booking_rooms.first.status == 'APPROVED' || booking_rooms.first.status == 'DENIED'
             @bookings['ANSWERED'].push(b)
           else
-            @bookings[b.state].push(b)
+            @bookings[booking_rooms.first.status].push(b)
           end
 
           b.rooms.each do |r|
