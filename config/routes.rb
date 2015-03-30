@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'comment/create'
-
   # devise_for :users
   devise_for :users, controllers: { sessions: 'users/sessions'}
 
@@ -26,6 +24,8 @@ Rails.application.routes.draw do
   resources :admins
   resources :users
   resources :bookings
+
+  post 'comment/create'
 
   get 'cart/index'
   patch 'cart/add'

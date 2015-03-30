@@ -14,6 +14,8 @@ class BookingsController < ApplicationController
       @inherited_booking_status = BookingsHelper.get_inherited_booking_status(@booking, current_user.role)
     elsif current_user.guest?
       @rooms = BookingsRoom.where(:booking_id => @booking.id)
+      @comment = Comment.new
+      @accommodations = Accommodation.joins(rooms: [:bookings_rooms]).where('bookings_rooms.booking_id = ?', @booking.id).uniq
     end
 
     @total_price = Hash.new

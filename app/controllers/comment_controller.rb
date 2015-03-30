@@ -1,8 +1,8 @@
 class CommentController < ApplicationController
   def create
-    @comment = Comment(comment_params)
+    @comment = Comment.new(comment_params)
     if @comment.save
-      redirect_to '/', notice: 'Vélemény mentve!'
+      redirect_to @comment.booking, notice: 'Vélemény mentve!'
     end
   end
 

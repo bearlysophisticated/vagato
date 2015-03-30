@@ -210,3 +210,15 @@ div.separator {
   margin-left: 10%;
   margin-right: 10%;
 }
+
+.rating-unchecked {
+  color: #BBBBBB;
+}
+
+.rating-checked {
+  color: goldenrod;
+}
+
+.rating:hover {
+  color: gold;
+}

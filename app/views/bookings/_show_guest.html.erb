@@ -131,6 +131,42 @@
       </div>
       <div class="panel-body" align="center">
         A foglalás teljesült.
+
+        <% unless @booking.comments.size >= @accommodations.size %>
+            <br/><br/><h3>Értékelje az üdülést!</h3><br/>
+        <% end %>
+
+        <% @accommodations.each_with_index do |a,j| %>
+            <% if a.comments.where(:booking_id => @booking.id).size == 0 %>
+                <%= simple_form_for @comment, url: {controller: 'comment', action: 'create'} do |c| %>
+                    <%= c.hidden_field :stars, value: nil, id: "comment_stars_#{a.id}" %>
+                    <%= c.hidden_field :booking_id, value: @booking.id %>
+                    <%= c.hidden_field :guest_id, value: @booking.guest.id %>
+                    <%= c.hidden_field :accommodation_id, value: a.id %>
+                    <div align="left"><%= c.input :text, label: a.name %></div>
+                    <% i=1; 10.times do %><i id="rating<%= i %><%= a.id %>" data="<%= i %>" onclick="on_rating_clicked(<%= i %>, <%= a.id %>)" class="fa fa-star fa-2x rating rating-unchecked"></i><% i+=1; end %>
+                    <%= c.button :submit, 'Mentés', class: 'btn-primary right' %>
+
+                    <% if j+1 < @accommodations.size %>
+                        <br/><br/><div class="separator"></div><br/>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
       </div>
     </div>
 <% end %>
+
+<script>
+  function on_rating_clicked(rating, accommodation) {
+      for(var i = 1; i <= rating; i++) {
+          $('#rating' + i + accommodation).removeClass('rating-unchecked');
+          $('#rating' + i + accommodation).addClass('rating-checked');
+      }
+      for(var i = rating+1; i <= 10; i++) {
+          $('#rating' + i + accommodation).removeClass('rating-checked');
+          $('#rating' + i + accommodation).addClass('rating-unchecked');
+      }
+      $('#comment_stars_' + accommodation).val(rating);
+  }
+</script>
