@@ -10,7 +10,7 @@ class BookingsController < ApplicationController
 
   # GET /bookings/1
   def show
-    @rooms = BookingsRoom.where(:booking_id => @booking.id)
+    @rooms = BookingsRoom.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id)
     @total_price = Hash.new
     @total_price['value'] = 0
     @total_price['currency'] = @rooms.first.room.price.currency
@@ -20,7 +20,7 @@ class BookingsController < ApplicationController
     end
 
     @guests = Hash.new
-    BookingsGuest.where(:booking_id => @booking.id).each do |bg|
+    BookingsGuest.joins(room: [:accommodation]).where(:booking_id => @booking.id).where('accommodations.owner_id = ?', current_user.role.id).each do |bg|
       @guests["#{@booking.id}#{bg.room_index}#{bg.bed}"] = bg.guest
     end
   end
