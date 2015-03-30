@@ -47,7 +47,13 @@ module BookingsHelper
 
   # Check if a given interval overlaps this interval
   def self.overlaps(start_date, end_date, base)
-    (start_date - base.end_date) * (base.start_date - end_date) >= 0
+    if start_date == base.end_date
+      return false
+    elsif end_date == base.start_date
+      return false
+    else
+      return (start_date - base.end_date) * (base.start_date - end_date) >= 0
+    end
   end
 
 
