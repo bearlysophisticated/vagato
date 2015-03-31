@@ -56,8 +56,14 @@ module OptDataHelper
   def self.run_solver_on(problem, model, rooms)
     write_solver_script(problem, model)
 
+    tstart = Time.now
+
     command = "ampl smartfilter/tasks/#{problem}.solve > smartfilter/tasks/#{problem}.solution"
     has_run = system(command)
+
+    tend = Time.now
+
+    puts "EXECUTION TIME: #{(tend-tstart)*1000.0}"
 
     if has_run
       until system("ls smartfilter/tasks/#{problem}.solution") do
@@ -84,6 +90,7 @@ module OptDataHelper
   def self.write_solver_script(problem, model)
     File.open("smartfilter/tasks/#{problem}.solve", 'w') do |s|
       s.write("option solver bonmin;\n")
+      s.write("options bonmin_options \"bonmin.algorithm B-OA\";\n")
       s.write(Property.find_by_key(model).value.to_s)
       s.write("\ndata smartfilter/tasks/#{problem}.dat;\n")
       s.write("solve;\n")
