@@ -1,5 +1,5 @@
 version: 
-  number: 0.7.2
+  number: 0.7.3
 
 smartfilter-models:
     cheap: 'model_cheap'
