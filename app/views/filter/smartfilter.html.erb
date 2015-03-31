@@ -124,16 +124,19 @@
 
 </div>
 
-<h2>Találatok</h2>
+<% if @rooms.size > 0 %>
+    <br />
+    <h2>Találatok <small><%= @rooms.size %> szoba (<%= @execution_time %> másodperc)</small></h2>
 
-<div align="right">
-  <%= form_tag ({controller: 'cart', action: 'add_from_smartfilter'}) do %>
-      <%= hidden_field_tag :start_date, params[:start_date] %>
-      <%= hidden_field_tag :end_date, params[:end_date] %>
-      <%= hidden_field_tag :rooms, @rooms.map { |r| r.id } %>
-      <button class="btn btn-primary">Kosárba <i class="fa fa-shopping-cart"></i></button>
-  <% end %>
-</div><br />
+    <div align="right">
+      <%= form_tag ({controller: 'cart', action: 'add_from_smartfilter'}) do %>
+          <%= hidden_field_tag :start_date, params[:start_date] %>
+          <%= hidden_field_tag :end_date, params[:end_date] %>
+          <%= hidden_field_tag :rooms, @rooms.map { |r| r.id } %>
+          <button class="btn btn-primary">Kosárba <i class="fa fa-shopping-cart"></i></button>
+      <% end %>
+    </div><br />
+<% end %>
 
 <% @rooms.each_with_index do |room, i| %>
     <% if (i+1) % 4 == 0 %>
