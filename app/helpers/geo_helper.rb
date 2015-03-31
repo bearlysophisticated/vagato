@@ -10,8 +10,6 @@ module GeoHelper
       distances.push(sub_distances)
     end
 
-    puts distances
-
     return distances
   end
 
