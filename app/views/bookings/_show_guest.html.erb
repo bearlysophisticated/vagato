@@ -163,7 +163,7 @@
           $('#rating' + i + accommodation).removeClass('rating-unchecked');
           $('#rating' + i + accommodation).addClass('rating-checked');
       }
-      for(var i = rating+1; i <= 10; i++) {
+      for(var i = rating+1; i>=rating; i--) {
           $('#rating' + i + accommodation).removeClass('rating-checked');
           $('#rating' + i + accommodation).addClass('rating-unchecked');
       }

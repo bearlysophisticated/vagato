@@ -197,6 +197,20 @@
       </div>
       <div class="panel-body" align="center">
         A foglalás teljesült.
+
+        <% unless @comments.size == 0 %>
+            <br/><br/><h3>Vélemények:</h3><br/>
+        <% end %>
+
+        <% @comments.each_with_index do |comment,j| %>
+            <div class="col-md-6 col-sm-6 panel panel-default">
+                <div align="left">
+                  <%= label_tag :accommodation_name, comment.accommodation.name %><br/>
+                  <%= text_area_tag :text, comment.text, class: 'form-control', disabled: true %>
+                </div>
+                <% comment.stars.times do %><i class="fa fa-star fa-2x rating-checked"></i><% end %><% (10-comment.stars).times do %><i class="fa fa-star fa-2x rating-unchecked"></i><% end %>
+            </div>
+        <% end %>
       </div>
     </div>
 <% end %>
