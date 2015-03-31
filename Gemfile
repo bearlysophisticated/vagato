@@ -36,7 +36,7 @@ gem 'momentjs-rails', '>= 2.8.1'
 # Use Paperclip for uploading and showing pictures
 gem 'paperclip'
 # Use Paperclip for Dropbox to upload and retrieve pictures from Dropbox
-gem 'paperclip-dropbox'
+# gem 'paperclip-dropbox'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'
