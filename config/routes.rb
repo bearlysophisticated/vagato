@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   resources :users
   resources :bookings
 
+  post 'comment/create'
+
   get 'cart/index'
   patch 'cart/add'
   post 'cart/add_from_smartfilter'

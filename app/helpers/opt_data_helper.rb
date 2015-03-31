@@ -5,7 +5,7 @@ module OptDataHelper
     File.open("smartfilter/tasks/#{problem}.dat", 'w') do |data|
       write_rooms_set(rooms, data)
       write_base_params(rooms, guests, data)
-      write_capacity_and_price_params(rooms, data)
+      write_capacity_and_stars_and_price_params(rooms, data)
     end
 
     run_solver_on(problem, PROPERTIES['smartfilter-models']['cheap'], rooms)
@@ -22,7 +22,7 @@ module OptDataHelper
     File.open("smartfilter/tasks/#{problem}.dat", 'w') do |data|
       write_rooms_set(rooms, data)
       write_base_params(rooms, guests, data)
-      write_capacity_params(rooms, data)
+      write_capacity_and_stars_params(rooms, data)
       write_distance_params(rooms, distances, data)
     end
 
@@ -41,7 +41,7 @@ module OptDataHelper
       write_rooms_set(rooms, data)
       write_base_params(rooms, guests, data)
       write_extra_params(rooms, distances, data)
-      write_capacity_and_price_params(rooms, data)
+      write_capacity_and_stars_and_price_params(rooms, data)
       write_distance_params(rooms, distances, data)
     end
 
@@ -133,19 +133,19 @@ module OptDataHelper
   end
 
 
-  def self.write_capacity_params(rooms, data)
-    data.write("param:\tcapacity :=\n")
+  def self.write_capacity_and_stars_params(rooms, data)
+    data.write("param:\tcapacity\tstars :=\n")
     rooms.each_pair do |key, room|
-      data.write("\t\t#{key}\t#{room.capacity}\n")
+      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)}\n")
     end
     data.write(";\n")
   end
 
 
-  def self.write_capacity_and_price_params(rooms, data)
-    data.write("param:\tcapacity\tprice :=\n")
+  def self.write_capacity_and_stars_and_price_params(rooms, data)
+    data.write("param:\tcapacity\tstars\tprice :=\n")
     rooms.each_pair do |key, room|
-      data.write("\t\t#{key}\t#{room.capacity}\t#{room.price.value_with_vat}\n")
+      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)}\t#{room.price.value_with_vat}\n")
     end
     data.write(";\n")
   end

@@ -35,6 +35,23 @@
   <% end %>
 </div>
 
+<h4>Vélemények:</h4>
+<% @accommodation.comments.each do |comment| %>
+    <div class="col-md-6 col-sm-6">
+      <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title"><%= comment.guest.name %>&nbsp<small>véleménye ekkor: <%= comment.created_at.to_s.first(10).gsub('-','.') %></small></h2>
+          </div>
+          <div class="panel-body" align="center">
+              <div align="left">
+                <p><%= comment.text %></p>
+              </div>
+              <% comment.stars.times do %><i class="fa fa-star fa-2x rating-checked"></i><% end %><% (10-comment.stars).times do %><i class="fa fa-star fa-2x rating-unchecked"></i><% end %>
+          </div>
+        </div>
+    </div>
+<% end %>
+
 <script type="text/javascript">
   handler = Gmaps.build('Google');
   handler.buildMap({
