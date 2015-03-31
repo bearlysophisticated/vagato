@@ -10,7 +10,6 @@ module OptSolutionHelper
         elsif l_idx > 2
           unless is_part_of_solution?(line)
             room_key = extract_room_key_from(line)
-            puts 'ROOM_KEY: ' + room_key
             rooms.delete(room_key)
           end
         end
@@ -47,8 +46,6 @@ module OptSolutionHelper
   end
 
   def self.compact_solution(rooms)
-    puts rooms
-    puts rooms.values
     return rooms.values
   end
 end
