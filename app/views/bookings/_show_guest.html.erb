@@ -110,7 +110,11 @@
         <h2 class="panel-title">Státusz - visszautasítva</h2>
       </div>
       <div class="panel-body" align="center">
-        A foglalás vissza lett utasítva a szálláshely(ek) által.
+        <span>A foglalás vissza lett utasítva a szálláshely(ek) által.</span><br/><br />
+        <%= simple_form_for @booking, :url => {:controller => 'cart', :action => 'back_to_cart'} do |b| %>
+            <%= b.hidden_field :id %>
+            <%= b.button :submit, 'A foglalás visszahelyezése a kosárba', class: 'btn-danger' %>
+        <% end %>
       </div>
     </div>
 

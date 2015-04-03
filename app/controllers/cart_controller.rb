@@ -296,6 +296,33 @@ class CartController < ApplicationController
     end
   end
 
+
+  def back_to_cart
+    denied_booking = Booking.find(params[:booking][:id])
+    cart = CartHelper.get_cart_for(current_user.role)
+
+    destination = denied_booking
+
+    if denied_booking.nil? || cart.nil?
+      flash[:warning] = 'A foglalást nem sikerült visszahelyezni a kosárba.'
+    else
+      cart.start_date = denied_booking.start_date
+      cart.end_date = denied_booking.end_date
+      cart.rooms = denied_booking.rooms
+      cart.num_of_nights = denied_booking.num_of_nights
+
+      if cart.save
+        destination = '/cart'
+        flash[:notice] = 'A foglalás vissza lett helyezve a kosárba.'
+      else
+        flash[:warning] = 'A foglalást nem sikerült visszahelyezni a kosárba.'
+      end
+    end
+
+    redirect_to destination
+  end
+
+
   private
 
   def check_role
