@@ -12,8 +12,8 @@
       <tr>
         <td><%= equipment.name %></td>
         <td><%= equipment.code %></td>
-        <td class="col-md-1" align="center">
-          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_equipment_path(equipment) %>&nbsp;
+        <td class="col-md-1 center">
+          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_equipment_path(equipment) %>&nbsp;;;
           <%= link_to raw("<i class='fa fa-trash'></i>"), equipment, method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>

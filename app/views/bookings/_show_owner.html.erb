@@ -139,7 +139,7 @@
         <% end %>
 
         <div class="well" align="right">
-          <h4>A foglalás vonatkozó részének ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
+          <h4>A foglalás vonatkozó részének ára: <strong><%= @total_price['value'] %>&nbsp;;<%= @total_price['currency'] %></strong></h4>
           <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t.</small>
         </div>
 
@@ -152,7 +152,7 @@
      <div class="panel-heading">
        <h2 class="panel-title">Státusz - válaszra vár</h2>
      </div>
-      <div class="panel-body" align="center">
+      <div class="panel-body center">
           <%= simple_form_for @booking do |b| %>
               <%= b.hidden_field :state, :value => 'DENIED' %>
               <%= b.hidden_field :id %>
@@ -171,7 +171,7 @@
       <div class="panel-heading">
         <h2 class="panel-title">Státusz - visszautasítva</h2>
       </div>
-      <div class="panel-body" align="center">
+      <div class="panel-body center">
           A foglalás vissza lett utasítva.
       </div>
     </div>
@@ -181,7 +181,7 @@
       <div class="panel-heading">
         <h2 class="panel-title">Státusz - teljesítésre vár</h2>
       </div>
-      <div class="panel-body" align="center">
+      <div class="panel-body center">
         <%= simple_form_for @booking do |b| %>
             <%= b.hidden_field :state, :value => 'CLOSED' %>
             <%= b.hidden_field :id %>
@@ -195,7 +195,7 @@
       <div class="panel-heading">
         <h2 class="panel-title">Státusz - teljesítve</h2>
       </div>
-      <div class="panel-body" align="center">
+      <div class="panel-body center">
         A foglalás teljesült.
 
         <% unless @comments.size == 0 %>

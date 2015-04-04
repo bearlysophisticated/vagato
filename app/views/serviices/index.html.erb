@@ -11,8 +11,8 @@
       <tr>
         <td><%= serviice.name %></td>
         <td><%= serviice.code %></td>
-        <td class="col-md-1" align="center">
-          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_serviice_path(serviice) %>&nbsp;
+        <td class="col-md-1 center">
+          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_serviice_path(serviice) %>&nbsp;;
           <%= link_to raw("<i class='fa fa-trash'></i>"), serviice, method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>

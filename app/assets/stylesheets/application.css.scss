@@ -40,6 +40,10 @@ body {
   float: left;
 }
 
+.center {
+  text-align: center;
+}
+
 .margin-right {
 	margin-right: 10px;
 }
@@ -51,10 +55,6 @@ body {
 .invisible {
   visibility: hidden;
 }
-
-/*.col-md-3:nth-child(4n+1){
-  clear: left;
-}*/
 
 div.narrow-30 {
   width: 30%; 
