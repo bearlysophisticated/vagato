@@ -125,7 +125,7 @@
     <br />
     <h2>Találatok <small><%= @rooms.size %> szoba (<%= @execution_time %> másodperc)</small></h2>
 
-    <div align="right">
+    <div class="right">
       <%= form_tag ({controller: 'cart', action: 'add_from_smartfilter'}) do %>
           <%= hidden_field_tag :start_date, params[:start_date] %>
           <%= hidden_field_tag :end_date, params[:end_date] %>

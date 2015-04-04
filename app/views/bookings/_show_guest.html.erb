@@ -85,7 +85,7 @@
             <% end %>
         <% end %>
 
-        <div class="well" align="right">
+        <div class="well right">
           <h4>A foglalás ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
           <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t. Az éjszakánként fizetendő idegenforgalmi adó mértéke szállodánként eltérhet.</small>
         </div>
@@ -147,7 +147,7 @@
                     <%= c.hidden_field :booking_id, value: @booking.id %>
                     <%= c.hidden_field :guest_id, value: @booking.guest.id %>
                     <%= c.hidden_field :accommodation_id, value: a.id %>
-                    <div align="left"><%= c.input :text, label: a.name %></div>
+                    <div class="left"><%= c.input :text, label: a.name %></div>
                     <% i=1; 10.times do %><i id="rating<%= i %><%= a.id %>" data="<%= i %>" onclick="on_rating_clicked(<%= i %>, <%= a.id %>)" class="fa fa-star fa-2x rating rating-unchecked"></i><% i+=1; end %>
                     <%= c.button :submit, 'Mentés', class: 'btn-primary right' %>
 

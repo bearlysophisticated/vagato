@@ -138,7 +138,7 @@
             <% end %>
         <% end %>
 
-        <div class="well" align="right">
+        <div class="well right">
           <h4>A foglalás vonatkozó részének ára: <strong><%= @total_price['value'] %>&nbsp<%= @total_price['currency'] %></strong></h4>
           <small>A feltüntetett árak tartalmazzák a 27%-os ÁFA-t.</small>
         </div>
@@ -204,7 +204,7 @@
 
         <% @comments.each_with_index do |comment,j| %>
             <div class="col-md-6 col-sm-6 panel panel-default">
-                <div align="left">
+                <div class="left">
                   <%= label_tag :accommodation_name, comment.accommodation.name %><br/>
                   <%= text_area_tag :text, comment.text, class: 'form-control', disabled: true %>
                 </div>

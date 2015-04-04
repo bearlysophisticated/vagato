@@ -43,7 +43,7 @@
             <h2 class="panel-title"><%= comment.guest.name %>&nbsp<small>véleménye ekkor: <%= comment.created_at.to_s.first(10).gsub('-','.') %></small></h2>
           </div>
           <div class="panel-body center">
-              <div align="left">
+              <div class="left">
                 <p><%= comment.text %></p>
               </div>
               <% comment.stars.times do %><i class="fa fa-star fa-2x rating-checked"></i><% end %><% (10-comment.stars).times do %><i class="fa fa-star fa-2x rating-unchecked"></i><% end %>
