@@ -14,7 +14,7 @@
         <td><%= admin.phone %></td>
         <td><%= admin.user.email %></td>
         <td class="col-md-1 center">
-          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_admin_path(admin) %>&nbsp;;;
+          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_admin_path(admin) %>&nbsp;
           <%= link_to raw("<i class='fa fa-trash'></i>"), admin, method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>

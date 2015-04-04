@@ -32,16 +32,24 @@ body {
   text-align: center;
 }
 
-.right {
+.float-right {
   float: right;
 }
 
-.left {
+.float-left {
   float: left;
 }
 
 .center {
   text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
 }
 
 .margin-right {

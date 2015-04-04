@@ -9,7 +9,7 @@
             <%= simple_form_for property, url: {controller: 'settings', action: 'update'} do |p| %>
                 <%= p.hidden_field :key %>
                 <%= p.input :value, label: property.title, :input_html => { :class => key } %>
-                <div align="right">
+                <div class="right">
                     <%= p.button :submit, 'Mentés', class: 'btn btn-success btn-sm' %>
                 </div>
             <% end %>
