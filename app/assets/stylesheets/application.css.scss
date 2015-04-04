@@ -40,6 +40,10 @@ body {
   float: left;
 }
 
+.center {
+  text-align: center;
+}
+
 .margin-right {
 	margin-right: 10px;
 }
@@ -51,10 +55,6 @@ body {
 .invisible {
   visibility: hidden;
 }
-
-/*.col-md-3:nth-child(4n+1){
-  clear: left;
-}*/
 
 div.narrow-30 {
   width: 30%; 
@@ -221,4 +221,33 @@ div.separator {
 
 .rating:hover {
   color: gold;
+}
+
+
+// extra-small devices
+@media (max-width: 767px) {
+  .rooms > .col-xs-6:nth-child(2n+1) {
+    clear: both;
+  }
+}
+
+// small devices
+@media (min-width: 768px) and (max-width: 991px) {
+  .rooms > .col-sm-4:nth-child(3n+1) {
+    clear: both;
+  }
+}
+
+// medium devices
+@media (min-width: 992px) and (max-width: 1199px) {
+  .rooms > .col-md-4:nth-child(3n+1) {
+    clear: both;
+  }
+}
+
+// large devices
+@media (min-width: 1200px) {
+  .rooms > .col-lg-3:nth-child(4n+1) {
+    clear: both;
+  }
 }

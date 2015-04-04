@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   post 'cart/book' => 'cart#finish_booking'
   patch 'cart/finish_booking'
   get '/cart' => 'cart#index'
+  patch 'cart/back_to_cart'
 
   post 'filter/filter'
   get '/smartfilter' => 'filter#smartfilter'

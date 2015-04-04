@@ -226,7 +226,9 @@ CREATE TABLE bookings_guests (
     room_id integer,
     role character varying,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    bed integer,
+    room_index integer
 );
 
 
@@ -284,7 +286,8 @@ CREATE TABLE bookings_rooms (
     room_id integer,
     status character varying,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    index integer
 );
 
 
@@ -346,6 +349,45 @@ ALTER TABLE public.categries_id_seq OWNER TO m3dw3;
 --
 
 ALTER SEQUENCE categries_id_seq OWNED BY categries.id;
+
+
+--
+-- Name: comments; Type: TABLE; Schema: public; Owner: m3dw3; Tablespace: 
+--
+
+CREATE TABLE comments (
+    id integer NOT NULL,
+    stars integer,
+    text text,
+    guest_id integer,
+    accommodation_id integer,
+    booking_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.comments OWNER TO m3dw3;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE; Schema: public; Owner: m3dw3
+--
+
+CREATE SEQUENCE comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.comments_id_seq OWNER TO m3dw3;
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: m3dw3
+--
+
+ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
@@ -767,6 +809,13 @@ ALTER TABLE ONLY categries ALTER COLUMN id SET DEFAULT nextval('categries_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: m3dw3
 --
 
+ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: m3dw3
+--
+
 ALTER TABLE ONLY equipment ALTER COLUMN id SET DEFAULT nextval('equipment_id_seq'::regclass);
 
 
@@ -860,7 +909,7 @@ COPY accommodations (id, name, code, description, owner_id, categry_id, created_
 -- Name: accommodations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('accommodations_id_seq', 8, true);
+SELECT pg_catalog.setval('accommodations_id_seq', 17, true);
 
 
 --
@@ -891,6 +940,57 @@ COPY accommodations_serviices (accommodation_id, serviice_id) FROM stdin;
 8	3
 8	4
 8	5
+2	1
+2	3
+2	5
+3	3
+3	5
+4	3
+4	5
+5	3
+5	4
+5	5
+6	1
+6	2
+6	3
+6	4
+6	5
+7	1
+7	2
+7	5
+8	1
+8	2
+8	3
+8	4
+8	5
+9	3
+9	4
+9	5
+10	1
+10	2
+10	3
+10	4
+10	5
+11	3
+11	5
+12	1
+12	2
+12	3
+12	4
+12	5
+13	3
+13	5
+14	4
+14	5
+15	1
+15	3
+15	4
+15	5
+16	1
+16	3
+16	4
+16	5
+17	5
 \.
 
 
@@ -916,7 +1016,7 @@ COPY addresses (id, country, zip, city, address, latitude, longitude, addressabl
 -- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('addresses_id_seq', 10, true);
+SELECT pg_catalog.setval('addresses_id_seq', 19, true);
 
 
 --
@@ -940,14 +1040,14 @@ SELECT pg_catalog.setval('admins_id_seq', 1, false);
 --
 
 COPY bookings (id, start_date, end_date, num_of_nights, state, guest_id, created_at, updated_at) FROM stdin;
-17	2015-02-25	2015-02-26	1	APPROVED	1	2015-02-24 19:11:09.478424	2015-03-02 19:23:29.031242
-16	2015-03-01	2015-03-05	4	DENIED	1	2015-02-24 17:04:51.871276	2015-03-02 19:26:05.616868
-18	2015-03-03	2015-03-04	1	BOOKED	1	2015-02-25 16:00:04.244852	2015-03-03 19:14:45.806724
-19	2015-03-03	2015-03-04	1	CART	1	2015-03-03 19:14:46.351851	2015-03-03 19:15:04.212652
-13	2015-02-24	2015-02-25	1	BOOKED	1	2015-02-24 16:41:19.825095	2015-02-24 16:46:39.404464
-14	2015-02-24	2015-02-25	1	BOOKED	1	2015-02-24 16:46:39.906397	2015-02-24 16:49:32.180411
-15	2015-02-24	2015-02-25	1	BOOKED	1	2015-02-24 16:49:33.03912	2015-02-24 17:04:51.296266
-20	2015-03-28	2015-03-31	3	CART	58	2015-03-27 17:17:41.122081	2015-03-27 17:19:46.839739
+23	2015-03-26	2015-03-30	1	CLOSED	1	2015-03-29 20:31:28.316684	2015-03-30 16:29:20.813494
+26	2015-03-30	2015-03-31	1	BOOKED	1	2015-03-30 16:38:46.115783	2015-03-30 18:38:42.758289
+27	2015-03-31	2015-04-01	1	BOOKED	1	2015-03-30 18:38:43.296983	2015-03-30 18:43:32.064082
+28	2015-04-01	2015-04-02	1	BOOKED	1	2015-03-30 18:43:32.610948	2015-03-30 18:44:21.927726
+22	2015-03-29	2015-03-30	1	CLOSED	1	2015-03-29 20:25:29.046298	2015-03-30 16:19:27.420378
+24	2015-03-29	2015-03-30	2	CLOSED	1	2015-03-29 20:55:46.656911	2015-03-30 14:39:13.635951
+25	2015-03-30	2015-03-31	1	DENIED	1	2015-03-30 13:29:45.520855	2015-03-30 16:38:43.917527
+29	2015-03-30	2015-03-31	1	CART	1	2015-03-30 18:44:22.539771	2015-04-03 17:32:33.910124
 \.
 
 
@@ -955,40 +1055,32 @@ COPY bookings (id, start_date, end_date, num_of_nights, state, guest_id, created
 -- Data for Name: bookings_guests; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY bookings_guests (id, guest_id, booking_id, room_id, role, created_at, updated_at) FROM stdin;
-43	1	13	2	\N	2015-02-24 16:41:19.838081	2015-02-24 16:46:39.370648
-44	31	13	2	\N	2015-02-24 16:46:39.391108	2015-02-24 16:46:39.391108
-45	1	14	3	BOOKER	2015-02-24 16:46:39.914001	2015-02-24 16:49:32.150881
-46	32	14	3	RELATIVE	2015-02-24 16:49:32.173398	2015-02-24 16:49:32.173398
-47	1	15	4	BOOKER	2015-02-24 16:49:33.060814	2015-02-24 17:00:09.605531
-49	34	15	4	RELATIVE	2015-02-24 17:04:51.273268	2015-02-24 17:04:51.273268
-50	1	16	6	BOOKER	2015-02-24 17:04:51.885502	2015-02-24 19:11:09.001438
-51	35	16	6	RELATIVE	2015-02-24 19:11:09.025447	2015-02-24 19:11:09.025447
-52	36	16	8	RELATIVE	2015-02-24 19:11:09.041366	2015-02-24 19:11:09.041366
-53	37	16	8	RELATIVE	2015-02-24 19:11:09.059125	2015-02-24 19:11:09.059125
-54	1	17	2	BOOKER	2015-02-24 19:11:09.485302	2015-02-25 16:00:03.239626
-55	38	17	2	RELATIVE	2015-02-25 16:00:03.275076	2015-02-25 16:00:03.275076
-56	39	17	3	RELATIVE	2015-02-25 16:00:03.306628	2015-02-25 16:00:03.306628
-57	40	17	3	RELATIVE	2015-02-25 16:00:03.409175	2015-02-25 16:00:03.409175
-58	41	17	4	RELATIVE	2015-02-25 16:00:03.433719	2015-02-25 16:00:03.433719
-59	42	17	4	RELATIVE	2015-02-25 16:00:03.445552	2015-02-25 16:00:03.445552
-60	43	17	5	RELATIVE	2015-02-25 16:00:03.46659	2015-02-25 16:00:03.46659
-61	44	17	5	RELATIVE	2015-02-25 16:00:03.479317	2015-02-25 16:00:03.479317
-62	45	17	9	RELATIVE	2015-02-25 16:00:03.492668	2015-02-25 16:00:03.492668
-63	46	17	9	RELATIVE	2015-02-25 16:00:03.503273	2015-02-25 16:00:03.503273
-64	47	17	6	RELATIVE	2015-02-25 16:00:03.518849	2015-02-25 16:00:03.518849
-65	48	17	6	RELATIVE	2015-02-25 16:00:03.531105	2015-02-25 16:00:03.531105
-66	49	17	8	RELATIVE	2015-02-25 16:00:03.55338	2015-02-25 16:00:03.55338
-67	50	17	8	RELATIVE	2015-02-25 16:00:03.565688	2015-02-25 16:00:03.565688
-68	51	17	7	RELATIVE	2015-02-25 16:00:03.592228	2015-02-25 16:00:03.592228
-69	52	17	7	RELATIVE	2015-02-25 16:00:03.603852	2015-02-25 16:00:03.603852
-70	53	17	1	RELATIVE	2015-02-25 16:00:03.624229	2015-02-25 16:00:03.624229
-71	54	17	1	RELATIVE	2015-02-25 16:00:03.636025	2015-02-25 16:00:03.636025
-72	1	18	2	BOOKER	2015-02-25 16:00:04.254867	2015-03-03 19:14:45.728777
-73	55	18	2	RELATIVE	2015-03-03 19:14:45.772415	2015-03-03 19:14:45.772415
-74	56	18	2	RELATIVE	2015-03-03 19:14:45.797616	2015-03-03 19:14:45.797616
-75	1	19	\N	\N	2015-03-03 19:14:46.360468	2015-03-03 19:14:46.360468
-76	58	20	\N	\N	2015-03-27 17:17:41.130628	2015-03-27 17:17:41.130628
+COPY bookings_guests (id, guest_id, booking_id, room_id, role, created_at, updated_at, bed, room_index) FROM stdin;
+78	1	22	11	BOOKER	2015-03-29 20:25:29.081428	2015-03-29 20:31:27.763312	1	1
+79	59	22	11	RELATIVE	2015-03-29 20:31:27.791887	2015-03-29 20:31:27.791887	2	1
+80	60	22	11	RELATIVE	2015-03-29 20:31:27.821684	2015-03-29 20:31:27.821684	1	2
+81	61	22	11	RELATIVE	2015-03-29 20:31:27.831819	2015-03-29 20:31:27.831819	2	2
+82	1	23	1	BOOKER	2015-03-29 20:31:28.331449	2015-03-29 20:55:46.111083	1	1
+83	62	23	1	RELATIVE	2015-03-29 20:55:46.14827	2015-03-29 20:55:46.14827	2	1
+84	1	24	1	BOOKER	2015-03-29 20:55:46.661298	2015-03-30 13:29:43.333821	1	1
+85	63	24	1	RELATIVE	2015-03-30 13:29:43.455545	2015-03-30 13:29:43.455545	2	1
+86	64	24	8	RELATIVE	2015-03-30 13:29:43.560605	2015-03-30 13:29:43.560605	1	2
+87	65	24	8	RELATIVE	2015-03-30 13:29:43.638425	2015-03-30 13:29:43.638425	2	2
+88	1	25	2	BOOKER	2015-03-30 13:29:45.5556	2015-03-30 16:38:43.781788	1	1
+89	66	25	2	RELATIVE	2015-03-30 16:38:43.840853	2015-03-30 16:38:43.840853	2	1
+90	1	26	3	BOOKER	2015-03-30 16:38:46.160739	2015-03-30 18:38:42.557646	1	1
+91	67	26	3	RELATIVE	2015-03-30 18:38:42.673043	2015-03-30 18:38:42.673043	2	1
+92	68	26	3	RELATIVE	2015-03-30 18:38:42.712519	2015-03-30 18:38:42.712519	1	2
+93	69	26	3	RELATIVE	2015-03-30 18:38:42.73222	2015-03-30 18:38:42.73222	2	2
+94	1	27	3	BOOKER	2015-03-30 18:38:43.306755	2015-03-30 18:43:31.952322	1	1
+95	70	27	3	RELATIVE	2015-03-30 18:43:32.002285	2015-03-30 18:43:32.002285	2	1
+96	71	27	3	RELATIVE	2015-03-30 18:43:32.020653	2015-03-30 18:43:32.020653	1	2
+97	72	27	3	RELATIVE	2015-03-30 18:43:32.038204	2015-03-30 18:43:32.038204	2	2
+98	1	28	3	BOOKER	2015-03-30 18:43:32.620775	2015-03-30 18:44:21.8595	1	1
+99	73	28	3	RELATIVE	2015-03-30 18:44:21.871456	2015-03-30 18:44:21.871456	2	1
+100	74	28	3	RELATIVE	2015-03-30 18:44:21.89984	2015-03-30 18:44:21.89984	1	2
+101	75	28	3	RELATIVE	2015-03-30 18:44:21.910352	2015-03-30 18:44:21.910352	2	2
+102	1	29	\N	\N	2015-03-30 18:44:22.544275	2015-03-30 18:44:22.544275	\N	\N
 \.
 
 
@@ -996,47 +1088,34 @@ COPY bookings_guests (id, guest_id, booking_id, room_id, role, created_at, updat
 -- Name: bookings_guests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('bookings_guests_id_seq', 76, true);
+SELECT pg_catalog.setval('bookings_guests_id_seq', 79, true);
 
 
 --
 -- Name: bookings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('bookings_id_seq', 20, true);
+SELECT pg_catalog.setval('bookings_id_seq', 22, true);
 
 
 --
 -- Data for Name: bookings_rooms; Type: TABLE DATA; Schema: public; Owner: m3dw3
 --
 
-COPY bookings_rooms (id, booking_id, room_id, status, created_at, updated_at) FROM stdin;
-18	13	2	\N	2015-02-24 16:45:21.423128	2015-02-24 16:45:21.423128
-21	14	3	\N	2015-02-24 16:49:16.318645	2015-02-24 16:49:16.318645
-25	15	4	\N	2015-02-24 16:59:50.994202	2015-02-24 16:59:50.994202
-26	16	6	\N	2015-02-24 19:09:52.541975	2015-02-24 19:09:52.541975
-27	16	8	\N	2015-02-24 19:10:04.145808	2015-02-24 19:10:04.145808
-28	17	2	\N	2015-02-25 15:57:39.242883	2015-02-25 15:57:39.242883
-29	17	3	\N	2015-02-25 15:57:51.476309	2015-02-25 15:57:51.476309
-30	17	4	\N	2015-02-25 15:58:00.495417	2015-02-25 15:58:00.495417
-31	17	5	\N	2015-02-25 15:58:08.482202	2015-02-25 15:58:08.482202
-32	17	9	\N	2015-02-25 15:58:16.569512	2015-02-25 15:58:16.569512
-33	17	6	\N	2015-02-25 15:58:23.507118	2015-02-25 15:58:23.507118
-34	17	8	\N	2015-02-25 15:58:30.664385	2015-02-25 15:58:30.664385
-35	17	7	\N	2015-02-25 15:58:37.200125	2015-02-25 15:58:37.200125
-36	17	1	\N	2015-02-25 15:58:46.288822	2015-02-25 15:58:46.288822
-37	18	2	\N	2015-03-03 19:13:37.223928	2015-03-03 19:13:37.223928
-38	18	2	\N	2015-03-03 19:13:41.123872	2015-03-03 19:13:41.123872
-39	19	2	\N	2015-03-03 19:15:04.199397	2015-03-03 19:15:04.199397
-40	20	1	\N	2015-03-27 17:19:46.829793	2015-03-27 17:19:46.829793
-41	20	2	\N	2015-03-27 17:19:46.844095	2015-03-27 17:19:46.844095
-42	20	3	\N	2015-03-27 17:19:46.848491	2015-03-27 17:19:46.848491
-43	20	4	\N	2015-03-27 17:19:46.852901	2015-03-27 17:19:46.852901
-44	20	5	\N	2015-03-27 17:19:46.858304	2015-03-27 17:19:46.858304
-45	20	6	\N	2015-03-27 17:19:46.862624	2015-03-27 17:19:46.862624
-46	20	7	\N	2015-03-27 17:19:46.866804	2015-03-27 17:19:46.866804
-47	20	8	\N	2015-03-27 17:19:46.870884	2015-03-27 17:19:46.870884
-48	20	9	\N	2015-03-27 17:19:46.875152	2015-03-27 17:19:46.875152
+COPY bookings_rooms (id, booking_id, room_id, status, created_at, updated_at, index) FROM stdin;
+61	22	11	DENIED	2015-03-29 20:28:41.321612	2015-03-30 16:19:27.388204	2
+60	22	11	DENIED	2015-03-29 20:28:41.299821	2015-03-30 16:19:27.401915	1
+68	23	1	CLOSED	2015-03-29 20:54:41.869447	2015-03-30 16:29:20.76362	1
+77	25	2	BOOKED	2015-03-30 16:38:24.592868	2015-03-30 16:38:43.906319	1
+79	26	3	BOOKED	2015-03-30 18:38:04.643998	2015-03-30 18:38:42.749919	1
+80	26	3	BOOKED	2015-03-30 18:38:08.593435	2015-03-30 18:38:42.754222	2
+81	27	3	BOOKED	2015-03-30 18:39:15.851429	2015-03-30 18:43:32.044125	1
+82	27	3	BOOKED	2015-03-30 18:43:09.738281	2015-03-30 18:43:32.049412	2
+83	28	3	BOOKED	2015-03-30 18:43:57.304108	2015-03-30 18:44:21.918145	1
+84	28	3	BOOKED	2015-03-30 18:44:01.049118	2015-03-30 18:44:21.923027	2
+75	24	1	CLOSED	2015-03-30 13:26:58.226171	2015-03-30 14:17:20.918665	1
+76	24	8	CLOSED	2015-03-30 13:28:35.414704	2015-03-30 14:39:13.60521	2
+85	29	2	\N	2015-04-03 17:32:33.873911	2015-04-03 17:32:33.873911	\N
 \.
 
 
@@ -1044,7 +1123,7 @@ COPY bookings_rooms (id, booking_id, room_id, status, created_at, updated_at) FR
 -- Name: bookings_rooms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('bookings_rooms_id_seq', 48, true);
+SELECT pg_catalog.setval('bookings_rooms_id_seq', 76, true);
 
 
 --
@@ -1065,6 +1144,23 @@ COPY categries (id, name, code, value, created_at, updated_at) FROM stdin;
 --
 
 SELECT pg_catalog.setval('categries_id_seq', 5, true);
+
+
+--
+-- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: m3dw3
+--
+
+COPY comments (id, stars, text, guest_id, accommodation_id, booking_id, created_at, updated_at) FROM stdin;
+3	9	asdasd	1	5	24	2015-03-30 20:20:33.891724	2015-03-30 20:20:33.891724
+4	7	qweqwe	1	2	24	2015-03-30 20:20:41.535429	2015-03-30 20:20:41.535429
+\.
+
+
+--
+-- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
+--
+
+SELECT pg_catalog.setval('comments_id_seq', 1, false);
 
 
 --
@@ -1153,7 +1249,7 @@ COPY equipment_rooms (id, room_id, equipment_id, created_at, updated_at) FROM st
 -- Name: equipment_rooms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('equipment_rooms_id_seq', 52, true);
+SELECT pg_catalog.setval('equipment_rooms_id_seq', 157, true);
 
 
 --
@@ -1188,6 +1284,23 @@ COPY guests (id, name, phone, day_of_birth, guest_id, created_at, updated_at) FR
 55	dsa	0	1925-02-20	1	2015-03-03 19:14:45.752423	2015-03-03 19:14:45.752423
 56	dsa	0	1925-02-20	1	2015-03-03 19:14:45.790476	2015-03-03 19:14:45.790476
 58	Drescher Adrienn	+36302341209	1990-03-29	\N	2015-03-27 17:15:34.33497	2015-03-27 17:15:34.33497
+59	asd	0	2015-03-29	1	2015-03-29 20:31:27.781059	2015-03-29 20:31:27.781059
+60	sdf	0	2015-03-29	1	2015-03-29 20:31:27.812578	2015-03-29 20:31:27.812578
+61	dfg	0	2015-03-29	1	2015-03-29 20:31:27.826715	2015-03-29 20:31:27.826715
+62	Drescher Adrienn	0	2015-03-29	1	2015-03-29 20:55:46.131449	2015-03-29 20:55:46.131449
+63	asd	0	2015-03-30	1	2015-03-30 13:29:43.416048	2015-03-30 13:29:43.416048
+64	sdf	0	2015-03-30	1	2015-03-30 13:29:43.532173	2015-03-30 13:29:43.532173
+65	dfg	0	2015-03-30	1	2015-03-30 13:29:43.588996	2015-03-30 13:29:43.588996
+66	asd	0	2015-03-30	1	2015-03-30 16:38:43.805608	2015-03-30 16:38:43.805608
+67	asad	0	2015-03-30	1	2015-03-30 18:38:42.651787	2015-03-30 18:38:42.651787
+68	qwe	0	2015-03-30	1	2015-03-30 18:38:42.70627	2015-03-30 18:38:42.70627
+69	ewq	0	2015-03-30	1	2015-03-30 18:38:42.721544	2015-03-30 18:38:42.721544
+70	asd	0	2015-03-30	1	2015-03-30 18:43:31.986519	2015-03-30 18:43:31.986519
+71	sdf	0	2015-03-30	1	2015-03-30 18:43:32.015757	2015-03-30 18:43:32.015757
+72	dfg	0	2015-03-30	1	2015-03-30 18:43:32.028864	2015-03-30 18:43:32.028864
+73	asd	0	2015-03-30	1	2015-03-30 18:44:21.866107	2015-03-30 18:44:21.866107
+74	sdf	0	2015-03-30	1	2015-03-30 18:44:21.888423	2015-03-30 18:44:21.888423
+75	dfg	0	2015-03-30	1	2015-03-30 18:44:21.905274	2015-03-30 18:44:21.905274
 \.
 
 
@@ -1195,7 +1308,7 @@ COPY guests (id, name, phone, day_of_birth, guest_id, created_at, updated_at) FR
 -- Name: guests_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('guests_id_seq', 58, true);
+SELECT pg_catalog.setval('guests_id_seq', 59, true);
 
 
 --
@@ -1217,7 +1330,7 @@ COPY owners (id, name, created_at, updated_at) FROM stdin;
 -- Name: owners_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('owners_id_seq', 7, true);
+SELECT pg_catalog.setval('owners_id_seq', 9, true);
 
 
 --
@@ -1251,7 +1364,7 @@ COPY prices (id, value, currency, ifa, vat, room_id, created_at, updated_at) FRO
 -- Name: prices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('prices_id_seq', 19, true);
+SELECT pg_catalog.setval('prices_id_seq', 41, true);
 
 
 --
@@ -1259,9 +1372,9 @@ SELECT pg_catalog.setval('prices_id_seq', 19, true);
 --
 
 COPY properties (id, key, value, "group", created_at, updated_at, title) FROM stdin;
-1	model_cheap	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam price {ROOMS} >= 0;\t\t\t\t# room price/night\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected rooms overall capacity have to be equal to guests\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsum{i in ROOMS} Occupation[i]*price[i];	smartfilter	2015-03-29 11:49:46.844	2015-03-29 09:53:09.125817	Olcsó modell
-2	model_close	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam distance {ROOMS,ROOMS} >= 0;\t\t# destination between rooms\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected overall room capacity has to be equal to guests or minimum room capacity\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsum{(i,j) in {ROOMS,ROOMS}} (Occupation[i]*Occupation[j])*distance[i,j];	smartfilter	2015-03-29 11:49:59.064	2015-03-29 09:53:19.529561	Közeli modell
-3	model_cheap_and_close	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam min_dist >= 0;\t\t\t\r\nparam min_price >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam price {ROOMS} >= 0;\t\t\t\t# room price/night\r\nparam distance {ROOMS,ROOMS} >= 0;\t\t# destination between rooms\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected rooms overall capacity have to be equal to guests\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsqrt((sum{i in ROOMS} Occupation[i]*((price[i]-min_price)^2))/occupied_rooms + 1)/min_price +\r\n\tif occupied_rooms > 1 then (\r\n\t\tsqrt((sum{(i,j) in {ROOMS,ROOMS}} (Occupation[i]*Occupation[j])*((distance[i,j]-min_dist)^2))/occupied_rooms + 1)\r\n\t\t\t\t/min_dist\r\n\t);	smartfilter	2015-03-29 11:51:04.096	2015-03-29 09:53:28.125587	Olcsó és közeli modell
+1	model_cheap	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam stars {ROOMS} >=0;                                # average rating\r\nparam price {ROOMS} >= 0;\t\t\t\t# room price/night\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected rooms overall capacity have to be equal to guests\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsum{i in ROOMS} Occupation[i]*price[i] + \r\n     sqrt((sum{i in ROOMS} Occupation[i]*((stars[i]-10)^2))/occupied_rooms + 1)/10;	smartfilter	2015-03-29 11:49:46.844	2015-03-31 16:48:37.605746	Olcsó modell
+2	model_close	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam stars {ROOMS} >=0;                                # average rating\r\nparam distance {ROOMS,ROOMS} >= 0;\t\t# destination between rooms\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected overall room capacity has to be equal to guests or minimum room capacity\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsum{(i,j) in {ROOMS,ROOMS}} (Occupation[i]*Occupation[j])*distance[i,j] + \r\n        sqrt((sum{i in ROOMS} Occupation[i]*((stars[i]-10)^2))/occupied_rooms + 1)/10;	smartfilter	2015-03-29 11:49:59.064	2015-03-31 13:03:37.854127	Közeli modell
+3	model_cheap_and_close	set ROOMS;\r\n\r\nparam min_capacity >= 0;\r\nparam min_dist >= 0;\t\t\t\r\nparam min_price >= 0;\r\nparam guests >= 0;\r\n\r\nparam capacity {ROOMS} >=0;\t\t\t\t# the amount of beds in a room\r\nparam stars {ROOMS} >=0;                                # average rating\r\nparam price {ROOMS} >= 0;\t\t\t\t# room price/night\r\nparam distance {ROOMS,ROOMS} >= 0;\t\t# destination between rooms\r\n\r\nvar Occupation {ROOMS} binary;\t\t\t# which rooms are included in solution\r\nvar occupied_rooms = sum {i in ROOMS} Occupation[i];\r\n\r\nsubject to Accommodation:\t\t\t\t# selected rooms overall capacity have to be equal to guests\r\n\tsum {i in ROOMS} Occupation[i]*capacity[i] = if guests < min_capacity then min_capacity else guests;\r\n\r\nminimize OPTIMUM:\r\n\tsqrt((sum{i in ROOMS} Occupation[i]*((price[i]-min_price)^2))/occupied_rooms + 1)/min_price +\r\n\tif occupied_rooms > 1 then (\r\n\t\tsqrt((sum{(i,j) in {ROOMS,ROOMS}} (Occupation[i]*Occupation[j])*((distance[i,j]-min_dist)^2))/occupied_rooms + 1)\r\n\t\t\t\t/min_dist\r\n\t) + \r\n        sqrt((sum{i in ROOMS} Occupation[i]*((stars[i]-10)^2))/occupied_rooms + 1)/10;	smartfilter	2015-03-29 11:51:04.096	2015-03-31 13:03:48.746071	Olcsó és közeli modell
 \.
 
 
@@ -1303,7 +1416,7 @@ COPY rooms (id, name, code, accommodation_id, num_of_this, capacity, description
 -- Name: rooms_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('rooms_id_seq', 19, true);
+SELECT pg_catalog.setval('rooms_id_seq', 41, true);
 
 
 --
@@ -1332,6 +1445,10 @@ COPY schema_migrations (version) FROM stdin;
 20150212120006
 20150328102239
 20150328105336
+20150329193503
+20150329195525
+20150329195759
+20150330185132
 \.
 
 
@@ -1362,14 +1479,14 @@ SELECT pg_catalog.setval('serviices_id_seq', 5, true);
 COPY users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, role_type, role_id, created_at, updated_at) FROM stdin;
 1	s@s.hu	$2a$10$spbnTM7Vej0Gh/vZQPj7qe3OCJViKL3o1qNFlXaqRAf1T38c8H8/G	\N	\N	\N	1	2015-02-20 15:35:41.153365	2015-02-20 15:35:41.153365	127.0.0.1	127.0.0.1	Owner	1	2015-02-20 15:34:31.885121	2015-02-20 15:35:41.156024
 4	s2@v.hu	$2a$10$Wz5FRatWcipFoN8fDRGJ/ODpDdxcbCuH8/iMbN4m4/qFouC5xTmuO	\N	\N	\N	4	2015-02-25 16:00:55.872865	2015-02-24 20:33:20.08399	127.0.0.1	127.0.0.1	Owner	3	2015-02-20 15:51:42.205162	2015-02-25 16:00:55.877788
-5	s3@v.hu	$2a$10$dHFSFDwncVkHmKMg9PAhCu1qDkyCzi0quKZsDMcc6E7TRp3UOMd0y	\N	\N	\N	4	2015-02-25 16:01:15.850659	2015-02-24 20:35:39.943288	127.0.0.1	127.0.0.1	Owner	4	2015-02-20 15:51:56.523254	2015-02-25 16:01:15.854656
-2	v@v.hu	$2a$10$fQFYzR7U9iAPmVvpY0IQF.2iZOBXjgquvN/hy.8SYh1CEBwoQaKK6	\N	\N	\N	14	2015-03-03 08:47:38.40619	2015-03-03 08:44:52.814156	127.0.0.1	127.0.0.1	Guest	1	2015-02-20 15:35:05.868171	2015-03-03 08:47:38.408573
 7	adrus90@gmail.com	$2a$10$iX41rpy6AxWgkPm3i4t6hOTj0D1AMxEj2xjlRyerYU5NhsRMfBU5y	\N	\N	2015-03-27 17:17:41.091616	1	2015-03-27 17:17:41.097379	2015-03-27 17:17:41.097379	84.21.7.41	84.21.7.41	Guest	58	2015-03-27 17:15:34.338889	2015-03-27 17:17:41.098649
 10	marcsi@v.hu	$2a$10$8z9rKUezutV/gjBsfZttueJPCxkoTZCCKhLPEh621LbA43uCppnV6	\N	\N	\N	1	2015-03-27 17:44:12.945679	2015-03-27 17:44:12.945679	84.21.7.41	84.21.7.41	Owner	6	2015-03-27 17:44:03.955469	2015-03-27 17:44:12.947699
 11	szilan@v.hu	$2a$10$Ofq.a1vzKEA5lTFl7evKduTCuO2QgiRGA/pnE.iNvEHXUTtPY0yfu	\N	\N	\N	0	\N	\N	\N	\N	Owner	7	2015-03-27 17:47:23.291728	2015-03-27 17:47:23.291728
 8	proba.jozska@lakimail.com	$2a$10$VaK25CfnOcSyMC3qq2xjDuluQG7WRYMCVaXaFSdUNHq.Uv2iWDCrC	\N	\N	\N	2	2015-03-27 17:55:52.736416	2015-03-27 17:33:30.319943	78.131.22.36	78.131.22.36	\N	\N	2015-03-27 17:33:30.311743	2015-03-27 17:55:52.738596
-3	s1@v.hu	$2a$10$V4Qqzvs3smm/hZT3ZQjn7ebDrtCHpZ6O4npjqZy1BsvyQKu5xaYBu	\N	\N	\N	9	2015-03-29 09:26:27.471132	2015-03-29 08:51:08.581828	84.21.7.41	84.21.7.41	Owner	2	2015-02-20 15:51:26.915447	2015-03-29 09:26:27.472983
-6	a@v.hu	$2a$10$/H98kpx/jQYODdZhdMuBVOANz50GPThreBhT9mkYKQWLt0X/JUzTq	\N	\N	\N	7	2015-03-29 09:48:30.113208	2015-03-27 17:53:02.31138	127.0.0.1	84.21.7.41	Admin	1	2015-02-20 17:00:51.836	2015-03-29 09:48:30.116753
+5	s3@v.hu	$2a$10$dHFSFDwncVkHmKMg9PAhCu1qDkyCzi0quKZsDMcc6E7TRp3UOMd0y	\N	\N	\N	7	2015-03-30 14:38:48.234534	2015-03-30 14:19:53.080704	127.0.0.1	127.0.0.1	Owner	4	2015-02-20 15:51:56.523254	2015-03-30 14:38:48.26188
+3	s1@v.hu	$2a$10$V4Qqzvs3smm/hZT3ZQjn7ebDrtCHpZ6O4npjqZy1BsvyQKu5xaYBu	\N	\N	\N	17	2015-03-31 09:57:34.849236	2015-03-30 15:50:59.495673	127.0.0.1	127.0.0.1	Owner	2	2015-02-20 15:51:26.915447	2015-03-31 09:57:34.863477
+6	a@v.hu	$2a$10$/H98kpx/jQYODdZhdMuBVOANz50GPThreBhT9mkYKQWLt0X/JUzTq	\N	\N	\N	9	2015-03-31 12:51:09.782404	2015-03-29 19:08:28.650219	127.0.0.1	127.0.0.1	Admin	1	2015-02-20 17:00:51.836	2015-03-31 12:51:09.784542
+2	v@v.hu	$2a$10$fQFYzR7U9iAPmVvpY0IQF.2iZOBXjgquvN/hy.8SYh1CEBwoQaKK6	\N	\N	\N	21	2015-03-31 20:46:00.911522	2015-03-30 16:36:08.13708	127.0.0.1	127.0.0.1	Guest	1	2015-02-20 15:35:05.868171	2015-03-31 20:46:00.913297
 \.
 
 
@@ -1377,7 +1494,7 @@ COPY users (id, email, encrypted_password, reset_password_token, reset_password_
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: m3dw3
 --
 
-SELECT pg_catalog.setval('users_id_seq', 11, true);
+SELECT pg_catalog.setval('users_id_seq', 13, true);
 
 
 --
@@ -1442,6 +1559,14 @@ ALTER TABLE ONLY bookings_rooms
 
 ALTER TABLE ONLY categries
     ADD CONSTRAINT categries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: m3dw3; Tablespace: 
+--
+
+ALTER TABLE ONLY comments
+    ADD CONSTRAINT comments_pkey PRIMARY KEY (id);
 
 
 --

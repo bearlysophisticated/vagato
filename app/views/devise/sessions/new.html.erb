@@ -5,13 +5,13 @@
       <%= f.input :email, autofocus: true, label: 'E-mail' %>
       <%= f.input :password, label: 'Jelszó' %>
       <%= f.input :remember_me, label: 'Emlékezz rám', as: :boolean %>
-      <div align="center">
+      <div class="center">
         <%= f.button :submit, 'Bejelentkezés', class: 'btn btn-primary center' %>
       </div><br/>
 
 <% end %>
 
-<div align="center">
+<div class="center">
   <%= link_to 'Vendég regisztráció', '/guests/new' %><br />
   <%= link_to 'Szállásadó regisztráció', '/owners/new' %>
 </div>

@@ -4,7 +4,7 @@
     <th>Név</th>
     <th>Telefon</th>
     <th>Email</th>
-    <th><%= link_to 'Új admin', new_admin_path, class: 'btn btn-success btn-xs' %></th>
+    <th class="center"><%= link_to 'Új admin', new_admin_path, class: 'btn btn-success btn-xs' %></th>
   </tr>
   </thead>
 
@@ -13,8 +13,8 @@
         <td><%= admin.name %></td>
         <td><%= admin.phone %></td>
         <td><%= admin.user.email %></td>
-        <td class="col-md-1" align="center">
-          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_admin_path(admin) %>&nbsp;
+        <td class="col-md-1 center">
+          <%= link_to raw("<i class='fa fa-pencil-square-o'></i>"), edit_admin_path(admin) %>&nbsp;;;
           <%= link_to raw("<i class='fa fa-trash'></i>"), admin, method: :delete, data: { confirm: 'Are you sure?' } %>
         </td>
       </tr>

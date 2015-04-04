@@ -114,7 +114,7 @@
         </div>
       </div>
 
-      <div class="row" align="center">
+      <div class="row center">
         <%= button_tag 'Keresés' , class: 'btn btn-primary', style: 'width: 200px' %>
       </div>
   <% end %>
@@ -135,17 +135,13 @@
     </div><br />
 <% end %>
 
-<% @rooms.each_with_index do |room, i| %>
-    <% if (i+1) % 4 == 0 %>
-        <div class="row" %>
-    <% end %>
-    <div class="col-sm-3 col-xs-6 col-md-3">
-      <%= render 'rooms/thumbnail', :room => room %>
-    </div>
-    <% if (i+1) % 4 == 0 %>
-        </div>
-    <% end %>
-<% end %><br />
+<div class="rooms row">
+  <% @rooms.each do |room| %>
+      <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+        <%= render 'rooms/thumbnail', :room => room %>
+      </div>
+  <% end %>
+</div><br />
 
 <% if params.has_key?(:filter) && @rooms.size > 0 %>
     <div>
