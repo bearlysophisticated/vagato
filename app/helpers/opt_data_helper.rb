@@ -120,6 +120,7 @@ module OptDataHelper
 
 
   def self.write_extra_params(rooms, distances, data)
+=begin
     min_dist = Float::INFINITY
     min_price = Float::INFINITY
 
@@ -134,9 +135,10 @@ module OptDataHelper
       end
       i += 1
     end
+=end
 
-    data.write("param min_dist:= #{min_dist};\n")
-    data.write("param min_price:= #{min_price};\n")
+    data.write("param min_dist:= 1;\n")
+    data.write("param min_price:= 1;\n")
   end
 
 
@@ -150,15 +152,20 @@ module OptDataHelper
 
 
   def self.write_capacity_and_stars_and_price_params(rooms, data)
+    price_categories = self.build_price_categories(rooms)
+
     data.write("param:\tcapacity\tstars\tprice :=\n")
     rooms.each_pair do |key, room|
-      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)}\t#{room.price.value_with_vat}\n")
+      price_category = price_categories[room.price.value_with_vat]
+      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)}\t#{price_category}\n")
     end
     data.write(";\n")
   end
 
 
   def self.write_distance_params(rooms, distances, data)
+    distance_categories = self.build_distance_categories(distances)
+
     data.write("param\tdistance: ")
     rooms.each_key do |key|
       data.write("#{key} ")
@@ -169,12 +176,48 @@ module OptDataHelper
       data.write("\t\t#{key}\t")
       j = 0
       rooms.each_value do |moor|
-        data.write("#{distances[i][j]}\t")
+        distance_category = distance_categories[distances[i][j]]
+        data.write("#{distance_category}\t")
         j += 1
       end
       data.write("\n")
       i += 1
     end
     data.write(";\n")
+  end
+
+  def self.build_price_categories(rooms)
+    price_categories = Hash.new
+
+    rooms.each_value do |room|
+      unless price_categories.has_key? room.price.value_with_vat
+        price_categories[room.price.value_with_vat] = 0
+      end
+    end
+
+    price_categories.keys.sort.each_with_index do |price, i|
+      price_categories[price] = i+1
+    end
+
+    puts price_categories.to_s
+    return price_categories
+  end
+
+  def self.build_distance_categories(distances)
+    distance_categories = Hash.new
+
+    distances.each do |subdistances|
+      subdistances.each do |distance|
+        unless distance_categories.has_key? distance
+          distance_categories[distance] = 0
+        end
+      end
+    end
+
+    distance_categories.keys.sort.each_with_index do |distance, i|
+      distance_categories[distance] = i+1
+    end
+
+    return distance_categories
   end
 end
