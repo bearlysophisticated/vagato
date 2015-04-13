@@ -40,7 +40,6 @@ module OptDataHelper
     File.open("smartfilter/tasks/#{problem}.dat", 'w') do |data|
       write_rooms_set(rooms, data)
       write_base_params(rooms, guests, data)
-      write_extra_params(rooms, distances, data)
       write_capacity_and_stars_and_price_params(rooms, data)
       write_distance_params(rooms, distances, data)
     end
@@ -116,29 +115,6 @@ module OptDataHelper
     end
     data.write("param min_capacity := #{min_capacity};\n")
     data.write("param guests := #{guests};\n")
-  end
-
-
-  def self.write_extra_params(rooms, distances, data)
-=begin
-    min_dist = Float::INFINITY
-    min_price = Float::INFINITY
-
-    i = 0
-    rooms.each_value do |room|
-      min_price = room.price.value_with_vat if room.price.value_with_vat < min_price
-
-      j = 0
-      rooms.each_value do |moor|
-        min_dist = distances[i][j] if distances[i][j] < min_dist && distances[i][j] > 0.0
-        j += 1
-      end
-      i += 1
-    end
-=end
-
-    data.write("param min_dist:= 1;\n")
-    data.write("param min_price:= 1;\n")
   end
 
 
