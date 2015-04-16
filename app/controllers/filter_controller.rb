@@ -6,10 +6,6 @@ class FilterController < ApplicationController
       flash[:danger] = 'Valami hiba történt a szűrés/keresés közben'
       redirect_to '/rooms'
     else
-
-      puts params
-
-
       params[:filter][:equipment_ids].delete_at(params[:filter][:equipment_ids].length-1) unless params[:filter][:equipment_ids].nil?
       params[:filter][:serviice_ids].delete_at(params[:filter][:serviice_ids].length-1) unless params[:filter][:serviice_ids].nil?
 
@@ -68,25 +64,29 @@ class FilterController < ApplicationController
   def smartfilter
     @filter = Filter.new
 
-    @rooms = FilterHelper.prepare_rooms_for_smartfilter(params)
+    @rooms = Array.new
 
-    tstart = Time.now
-    if params.has_key?(:cheap) && params.has_key?(:close)
-      distances = GeoHelper.calculate_distances_per_room(@rooms)
-      @rooms = OptDataHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests])
-    elsif params.has_key? :cheap
-      @rooms = OptDataHelper.find_cheap_solution(@rooms, params[:guests])
-    elsif params.has_key? :close
-      distances = GeoHelper.calculate_distances_per_room(@rooms)
-      @rooms = OptDataHelper.find_close_solution(@rooms, distances, params[:guests])
-    else
-      @rooms = Array.new
+    if params.has_key? :filter
+      @rooms = FilterHelper.prepare_rooms_for_smartfilter(params)
+
+      tstart = Time.now
+      if params.has_key?(:cheap) && params.has_key?(:close)
+        distances = GeoHelper.calculate_distances_per_room(@rooms)
+        @rooms = OptDataHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests])
+      elsif params.has_key? :cheap
+        @rooms = OptDataHelper.find_cheap_solution(@rooms, params[:guests])
+      elsif params.has_key? :close
+        distances = GeoHelper.calculate_distances_per_room(@rooms)
+        @rooms = OptDataHelper.find_close_solution(@rooms, distances, params[:guests])
+      end
+      tend = Time.now
+      @execution_time = (tend-tstart).round(2)
+
+      unless @rooms.nil?
+        @rooms.sort_by! { |r| r.accommodation.name }
+        @map_hash = GeoHelper.create_map_hash_from(@rooms)
+      end
     end
-    tend = Time.now
-    @execution_time = (tend-tstart).round(2)
-
-    @rooms.sort_by! { |r| r.accommodation.name }
-    @map_hash = GeoHelper.create_map_hash_from(@rooms)
   end
 
 end

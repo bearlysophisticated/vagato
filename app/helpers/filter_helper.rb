@@ -1,11 +1,12 @@
 module FilterHelper
   def self.filter_rooms(params)
+    rooms = Room.all
     rooms_by_date = Array.new
     rooms_by_city = Array.new
     rooms_by_equipment = Array.new
     rooms_by_serviice = Array.new
     rooms_by_capacity = Array.new
-    filter_viewpoints = 0
+    filter_viewpoints = 1
 
     if params.has_key? :city
       rooms_by_city = Room.joins(:accommodation => [:address]).where('lower(addresses.city) = ?', params[:city].downcase)
@@ -79,17 +80,16 @@ module FilterHelper
       filter_viewpoints += 1
     end
 
-    rooms_to_intersect = Array.new
     intersected_rooms_ids = Hash.new
     intersected_rooms = Array.new
 
-    rooms_to_intersect.concat(rooms_by_city) unless rooms_by_city.empty?
-    rooms_to_intersect.concat(rooms_by_capacity) unless rooms_by_capacity.empty?
-    rooms_to_intersect.concat(rooms_by_serviice) unless rooms_by_serviice.empty?
-    rooms_to_intersect.concat(rooms_by_equipment) unless rooms_by_equipment.empty?
-    rooms_to_intersect.concat(rooms_by_date) unless rooms_by_date.empty?
+    rooms.concat(rooms_by_city) unless rooms_by_city.empty?
+    rooms.concat(rooms_by_capacity) unless rooms_by_capacity.empty?
+    rooms.concat(rooms_by_serviice) unless rooms_by_serviice.empty?
+    rooms.concat(rooms_by_equipment) unless rooms_by_equipment.empty?
+    rooms.concat(rooms_by_date) unless rooms_by_date.empty?
 
-    rooms_to_intersect.each do |room|
+    rooms.each do |room|
       if intersected_rooms_ids.has_key?(room.id)
         intersected_rooms_ids[room.id] += 1
       else
@@ -116,10 +116,18 @@ module FilterHelper
     prepared_rooms = Hash.new
 
     rooms.each do |room|
-      i = 1
-      BookingsHelper.get_free_rooms_count(room, params[:start_date], params[:end_date]).times do
-        prepared_rooms["R#{room.id}_#{i}"] = room
-        i+=1
+      if params[:start_date].nil? && params[:end_date].nil?
+        i = 1
+        room.num_of_this.times do
+          prepared_rooms["R#{room.id}_#{i}"] = room
+          i+=1
+        end
+      else
+        i = 1
+        BookingsHelper.get_free_rooms_count(room, params[:start_date], params[:end_date]).times do
+          prepared_rooms["R#{room.id}_#{i}"] = room
+          i+=1
+        end
       end
     end
 
