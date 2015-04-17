@@ -10,7 +10,7 @@
 
 
 <h2><%= @accommodation.name %> <% @accommodation.categry.value.times { %><i class="fa fa-star accommodation-class"></i><% } %> </h2>
-<span class="label label-warning" style="margin-right: 5px;"><%= CommentHelper.get_random_rating %></span>
+<span class="label label-warning" style="margin-right: 5px;"><%= CommentHelper.get_average_stars_for(@accommodation) %></span>
 <% @accommodation.serviices.map do |serviice| %>
   <span class="label label-success" style="margin-right: 5px;">
      <%= serviice.name %> 
