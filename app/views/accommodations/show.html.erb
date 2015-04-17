@@ -4,10 +4,13 @@
 <p id="notice"><%= notice %></p>
 
 <% if (user_signed_in?) && (current_user == @accommodation.owner.user || current_user.admin?) %>
-  <%= link_to 'Szerkesztés', edit_accommodation_path(@accommodation), class: "btn btn-link right" %>
+  <%= link_to 'Szerkesztés', edit_accommodation_path(@accommodation), class: "btn btn-link float-right" %>
 <% end %>
 
+
+
 <h2><%= @accommodation.name %> <% @accommodation.categry.value.times { %><i class="fa fa-star accommodation-class"></i><% } %> </h2>
+<span class="label label-warning" style="margin-right: 5px;"><%= CommentHelper.get_random_rating %></span>
 <% @accommodation.serviices.map do |serviice| %>
   <span class="label label-success" style="margin-right: 5px;">
      <%= serviice.name %> 
