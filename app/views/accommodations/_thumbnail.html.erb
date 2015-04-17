@@ -5,6 +5,15 @@
       </div>
   </a>
   <div class="caption">
-    <%= link_to accommodation.name, accommodation %>
+    <div class="row">
+      <div class="col-md-9 left">
+        <%= link_to accommodation.name, accommodation %><br />
+        <small><i class="fa fa-map-marker"></i>&nbsp<%= accommodation.address.city %></small>
+      </div>
+      <div class="col-md-3 right">
+        <span class="label label-warning"><%= CommentHelper.get_random_rating %></span>
+      </div>
+    </div>
+
   </div>
 </div>
