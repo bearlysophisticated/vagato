@@ -10,6 +10,10 @@ class CreateFilters < ActiveRecord::Migration
       t.integer :guests
       t.boolean :close
       t.boolean :cheap
+      t.boolean :one_bed
+      t.boolean :two_bed
+      t.boolean :three_bed
+      t.boolean :four_or_more_bed
 
       t.timestamps null: false
     end

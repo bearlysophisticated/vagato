@@ -9,13 +9,13 @@
 
     <%= simple_form_for @filter, url: {controller: 'filter', action: 'filter'} do |f| %>
         <%= f.hidden_field :filter, :value => :fine %>
-        <%= hidden_field_tag :base_url, '/rooms' %>
+        <%= f.hidden_field :base_url, :value => base_url %>
 
       <div class="row">
         <div class='col-md-4'>
           <div class="form-group">
             <div class='input-group'>
-              <%= text_field_tag :city, nil, class: 'form-control', placeholder: 'Város' %>
+              <%= f.text_field :city, class: 'form-control', placeholder: 'Város' %>
               <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
             </div>
           </div>
@@ -24,7 +24,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= text_field_tag :start_date, nil, class: 'form-control', placeholder: 'Érkezés' %>
+              <%= f.text_field :start_date, class: 'form-control', placeholder: 'Érkezés' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -33,7 +33,7 @@
         <div class='col-md-3'>
           <div class="form-group">
             <div class='input-group'>
-              <%= text_field_tag :end_date, nil, class: 'form-control', placeholder: 'Távozás' %>
+              <%= f.text_field :end_date, class: 'form-control', placeholder: 'Távozás' %>
               <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
             </div>
           </div>
@@ -42,7 +42,7 @@
         <div class='col-md-2'>
             <div class="form-group">
               <div class='input-group'>
-                <%= number_field_tag :capacity, nil, class: 'form-control', placeholder: 'Ágyak' %>
+                <%= f.number_field :capacity, class: 'form-control', placeholder: 'Ágyak' %>
                 <span class="input-group-addon"><i class="fa fa-hotel"></i></span>
               </div>
             </div>
@@ -76,7 +76,7 @@
       </div>
 
       <div class="row center">
-        <%= button_tag 'Szűrés' , class: 'btn btn-success' %>
+        <%= f.button :submit, 'Szűrés' , class: 'btn btn-success' %>
       </div>
     <% end %>
 
@@ -91,56 +91,14 @@
             $('#filter_panel').slideUp();
             $('#filter_button').html('Szűrés <i class="fa fa-chevron-down"></i>');
         } else {
-            fill_inputs();
             $('#filter_panel').slideDown();
             $('#filter_button').html('Szűrés <i class="fa fa-chevron-up"></i>');
         }
     }
 
-    function fill_inputs() {
-        fill_dates();
-        fill_city();
-        fill_capacity();
-        fill_equipments();
-        fill_serviices();
-    }
-
-    function fill_dates() {
-        <% if params.has_key?(:start_date) && params.has_key?(:end_date) %>
-        $('#start_date').val("<%= params[:start_date] %>");
-        $('#end_date').val("<%= params[:end_date] %>");
-        <% end %>
-    }
-
-    function fill_city() {
-        <% if params.has_key? :city %>
-        $('#city').val("<%= params[:city] %>");
-        <% end %>
-    }
-
-    function fill_capacity(capacity) {
-        <% if params.has_key? :capacity %>
-        $('#capacity').val("<%= params[:capacity] %>");
-        <% end %>
-    }
-
-    function fill_equipments() {
-        <% if params.has_key? :equipment_ids
-           params[:equipment_ids].split(',').each do |e| %>
-            $('#filter_equipment_ids_<%= e %>').prop('checked', true);
-        <% end end %>
-    }
-
-    function fill_serviices() {
-        <% if params.has_key? :serviice_ids
-           params[:serviice_ids].split(',').each do |s| %>
-        $('#filter_serviice_ids_<%= s %>').prop('checked', true);
-        <% end end %>
-    }
-
     var setupFilterDatePickers = function() {
-        var start_date = $('#start_date');
-        var end_date = $('#end_date');
+        var start_date = $('#filter_start_date');
+        var end_date = $('#filter_end_date');
 
         start_date.datetimepicker({
             locale: "hu",

@@ -8,6 +8,8 @@ module FilterHelper
     rooms_by_capacity = Array.new
     filter_viewpoints = 1
 
+    puts params
+
     if params.has_key? :city
       rooms_by_city = Room.joins(:accommodation => [:address]).where('lower(addresses.city) = ?', params[:city].downcase)
       filter_viewpoints += 1
@@ -19,22 +21,22 @@ module FilterHelper
     else
       is_filtering_by_beds = false
 
-      if params.has_key? :one_bed
+      if params[:one_bed] == '1'
         rooms_by_capacity.concat(Room.where(:capacity => 1))
         is_filtering_by_beds = true
       end
 
-      if params.has_key? :two_bed
+      if params[:two_bed] == '1'
         rooms_by_capacity.concat(Room.where(:capacity => 2))
         is_filtering_by_beds = true
       end
 
-      if params.has_key? :three_bed
+      if params[:three_bed] == '1'
         rooms_by_capacity.concat(Room.where(:capacity => 3))
         is_filtering_by_beds = true
       end
 
-      if params.has_key? :four_or_more_bed
+      if params[:four_or_more_bed] == '1'
         rooms_by_capacity.concat(Room.where('capacity >= ?', 4))
         is_filtering_by_beds = true
       end

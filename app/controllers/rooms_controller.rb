@@ -1,15 +1,13 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
+  before_action :set_filter, only: [:index]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   #before_action :check_user, only: [:new_owner, :create, :edit, :update, :destroy]
 
   # GET /rooms
   # GET /rooms.json
   def index
-    @filter = Filter.new
-
     if params.has_key?('filter')
-      # @filter = FilterHelper.load_filter_params(params)
       @rooms = FilterHelper.filter_rooms(params).sort_by!{ |r| r.accommodation.name }
     else
       @rooms = Room.all.sort_by{ |r| r.accommodation.name }
@@ -85,6 +83,11 @@ class RoomsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_room
       @room = Room.find(params[:id])
+    end
+
+    def set_filter
+      @filter = Filter.new
+      @filter.load_params(params)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
