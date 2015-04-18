@@ -28,4 +28,8 @@ module CommentHelper
     return room.accommodation.comments.size > 0 ?avg_stars/room.accommodation.comments.size : 0
   end
 
+  def self.get_random_rating
+    prng = Random.new
+    prng.rand(6.0...10.0).round(1)
+  end
 end

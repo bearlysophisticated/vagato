@@ -1,8 +1,9 @@
 # config valid only for Capistrano 3.1
 lock '3.1.0'
 
-set :application, 'vagatp'
+set :application, 'vagato'
 set :repo_url, 'git@github.com:m3dw3/vagato.git'
+set :branch, ENV['BRANCH'] || "master"
 
 set :deploy_to, '/home/deploy/vagato/'
 
