@@ -2,45 +2,14 @@ class FilterController < ApplicationController
   before_action :set_filter, only: [:smartfilter]
 
   def filter
-    base_url = params[:filter][:base_url]
+    url = UrlHelper.build_parameterised_url(params[:filter])
 
-    if base_url.nil?
-      flash[:danger] = 'Valami hiba történt a szűrés/keresés közben'
+    if url.nil?
+      flash[:danger] = 'Valami hiba történt a szűrés közben'
       redirect_to '/rooms'
-
     else
-      params[:filter][:equipment_ids].delete_at(params[:filter][:equipment_ids].length-1) unless params[:filter][:equipment_ids].nil?
-      params[:filter][:serviice_ids].delete_at(params[:filter][:serviice_ids].length-1) unless params[:filter][:serviice_ids].nil?
-
-      #params[:filter].delete(:city) if params[:filter][:city].empty?
-      params[:filter].delete(:start_date) if params[:filter][:start_date].empty?
-      params[:filter].delete(:end_date) if params[:filter][:end_date].empty?
-      params[:filter].delete(:equipment_ids) if params[:filter][:equipment_ids].empty?
-      params[:filter].delete(:serviice_ids) if params[:filter][:serviice_ids].empty?
-
-      if params[:filter][:filter] == 'fine'
-        params[:filter].delete(:capacity) if params[:filter][:capacity].empty?
-
-      elsif params[:filter][:filter] == 'smart'
-        params[:filter][:close] = params[:close] if params.has_key?('close')
-        params[:filter][:cheap] = params[:cheap] if params.has_key?('cheap')
-
-        params[:filter][:one_bed] = params[:one_bed] if params.has_key?('one_bed')
-        params[:filter][:two_bed] = params[:two_bed] if params.has_key?('two_bed')
-        params[:filter][:three_bed] = params[:three_bed] if params.has_key?('three_bed')
-        params[:filter][:four_or_more_bed] = params[:four_or_more_bed] if params.has_key?('four_or_more_bed')
-
-        params[:filter].delete(:guests) if params[:filter][:guests].empty?
-      end
-
-      url = UrlHelper.build_parameterised_url(base_url, params[:filter])
-
       redirect_to url
     end
-  end
-
-  def type_cast_from_user(param)
-    puts param
   end
 
   def smartfilter
