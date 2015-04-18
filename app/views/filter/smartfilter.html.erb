@@ -79,7 +79,7 @@
                     <strong>A szobák legyenek minél olcsóbbak:</strong>
                   </div>
                   <div class="col-md-4">
-                    <%= check_box_tag :cheap, 1, params.has_key?(:cheap) || (!params.has_key?(:cheap) && !params.has_key?(:close)), :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                    <%= f.check_box :cheap, :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
                   </div>
                 </div><br />
                 <div class="row">
@@ -87,7 +87,7 @@
                     <strong>A szobák legyenek minél közelebb egymáshoz:</strong>
                   </div>
                   <div class="col-md-4">
-                    <%= check_box_tag :close, 1, params.has_key?(:close), :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
+                    <%= f.check_box :close, :class => 'checkbox', 'data-on-text' => 'IGEN', 'data-off-text' => 'NEM','data-on-color' => 'success' %>
                   </div>
                 </div>
               </div>
@@ -182,8 +182,8 @@
     $(document).on('page:load', ready);
 
     function initialize_switches(){
-        $("#cheap").bootstrapSwitch();
-        $("#close").bootstrapSwitch();
+        $("#filter_cheap").bootstrapSwitch();
+        $("#filter_close").bootstrapSwitch();
     }
 
     var setupFilterDatePickers = function() {
