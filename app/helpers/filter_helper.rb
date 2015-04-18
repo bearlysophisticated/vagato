@@ -8,8 +8,6 @@ module FilterHelper
     rooms_by_capacity = Array.new
     filter_viewpoints = 1
 
-    puts params
-
     if params.has_key? :city
       rooms_by_city = Room.joins(:accommodation => [:address]).where('lower(addresses.city) = ?', params[:city].downcase)
       filter_viewpoints += 1
@@ -133,7 +131,6 @@ module FilterHelper
       end
     end
 
-    puts prepared_rooms.to_s
     return prepared_rooms
   end
 
