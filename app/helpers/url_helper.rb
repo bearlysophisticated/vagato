@@ -27,10 +27,10 @@ module UrlHelper
       params.delete(:equipment_ids) if params[:equipment_ids].empty?
       params.delete(:serviice_ids) if params[:serviice_ids].empty?
 
-      if params == 'fine'
+      if params[:filter] == 'fine'
         params.delete(:capacity) if params[:capacity].empty?
 
-      elsif params == 'smart'
+      elsif params[:filter] == 'smart'
         params[:close] = params[:close] if params.has_key?('close')
         params[:cheap] = params[:cheap] if params.has_key?('cheap')
 
