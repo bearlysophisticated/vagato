@@ -19,12 +19,12 @@ class FilterController < ApplicationController
       @rooms = FilterHelper.prepare_rooms_for_smartfilter(params)
 
       tstart = Time.now
-      if params.has_key?(:cheap) && params.has_key?(:close)
+      if params[:cheap] == '1' && params[:close] == '1'
         distances = GeoHelper.calculate_distances_per_room(@rooms)
         @rooms = OptDataHelper.find_cheap_and_close_solution(@rooms, distances, params[:guests])
-      elsif params.has_key? :cheap
+      elsif params[:cheap] == '1'
         @rooms = OptDataHelper.find_cheap_solution(@rooms, params[:guests])
-      elsif params.has_key? :close
+      elsif params[:close] == '1'
         distances = GeoHelper.calculate_distances_per_room(@rooms)
         @rooms = OptDataHelper.find_close_solution(@rooms, distances, params[:guests])
       end
