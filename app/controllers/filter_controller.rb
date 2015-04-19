@@ -33,6 +33,8 @@ class FilterController < ApplicationController
 
       unless @rooms.nil?
         @rooms.sort_by! { |r| r.accommodation.name }
+        @average_price = PricesHelper.get_average_price(@rooms)
+        @average_distance = GeoHelper.get_average_distance(@rooms)
         @map_hash = GeoHelper.create_map_hash_from(@rooms)
       end
     end

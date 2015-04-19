@@ -1,10 +1,27 @@
 module GeoHelper
 
+  def self.get_average_distance(rooms)
+    distances = calculate_distances_per_room(rooms)
+    average_distance = 0
+    num_of_distances = 0
+
+    distances.each do |distance|
+      distance.each do |sub_distance|
+        average_distance += sub_distance
+        num_of_distances += 1
+      end
+    end
+
+    (average_distance /= num_of_distances).round(2)
+  end
+
   def self.calculate_distances_per_room(rooms)
+    rooms = rooms.values if rooms.is_a? Hash
+
     distances = Array.new
-    rooms.each_value do |room|
+    rooms.each do |room|
       sub_distances = Array.new
-      rooms.each_value do |moor|
+      rooms.each do |moor|
         sub_distances.push(moor.accommodation.address.distance_to(room.accommodation.address)*1.609344)
       end
       distances.push(sub_distances)

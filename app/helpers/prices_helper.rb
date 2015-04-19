@@ -22,4 +22,13 @@ module PricesHelper
 	def default_ifa
 		PricesHelper.default_ifa
 	end
+
+	def self.get_average_price(rooms)
+		average_price = 0
+		rooms.each do |room|
+			average_price += room.price.value_with_vat
+		end
+
+		(average_price /= rooms.size).round(2)
+	end
 end

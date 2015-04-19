@@ -123,7 +123,7 @@
 
 <% if @rooms.size > 0 %>
     <br />
-    <h2>Találatok <small><%= @rooms.size %> szoba (<%= @execution_time %> másodperc)</small></h2>
+    <h2>Találatok <small><%= @rooms.size %> szoba (<%= @execution_time %> másodperc) - Átlagos ár: <%= @average_price %> Ft - Átlagos távolság: <%= @average_distance %> km</small></h2>
 
     <div class="right">
       <%= form_tag ({controller: 'cart', action: 'add_from_smartfilter'}) do %>
