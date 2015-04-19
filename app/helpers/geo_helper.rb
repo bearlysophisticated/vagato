@@ -52,6 +52,7 @@ module GeoHelper
     map_hash = Gmaps4rails.build_markers(accommodations.values) do |accommodation, marker|
       marker.lat accommodation.address.latitude
       marker.lng accommodation.address.longitude
+      marker.infowindow accommodation.name
     end
 
     return map_hash
