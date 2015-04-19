@@ -165,14 +165,19 @@ module OptDataHelper
   def self.build_price_categories(rooms)
     price_categories = Hash.new
 
+    min_price = Float::INFINITY
+
     rooms.each_value do |room|
-      unless price_categories.has_key? room.price.value_with_vat
-        price_categories[room.price.value_with_vat] = 0
+      price = room.price.value_with_vat
+      unless price_categories.has_key? price
+        price_categories[price] = 0
+
+        min_price = price if price < min_price
       end
     end
 
     price_categories.keys.sort.each_with_index do |price, i|
-      price_categories[price] = i+1
+      price_categories[price] = (price/min_price).floor
     end
 
     puts price_categories.to_s
@@ -182,16 +187,22 @@ module OptDataHelper
   def self.build_distance_categories(distances)
     distance_categories = Hash.new
 
-    distances.each do |subdistances|
-      subdistances.each do |distance|
+    min_distance = Float::INFINITY
+
+    distances.each do |sub_distances|
+      sub_distances.each do |distance|
         unless distance_categories.has_key? distance
           distance_categories[distance] = 0
+
+          if distance < min_distance && distance != 0
+            min_distance = distance
+          end
         end
       end
     end
 
     distance_categories.keys.sort.each_with_index do |distance, i|
-      distance_categories[distance] = i+1
+      distance_categories[distance] = (distance/min_distance).floor
     end
 
     return distance_categories
