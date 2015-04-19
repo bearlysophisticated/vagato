@@ -121,7 +121,7 @@ module OptDataHelper
   def self.write_capacity_and_stars_params(rooms, data)
     data.write("param:\tcapacity\tstars :=\n")
     rooms.each_pair do |key, room|
-      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)}\n")
+      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)*10}\n")
     end
     data.write(";\n")
   end
@@ -133,7 +133,7 @@ module OptDataHelper
     data.write("param:\tcapacity\tstars\tprice :=\n")
     rooms.each_pair do |key, room|
       price_category = price_categories[room.price.value_with_vat]
-      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)}\t#{price_category}\n")
+      data.write("\t\t#{key}\t#{room.capacity}\t#{CommentHelper.get_average_stars_for(room)*10}\t#{price_category}\n")
     end
     data.write(";\n")
   end
@@ -176,8 +176,8 @@ module OptDataHelper
       end
     end
 
-    price_categories.keys.sort.each_with_index do |price, i|
-      price_categories[price] = (price/min_price).floor
+    price_categories.keys.sort.each do |price|
+      price_categories[price] = ((price/min_price)*10).floor
     end
 
     puts price_categories.to_s
@@ -201,7 +201,7 @@ module OptDataHelper
       end
     end
 
-    distance_categories.keys.sort.each_with_index do |distance, i|
+    distance_categories.keys.sort.each do |distance|
       distance_categories[distance] = (distance/min_distance).floor
     end
 

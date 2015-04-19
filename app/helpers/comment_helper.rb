@@ -25,7 +25,7 @@ module CommentHelper
       avg_stars += c.stars
     end
 
-    return room.accommodation.comments.size > 0 ?avg_stars/room.accommodation.comments.size : 0
+    return room.accommodation.comments.size > 0 ? avg_stars/room.accommodation.comments.size : 0
   end
 
   def self.get_random_rating
