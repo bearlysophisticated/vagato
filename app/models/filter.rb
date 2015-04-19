@@ -21,11 +21,11 @@ class Filter < ActiveRecord::Base
     end
 
     self.guests = params[:guests] if params.has_key? :guests
-    self.one_bed = params[:one_bed] if params.has_key? :one_bed
-    self.two_bed = params[:two_bed] if params.has_key? :two_bed
-    self.three_bed = params[:three_bed] if params.has_key? :three_bed
-    self.four_or_more_bed = params[:four_or_more_bed] if params.has_key? :four_or_more_bed
-    self.cheap = params.has_key?(:cheap) || (!params.has_key?(:cheap) && !params.has_key?(:close))
-    self.close = params[:close] if params.has_key? :close
+    self.one_bed = params[:one_bed] == '1' || !params.has_key?(:one_bed)
+    self.two_bed = params[:two_bed] == '1' || !params.has_key?(:two_bed)
+    self.three_bed = params[:three_bed] == '1' || !params.has_key?(:three_bed)
+    self.four_or_more_bed = params[:four_or_more_bed] == '1' || !params.has_key?(:four_or_more_bed)
+    self.cheap = params[:cheap] == '1' || (params[:cheap] == '1' && params[:close] != '1') || !params.has_key?(:cheap)
+    self.close = params[:close] == '1'
   end
 end
