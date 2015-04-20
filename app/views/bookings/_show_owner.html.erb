@@ -156,12 +156,12 @@
           <%= simple_form_for @booking do |b| %>
               <%= b.hidden_field :state, :value => 'DENIED' %>
               <%= b.hidden_field :id %>
-              <%= b.button :submit, 'Elutasít', class: 'btn-danger btn-answer-half left' %>
+              <%= b.button :submit, 'Elutasít', class: 'btn-danger btn-answer-half float-left' %>
           <% end %>
         <%= simple_form_for @booking do |b| %>
             <%= b.hidden_field :state, :value => 'APPROVED' %>
             <%= b.hidden_field :id %>
-            <%= b.button :submit, 'Elfogad', class: 'btn-success btn-answer-half right' %>
+            <%= b.button :submit, 'Elfogad', class: 'btn-success btn-answer-half float-right' %>
         <% end %>
       </div>
     </div>
