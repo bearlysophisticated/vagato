@@ -177,7 +177,7 @@ module OptDataHelper
     end
 
     price_categories.keys.sort.each do |price|
-      price_categories[price] = ((price/min_price)*10).floor
+      price_categories[price] = price/min_price
     end
 
     puts price_categories.to_s
@@ -185,6 +185,12 @@ module OptDataHelper
   end
 
   def self.build_distance_categories(distances)
+    distances.each_index do |i|
+      distances[i].each_index do |j|
+        distances[i][j] += 1
+      end
+    end
+
     distance_categories = Hash.new
 
     min_distance = Float::INFINITY
@@ -194,7 +200,7 @@ module OptDataHelper
         unless distance_categories.has_key? distance
           distance_categories[distance] = 0
 
-          if distance < min_distance && distance != 0
+          if distance < min_distance
             min_distance = distance
           end
         end
@@ -202,7 +208,7 @@ module OptDataHelper
     end
 
     distance_categories.keys.sort.each do |distance|
-      distance_categories[distance] = (distance/min_distance).floor
+      distance_categories[distance] = distance/min_distance
     end
 
     return distance_categories
