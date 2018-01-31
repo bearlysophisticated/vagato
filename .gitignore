@@ -23,3 +23,5 @@
 
 # Ignore app-generated files
 smartfilter/tasks
+
+.byebug_history

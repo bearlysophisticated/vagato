@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150418203331) do
+ActiveRecord::Schema.define(version: 20150418195654) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,19 +127,19 @@ ActiveRecord::Schema.define(version: 20150418203331) do
   create_table "filters", force: :cascade do |t|
     t.string   "filter"
     t.string   "base_url"
+    t.string   "city"
     t.date     "start_date"
     t.date     "end_date"
     t.integer  "capacity"
     t.integer  "guests"
     t.boolean  "close"
     t.boolean  "cheap"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.string   "city"
     t.boolean  "one_bed"
     t.boolean  "two_bed"
     t.boolean  "three_bed"
     t.boolean  "four_or_more_bed"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "guests", force: :cascade do |t|
