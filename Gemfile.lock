@@ -133,8 +133,8 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
-    pg (0.18.1)
-    pg (0.18.1-x86-mingw32)
+    pg (0.21.0)
+    pg (0.21.0-x86-mingw32)
     rack (1.6.0)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -229,9 +229,12 @@ DEPENDENCIES
   jquery-rails
   momentjs-rails (>= 2.8.1)
   paperclip
-  pg
+  pg (= 0.21.0)
   rails
   sass-rails
   simple_form
   therubyracer
   uglifier
+
+BUNDLED WITH
+   1.16.1
