@@ -1,30 +1,30 @@
 source 'https://rubygems.org'
 
 # Geocoding library
-gem 'geocoder', '1.2.8'
+gem 'geocoder'
 
 # Google maps integration
-gem 'gmaps4rails', '2.1.2'
+gem 'gmaps4rails'
 
 # Countries gem for country selection and validation
-gem 'countries', '0.11.3'
+gem 'countries'
 
 # Authentication
-gem 'devise', '3.4.1'
-gem 'bcrypt', '3.1.10'
+gem 'devise'
+gem 'bcrypt'
 
 # Bootstrap CSS library
-gem 'bootstrap-sass', '3.3.4.1'
+gem 'bootstrap-sass'
 
 # Bootstrap Switch extension
-gem 'bootstrap-switch-rails', '3.3.2'
+gem 'bootstrap-switch-rails'
 
 # Font Awesome icons
-gem 'font-awesome-sass', '4.3.2.1'
+gem 'font-awesome-sass'
 
 # Simple Form with country select
-gem 'simple_form', '3.1.0'
-gem 'country_select', '2.2.0'
+gem 'simple_form'
+gem 'country_select'
 
 # DatePicker for Simple Form
 gem 'bootstrap3-datetimepicker-rails', '~> 4.0.0'
@@ -34,23 +34,23 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.0.0'
 gem 'momentjs-rails', '>= 2.8.1'
 
 # Use Paperclip for uploading and showing pictures
-gem 'paperclip', '4.2.1'
+gem 'paperclip'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 # Use PostgreSQL as the database for Active Record
 gem 'pg', '0.21.0'
 # Use SCSS for stylesheets
-gem 'sass-rails', '5.0.1'
+gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '2.7.1'
+gem 'uglifier'
 # Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '4.1.0'
+gem 'coffee-rails'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer', '0.12.1', platforms: :ruby
+gem 'therubyracer',  platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails', '4.0.3'
+gem 'jquery-rails'
 
 # Use Capistrano for deployment
 group :development do
@@ -60,8 +60,6 @@ group :development do
 
   # Add this if you're using rbenv
   gem 'capistrano-rbenv', github: 'capistrano/rbenv'
-
-  gem 'byebug'
 end
 
 # Use debugger
