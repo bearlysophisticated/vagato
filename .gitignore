@@ -25,3 +25,5 @@
 smartfilter/tasks
 
 .byebug_history
+
+/public/assets
