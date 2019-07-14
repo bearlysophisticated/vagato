@@ -60,6 +60,8 @@ group :development do
 
   # Add this if you're using rbenv
   gem 'capistrano-rbenv', github: 'capistrano/rbenv'
+
+  gem 'byebug'
 end
 
 # Use debugger

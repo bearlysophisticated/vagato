@@ -22,7 +22,8 @@
 .idea
 
 # Ignore app-generated files
-smartfilter/tasks
+smartfilter/tasks/*.dat
+smartfilter/tasks/*.solve
 
 .byebug_history
 

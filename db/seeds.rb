@@ -8,7 +8,6 @@
 
 user = Admin.new
 user.name = "Default Admin"
-user.email = 'admin@admin.io'
 user.password = '123456'
 user.password_confirmation = '123456'
 user.save!
