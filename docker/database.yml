@@ -1,0 +1,28 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  database: vagato
+  password: m3dw3
+  username: m3dw3
+  host: postgres
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: vagato
+  username: deploy
+  password: wwGp44AwYAh0
+  host: localhost
+  pool: 5
+  timeout: 5000
