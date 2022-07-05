@@ -1,8 +1,8 @@
 GIT
-  remote: git://github.com/capistrano/rbenv.git
-  revision: c029e4128e4a8f25adda35795f5729bd4f62e51f
+  remote: https://github.com/capistrano/rbenv.git
+  revision: 1fdb93a6dd4a4ab3fb786c995055cf6949daf7a4
   specs:
-    capistrano-rbenv (2.1.3)
+    capistrano-rbenv (2.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
 
@@ -84,7 +84,7 @@ GEM
     country_select (3.1.1)
       countries (~> 2.0)
       sort_alphabetical (~> 1.0)
-    crass (1.0.3)
+    crass (1.0.6)
     devise (4.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -109,7 +109,7 @@ GEM
       thor (>= 0.14, < 2.0)
     json (1.8.6)
     libv8 (3.16.14.19)
-    loofah (2.1.1)
+    loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -117,9 +117,11 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
-    mimemagic (0.3.2)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_mime (1.0.0)
-    mini_portile2 (2.3.0)
+    mini_portile2 (2.8.0)
     minitest (5.11.3)
     momentjs-rails (2.17.1)
       railties (>= 3.1)
@@ -128,8 +130,9 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
-    nokogiri (1.8.2)
-      mini_portile2 (~> 2.3.0)
+    nokogiri (1.13.6)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     orm_adapter (0.5.0)
     paperclip (5.2.1)
       activemodel (>= 4.2.0)
@@ -138,6 +141,7 @@ GEM
       mime-types
       mimemagic (~> 0.3.0)
     pg (0.21.0)
+    racc (1.6.0)
     rack (1.6.8)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -158,8 +162,8 @@ GEM
       activesupport (>= 4.2.0, < 5.0)
       nokogiri (~> 1.6)
       rails-deprecated_sanitizer (>= 1.0.1)
-    rails-html-sanitizer (1.0.3)
-      loofah (~> 2.0)
+    rails-html-sanitizer (1.4.3)
+      loofah (~> 2.3)
     railties (4.2.1)
       actionpack (= 4.2.1)
       activesupport (= 4.2.1)
